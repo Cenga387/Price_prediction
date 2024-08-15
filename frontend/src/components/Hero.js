@@ -3,10 +3,10 @@ import { alpha } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
-import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import heroImage from '../assets/images/merc_hero.png'
 
 export default function Hero() {
   return (
@@ -31,69 +31,123 @@ export default function Hero() {
           pb: { xs: 8, sm: 12 },
         }}
       >
-        <Stack spacing={2} useFlexGap sx={{ width: { xs: '100%', sm: '70%' } }}>
-          <Typography
-            variant="h1"
-            sx={{
-              display: 'flex',
-              flexDirection: { xs: 'column', md: 'row' },
-              alignSelf: 'center',
-              textAlign: 'center',
-              fontSize: 'clamp(3.5rem, 10vw, 4rem)',
-            }}
-          >
-            Our latest&nbsp;
-            <Typography
-              component="span"
-              variant="h1"
+        <Stack spacing={2} useFlexGap sx={{ width: { xs: '100%', sm: '100%' } }}>
+          <Stack direction={{xs: 'column', md: 'row'}} spacing={2} alignItems='center'>
+            <Container sx={{justifyContent: 'center'}}>
+              <Typography
+                variant="h1"
+                sx={{
+                  display: 'flex',
+                  flexDirection: { xs: 'column', md: 'row' },
+                  alignSelf: 'center',
+                  textAlign: 'center',
+                  fontSize: 'clamp(3.5rem, 10vw, 4rem)',
+                }}
+              >
+                Welcome to our car price prediction&nbsp;
+              </Typography>
+              <Typography
+                  component="span"
+                  variant="h1"
+                  sx={{
+                    fontSize: 'clamp(3rem, 10vw, 4rem)',
+                    color: (theme) =>
+                      theme.palette.mode === 'light' ? 'primary.main' : 'primary.light',
+                  }}
+                >
+                  AI
+                </Typography>
+              <Typography
+                textAlign="center"
+                color="text.secondary"
+                sx={{ alignSelf: 'center', width: { sm: '100%', md: '80%' } }}
+              >
+                Unlock the future of car valuations with our AI-powered platform. Simply input your car details, and let our advanced algorithm deliver accurate, data-driven price predictions in seconds. Experience the next generation of smart car buying and selling.
+              </Typography>
+            </Container>
+            <Box
+              component="img"
               sx={{
-                fontSize: 'clamp(3rem, 10vw, 4rem)',
-                color: (theme) =>
-                  theme.palette.mode === 'light' ? 'primary.main' : 'primary.light',
+                width: 500,
+                height: 400,
+                objectFit: 'cover',
               }}
-            >
-              products
-            </Typography>
-          </Typography>
-          <Typography
-            textAlign="center"
-            color="text.secondary"
-            sx={{ alignSelf: 'center', width: { sm: '100%', md: '80%' } }}
-          >
-            Explore our cutting-edge dashboard, delivering high-quality solutions
-            tailored to your needs. Elevate your experience with top-tier features
-            and services.
-          </Typography>
+              alt="Description of the image"
+              src={heroImage}
+            />
+          </Stack>
           <Stack
             direction={{ xs: 'column', sm: 'row' }}
             alignSelf="center"
             spacing={1}
             useFlexGap
-            sx={{ pt: 2, width: { xs: '100%', sm: 'auto' } }}
+            sx={{ pt: 2, width: { xs: '100%', sm: '100%' } }}
           >
             <TextField
-              id="outlined-basic"
+              id="displacement"
               hiddenLabel
               size="small"
               variant="outlined"
-              aria-label="Enter your email address"
-              placeholder="Your email address"
+              aria-label="Enter displacement"
+              placeholder="Displacement"
               inputProps={{
                 autoComplete: 'off',
-                'aria-label': 'Enter your email address',
+                'aria-label': 'Enter displacement',
               }}
             />
-            <Button variant="contained" color="primary">
-              Start now
+            <TextField
+              id="mileage"
+              hiddenLabel
+              size="small"
+              variant="outlined"
+              aria-label="Enter mileage"
+              placeholder="Mileage"
+              inputProps={{
+                autoComplete: 'off',
+                'aria-label': 'Enter mileage',
+              }}
+            />
+            <TextField
+              id="year"
+              hiddenLabel
+              size="small"
+              variant="outlined"
+              aria-label="Enter year"
+              placeholder="Year"
+              inputProps={{
+                autoComplete: 'off',
+                'aria-label': 'Enter year',
+              }}
+            />
+            <TextField
+              id="kilowatts"
+              hiddenLabel
+              size="small"
+              variant="outlined"
+              aria-label="Enter kilowatts"
+              placeholder="Kilowatts"
+              inputProps={{
+                autoComplete: 'off',
+                'aria-label': 'Enter kilowatts',
+              }}
+            />
+            <TextField
+              id="rimsize"
+              hiddenLabel
+              size="small"
+              variant="outlined"
+              aria-label="Enter rim size"
+              placeholder="Rim size"
+              inputProps={{
+                autoComplete: 'off',
+                'aria-label': 'Enter rim size',
+              }}
+            />
+            <Button variant="contained" color="primary" size='medium'>
+              Predict
             </Button>
           </Stack>
-          <Typography variant="caption" textAlign="center" sx={{ opacity: 0.8 }}>
-            By clicking &quot;Start now&quot; you agree to our&nbsp;
-            <Link href="#" color="primary">
-              Terms & Conditions
-            </Link>
-            .
-          </Typography>
+          
         </Stack>
         <Box
           id="image"
