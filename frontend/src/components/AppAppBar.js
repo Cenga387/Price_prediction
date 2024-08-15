@@ -4,19 +4,24 @@ import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
-import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import MenuItem from '@mui/material/MenuItem';
 import Drawer from '@mui/material/Drawer';
 import MenuIcon from '@mui/icons-material/Menu';
+import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
 import ToggleColorMode from './ToggleColorMode';
+import myLogo from '../assets/bloomteq_logo.png';
 
 const logoStyle = {
-  width: '140px',
+  width: '8vw',
   height: 'auto',
   cursor: 'pointer',
+  borderRadius: '20%', // This makes the logo a perfect circle
+  overflow: 'hidden',
+  marginLeft: 0, 
+  marginTop: 0,
 };
 
 function AppAppBar({ mode, toggleColorMode }) {
@@ -48,10 +53,10 @@ function AppAppBar({ mode, toggleColorMode }) {
           boxShadow: 0,
           bgcolor: 'transparent',
           backgroundImage: 'none',
-          mt: 2,
+          mt: 0,
         }}
       >
-        <Container maxWidth="lg">
+        <Container maxWidth="false">
           <Toolbar
             variant="regular"
             sx={(theme) => ({
@@ -59,14 +64,14 @@ function AppAppBar({ mode, toggleColorMode }) {
               alignItems: 'center',
               justifyContent: 'space-between',
               flexShrink: 0,
-              borderRadius: '999px',
               bgcolor:
                 theme.palette.mode === 'light'
                   ? 'rgba(255, 255, 255, 0.4)'
                   : 'rgba(0, 0, 0, 0.4)',
               backdropFilter: 'blur(24px)',
-              maxHeight: 40,
-              border: '1px solid',
+              maxHeight: 100,
+              height: 100,
+              border: '4px solid',
               borderColor: 'divider',
               boxShadow:
                 theme.palette.mode === 'light'
@@ -76,59 +81,31 @@ function AppAppBar({ mode, toggleColorMode }) {
           >
             <Box
               sx={{
-                flexGrow: 1,
                 display: 'flex',
                 alignItems: 'center',
-                ml: '-18px',
-                px: 0,
+                flexGrow: 1,
               }}
             >
               <img
-                src={
-                  'https://assets-global.website-files.com/61ed56ae9da9fd7e0ef0a967/61f12e6faf73568658154dae_SitemarkDefault.svg'
-                }
+                src={myLogo}
                 style={logoStyle}
-                alt="logo of sitemark"
+                alt="bloomteq logo"
               />
-              <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+              <Box sx={{ display: { xs: 'none', md: 'flex' }, ml: 2 }}>
                 <MenuItem
-                  onClick={() => scrollToSection('features')}
+                  onClick={() => scrollToSection('home')}
                   sx={{ py: '6px', px: '12px' }}
                 >
-                  <Typography variant="body2" color="text.primary">
-                    Features
+                  <Typography variant="body2" color="text.primary" sx={{ fontSize: '24px' }}>
+                    Home
                   </Typography>
                 </MenuItem>
                 <MenuItem
-                  onClick={() => scrollToSection('testimonials')}
+                  onClick={() => scrollToSection('car-stats')}
                   sx={{ py: '6px', px: '12px' }}
                 >
-                  <Typography variant="body2" color="text.primary">
-                    Testimonials
-                  </Typography>
-                </MenuItem>
-                <MenuItem
-                  onClick={() => scrollToSection('highlights')}
-                  sx={{ py: '6px', px: '12px' }}
-                >
-                  <Typography variant="body2" color="text.primary">
-                    Highlights
-                  </Typography>
-                </MenuItem>
-                <MenuItem
-                  onClick={() => scrollToSection('pricing')}
-                  sx={{ py: '6px', px: '12px' }}
-                >
-                  <Typography variant="body2" color="text.primary">
-                    Pricing
-                  </Typography>
-                </MenuItem>
-                <MenuItem
-                  onClick={() => scrollToSection('faq')}
-                  sx={{ py: '6px', px: '12px' }}
-                >
-                  <Typography variant="body2" color="text.primary">
-                    FAQ
+                  <Typography variant="body2" color="text.primary" sx={{ fontSize: '24px' }}>
+                    Car Stats
                   </Typography>
                 </MenuItem>
               </Box>
@@ -141,26 +118,6 @@ function AppAppBar({ mode, toggleColorMode }) {
               }}
             >
               <ToggleColorMode mode={mode} toggleColorMode={toggleColorMode} />
-              <Button
-                color="primary"
-                variant="text"
-                size="small"
-                component="a"
-                href="/material-ui/getting-started/templates/sign-in/"
-                target="_blank"
-              >
-                Sign in
-              </Button>
-              <Button
-                color="primary"
-                variant="contained"
-                size="small"
-                component="a"
-                href="/material-ui/getting-started/templates/sign-up/"
-                target="_blank"
-              >
-                Sign up
-              </Button>
             </Box>
             <Box sx={{ display: { sm: '', md: 'none' } }}>
               <Button
@@ -191,44 +148,13 @@ function AppAppBar({ mode, toggleColorMode }) {
                   >
                     <ToggleColorMode mode={mode} toggleColorMode={toggleColorMode} />
                   </Box>
-                  <MenuItem onClick={() => scrollToSection('features')}>
-                    Features
+                  <MenuItem onClick={() => scrollToSection('home')}>
+                    Home
                   </MenuItem>
-                  <MenuItem onClick={() => scrollToSection('testimonials')}>
-                    Testimonials
+                  <MenuItem onClick={() => scrollToSection('car-stats')}>
+                    Car Stats
                   </MenuItem>
-                  <MenuItem onClick={() => scrollToSection('highlights')}>
-                    Highlights
-                  </MenuItem>
-                  <MenuItem onClick={() => scrollToSection('pricing')}>
-                    Pricing
-                  </MenuItem>
-                  <MenuItem onClick={() => scrollToSection('faq')}>FAQ</MenuItem>
                   <Divider />
-                  <MenuItem>
-                    <Button
-                      color="primary"
-                      variant="contained"
-                      component="a"
-                      href="/material-ui/getting-started/templates/sign-up/"
-                      target="_blank"
-                      sx={{ width: '100%' }}
-                    >
-                      Sign up
-                    </Button>
-                  </MenuItem>
-                  <MenuItem>
-                    <Button
-                      color="primary"
-                      variant="outlined"
-                      component="a"
-                      href="/material-ui/getting-started/templates/sign-in/"
-                      target="_blank"
-                      sx={{ width: '100%' }}
-                    >
-                      Sign in
-                    </Button>
-                  </MenuItem>
                 </Box>
               </Drawer>
             </Box>
