@@ -1,14 +1,31 @@
 import * as React from 'react';
+import { useState } from 'react';
 import { alpha } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
-import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import heroImage from '../assets/merc_hero.png'
+import Dropdown from './Dropdown';
 
 export default function Hero() {
+
+  const [modelResponse, setModelResponse] = useState(null);
+  const [displacement, setDisplacement] = useState('');
+  const [mileage, setMileage] = useState('');
+  const [rimSize, setRimSize] = useState('');
+  const [year, setYear] = useState('');
+  const [kilowatts, setKilowatts] = useState('');
+
+  const handlePredict = () => {
+    // Add your request to the server here
+  };
+
+  const isButtonDisabled = !rimSize || !year || !kilowatts || !mileage || !displacement;
+
+
   return (
     <Box
       id="hero"
@@ -27,73 +44,150 @@ export default function Hero() {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          pt: { xs: 14, sm: 20 },
+          pt: { xs: 14, sm: 14 },
           pb: { xs: 8, sm: 12 },
         }}
       >
-        <Stack spacing={2} useFlexGap sx={{ width: { xs: '100%', sm: '70%' } }}>
-          <Typography
-            variant="h1"
-            sx={{
-              display: 'flex',
-              flexDirection: { xs: 'column', md: 'row' },
-              alignSelf: 'center',
-              textAlign: 'center',
-              fontSize: 'clamp(3.5rem, 10vw, 4rem)',
-            }}
-          >
-            Our latest&nbsp;
-            <Typography
-              component="span"
-              variant="h1"
+        <Stack spacing={2} useFlexGap sx={{ width: { xs: '100%', sm: '100%' } }}>
+          <Stack direction={{xs: 'column', md: 'row'}} spacing={2} alignItems='center'>
+            <Container sx={{justifyContent: 'center', alignItems: 'center'}}>
+              <Typography
+                variant="h1"
+                sx={{
+                  display: 'flex',
+                  width: '100%',
+                  alignSelf: 'center',
+                  textAlign: 'center',
+                  fontSize: 'clamp(3.5rem, 10vw, 4rem)',
+                }}
+              >
+                Welcome to our car price prediction AI
+              </Typography>
+              <Typography
+                variant="h6"              
+                alignSelf={{ xs: 'center', md: 'center' }}
+                color="text.secondary"
+                sx={{ 
+                  alignSelf: 'center', 
+                  width: { sm: '100%', md: '100%' }, 
+                  textAlign: "center",
+                  mt: 3,
+                }}
+              >
+                Unlock the future of car valuations with our AI-powered platform. Simply input your car details, and let our advanced algorithm deliver accurate, data-driven price predictions in seconds. Experience the next generation of smart car buying and selling.
+              </Typography>
+            </Container>
+            <Box
+              component="img"
               sx={{
-                fontSize: 'clamp(3rem, 10vw, 4rem)',
-                color: (theme) =>
-                  theme.palette.mode === 'light' ? 'primary.main' : 'primary.light',
+                width: 500,
+                height: 400,
+                objectFit: 'cover',
               }}
-            >
-              products
-            </Typography>
-          </Typography>
-          <Typography
-            textAlign="center"
-            color="text.secondary"
-            sx={{ alignSelf: 'center', width: { sm: '100%', md: '80%' } }}
-          >
-            Explore our cutting-edge dashboard, delivering high-quality solutions
-            tailored to your needs. Elevate your experience with top-tier features
-            and services.
-          </Typography>
+              alt="Description of the image"
+              src={heroImage}
+            />
+          </Stack>
+          <Dropdown />
           <Stack
             direction={{ xs: 'column', sm: 'row' }}
             alignSelf="center"
             spacing={1}
             useFlexGap
-            sx={{ pt: 2, width: { xs: '100%', sm: 'auto' } }}
+            sx={{ width: { xs: '100%', sm: '100%' } }}
           >
             <TextField
-              id="outlined-basic"
+              id="displacement"
               hiddenLabel
               size="small"
               variant="outlined"
-              aria-label="Enter your email address"
-              placeholder="Your email address"
-              inputProps={{
+              aria-label="Enter displacement"
+              placeholder="Displacement"
+              onChange={(e) => setDisplacement(e.target.value)}
+              InputProps={{
                 autoComplete: 'off',
-                'aria-label': 'Enter your email address',
+                'aria-label': 'Enter displacement',
+                sx:{ borderRadius: 15,},
               }}
             />
-            <Button variant="contained" color="primary">
-              Start now
+            <TextField
+              id="mileage"
+              hiddenLabel
+              size="small"
+              variant="outlined"
+              aria-label="Enter mileage"
+              placeholder="Mileage"
+              onChange={(e) => setMileage(e.target.value)}
+              InputProps={{
+                autoComplete: 'off',
+                'aria-label': 'Enter mileage',
+                sx:{ borderRadius: 15 },
+                min: 0,
+                type: 'number',
+                step: 1000,
+              }}
+            />
+            <TextField
+              id="year"
+              hiddenLabel
+              size="small"
+              variant="outlined"
+              aria-label="Enter year"
+              placeholder="Year"
+              onChange={(e) => setYear(e.target.value)}
+              InputProps={{
+                autoComplete: 'off',
+                'aria-label': 'Enter year',
+                sx:{ borderRadius: 15 },
+                max: 2024,
+                type: 'number',
+                  
+              }}
+            />
+            <TextField
+              id="kilowatts"
+              hiddenLabel
+              size="small"
+              variant="outlined"
+              aria-label="Enter kilowatts"
+              placeholder="Kilowatts"
+              onChange={(e) => setKilowatts(e.target.value)}
+              InputProps={{
+                autoComplete: 'off',
+                'aria-label': 'Enter kilowatts',
+                sx:{ borderRadius: 15 }  
+              }}
+            />
+            <TextField
+              id="rimsize"
+              hiddenLabel
+              size="small"
+              variant="outlined"
+              aria-label="Enter rim size"
+              placeholder="Rim size"
+              onChange={(e) => setRimSize(e.target.value)}
+              InputProps={{
+                autoComplete: 'off',
+                'aria-label': 'Enter rim size',
+                sx:{ borderRadius: 15, }  
+              }}
+            />
+            <Button 
+              variant="contained" 
+              color="primary" 
+              size='medium' 
+              sx={{borderRadius: 15}}
+              onClick={handlePredict}
+              disabled={isButtonDisabled}
+            >
+              Predict
             </Button>
           </Stack>
-          <Typography variant="caption" textAlign="center" sx={{ opacity: 0.8 }}>
-            By clicking &quot;Start now&quot; you agree to our&nbsp;
-            <Link href="#" color="primary">
-              Terms & Conditions
-            </Link>
-            .
-          </Typography>
+          {modelResponse &&(
+          <Container sx={{alignSelf: 'center', justifySelf: 'center'}}>
+            <Typography>Predicted  price of your car is: KM</Typography>
+          </Container>
+          )}
         </Stack>
         <Box
           id="image"
