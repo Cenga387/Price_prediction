@@ -15,7 +15,7 @@ import ToggleColorMode from './ToggleColorMode';
 import myLogo from '../assets/bloomteq_logo.png';
 
 const logoStyle = {
-  width: '8vw',
+  width: '120px',
   height: 'auto',
   cursor: 'pointer',
   borderRadius: '20%', 
@@ -94,7 +94,7 @@ function AppAppBar({ mode, toggleColorMode }) {
               />
               <Box sx={{ display: { xs: 'none', md: 'flex' }, ml: 2 }}>
                 <MenuItem
-                  onClick={() => scrollToSection('home')}
+                  onClick={() => scrollToSection('hero')}
                   sx={{ py: '6px', px: '12px', ml: 4 }}
                 >
                   <Typography variant="body2" color="text.primary" sx={{ fontSize: '24px' }}>
@@ -157,11 +157,14 @@ function AppAppBar({ mode, toggleColorMode }) {
                   >
                     <ToggleColorMode mode={mode} toggleColorMode={toggleColorMode} />
                   </Box>
-                  <MenuItem onClick={() => scrollToSection('home')}>
+                  <MenuItem onClick={() => scrollToSection('hero')}>
                     Home
                   </MenuItem>
                   <MenuItem onClick={() => scrollToSection('car-stats')}>
                     Car Stats
+                  </MenuItem>
+                  <MenuItem onClick={() => scrollToSection('faq')}>
+                    FAQ
                   </MenuItem>
                   <Divider />
                 </Box>
