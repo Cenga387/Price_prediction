@@ -28,8 +28,6 @@ export default function LandingPage() {
       <Hero />
       <Box sx={{ bgcolor: 'background.default' }}>
         <Divider />
-        <Highlights />
-        <Divider />
         <FAQ />
         <Divider />
         <Footer />
