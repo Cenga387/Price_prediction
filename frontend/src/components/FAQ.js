@@ -4,7 +4,6 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -51,7 +50,7 @@ export default function FAQ() {
             id="panel1d-header"
           >
             <Typography component="h3" variant="subtitle2">
-              How do I contact customer support if I have a question or issue?
+            What is this website for?
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
@@ -60,10 +59,8 @@ export default function FAQ() {
               gutterBottom
               sx={{ maxWidth: { sm: '100%', md: '70%' } }}
             >
-              You can reach our customer support team by emailing
-              <Link> support@email.com </Link>
-              or calling our toll-free number. We&apos;re here to assist you
-              promptly.
+              This website helps users estimate the price of a car based on various factors
+               such as <b>Mileage, Year, Kilowatts, Rim size,</b> and <b>Displacement</b>.
             </Typography>
           </AccordionDetails>
         </Accordion>
@@ -77,7 +74,7 @@ export default function FAQ() {
             id="panel2d-header"
           >
             <Typography component="h3" variant="subtitle2">
-              Can I return the product if it doesn&apos;t meet my expectations?
+            How accurate is the car price prediction?
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
@@ -86,9 +83,9 @@ export default function FAQ() {
               gutterBottom
               sx={{ maxWidth: { sm: '100%', md: '70%' } }}
             >
-              Absolutely! We offer a hassle-free return policy. If you&apos;re not
-              completely satisfied, you can return the product within [number of
-              days] days for a full refund or exchange.
+              The predictions are based on historical data and machine learning algorithms.
+               While we strive for accuracy, the estimates may vary due to market
+                fluctuations and other factors.
             </Typography>
           </AccordionDetails>
         </Accordion>
@@ -102,7 +99,7 @@ export default function FAQ() {
             id="panel3d-header"
           >
             <Typography component="h3" variant="subtitle2">
-              What makes your product stand out from others in the market?
+            What algorithms do you use for prediction?
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
@@ -111,9 +108,9 @@ export default function FAQ() {
               gutterBottom
               sx={{ maxWidth: { sm: '100%', md: '70%' } }}
             >
-              Our product distinguishes itself through its adaptability, durability,
-              and innovative features. We prioritize user satisfaction and
-              continually strive to exceed expectations in every aspect.
+             We use an advanced machine learning algorithm, <b>RandomForestRegressor</b>, as well
+             as <b>GridSearchCV</b> in order to find the optimal combination of hyperparameters for a given model.
+
             </Typography>
           </AccordionDetails>
         </Accordion>
@@ -127,7 +124,7 @@ export default function FAQ() {
             id="panel4d-header"
           >
             <Typography component="h3" variant="subtitle2">
-              Is there a warranty on the product, and what does it cover?
+            Can I get a detailed report of the car’s specifications?
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
@@ -136,10 +133,8 @@ export default function FAQ() {
               gutterBottom
               sx={{ maxWidth: { sm: '100%', md: '70%' } }}
             >
-              Yes, our product comes with a [length of warranty] warranty. It covers
-              defects in materials and workmanship. If you encounter any issues
-              covered by the warranty, please contact our customer support for
-              assistance.
+              Yes, we offer detailed reports that include specifications like:
+              Type of fuel used, Model, Color, Drivetrain, Emmision standard and others.
             </Typography>
           </AccordionDetails>
         </Accordion>
