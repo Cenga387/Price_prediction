@@ -6,7 +6,8 @@ import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import heroImage from '../assets/images/merc_hero.png'
+import heroImage from '../assets/merc_hero.png'
+import Dropdown from './Dropdown';
 
 export default function Hero() {
   return (
@@ -27,40 +28,35 @@ export default function Hero() {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          pt: { xs: 14, sm: 20 },
+          pt: { xs: 14, sm: 14 },
           pb: { xs: 8, sm: 12 },
         }}
       >
         <Stack spacing={2} useFlexGap sx={{ width: { xs: '100%', sm: '100%' } }}>
           <Stack direction={{xs: 'column', md: 'row'}} spacing={2} alignItems='center'>
-            <Container sx={{justifyContent: 'center'}}>
+            <Container sx={{justifyContent: 'center', alignItems: 'center'}}>
               <Typography
                 variant="h1"
                 sx={{
                   display: 'flex',
-                  flexDirection: { xs: 'column', md: 'row' },
+                  width: '100%',
                   alignSelf: 'center',
                   textAlign: 'center',
                   fontSize: 'clamp(3.5rem, 10vw, 4rem)',
                 }}
               >
-                Welcome to our car price prediction&nbsp;
+                Welcome to our car price prediction AI
               </Typography>
               <Typography
-                  component="span"
-                  variant="h1"
-                  sx={{
-                    fontSize: 'clamp(3rem, 10vw, 4rem)',
-                    color: (theme) =>
-                      theme.palette.mode === 'light' ? 'primary.main' : 'primary.light',
-                  }}
-                >
-                  AI
-                </Typography>
-              <Typography
-                textAlign="center"
+                variant="h6"              
+                alignSelf={{ xs: 'center', md: 'center' }}
                 color="text.secondary"
-                sx={{ alignSelf: 'center', width: { sm: '100%', md: '80%' } }}
+                sx={{ 
+                  alignSelf: 'center', 
+                  width: { sm: '100%', md: '100%' }, 
+                  textAlign: "center",
+                  mt: 3,
+                }}
               >
                 Unlock the future of car valuations with our AI-powered platform. Simply input your car details, and let our advanced algorithm deliver accurate, data-driven price predictions in seconds. Experience the next generation of smart car buying and selling.
               </Typography>
@@ -76,12 +72,13 @@ export default function Hero() {
               src={heroImage}
             />
           </Stack>
+          <Dropdown />
           <Stack
             direction={{ xs: 'column', sm: 'row' }}
             alignSelf="center"
             spacing={1}
             useFlexGap
-            sx={{ pt: 2, width: { xs: '100%', sm: '100%' } }}
+            sx={{ width: { xs: '100%', sm: '100%' } }}
           >
             <TextField
               id="displacement"
@@ -94,6 +91,7 @@ export default function Hero() {
                 autoComplete: 'off',
                 'aria-label': 'Enter displacement',
               }}
+              borderRadius={15}
             />
             <TextField
               id="mileage"

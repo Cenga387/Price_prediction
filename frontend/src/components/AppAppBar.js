@@ -18,7 +18,7 @@ const logoStyle = {
   width: '8vw',
   height: 'auto',
   cursor: 'pointer',
-  borderRadius: '20%', // This makes the logo a perfect circle
+  borderRadius: '20%', 
   overflow: 'hidden',
   marginLeft: 0, 
   marginTop: 0,
@@ -71,9 +71,10 @@ function AppAppBar({ mode, toggleColorMode }) {
               backdropFilter: 'blur(24px)',
               maxHeight: 100,
               height: 100,
-              border: '4px solid',
+              border: '2px solid',
               borderColor: 'divider',
-              boxShadow:
+              borderRadius: 15
+,              boxShadow:
                 theme.palette.mode === 'light'
                   ? `0 0 1px rgba(85, 166, 246, 0.1), 1px 1.5px 2px -1px rgba(85, 166, 246, 0.15), 4px 4px 12px -2.5px rgba(85, 166, 246, 0.15)`
                   : '0 0 1px rgba(2, 31, 59, 0.7), 1px 1.5px 2px -1px rgba(2, 31, 59, 0.65), 4px 4px 12px -2.5px rgba(2, 31, 59, 0.65)',
@@ -94,7 +95,7 @@ function AppAppBar({ mode, toggleColorMode }) {
               <Box sx={{ display: { xs: 'none', md: 'flex' }, ml: 2 }}>
                 <MenuItem
                   onClick={() => scrollToSection('home')}
-                  sx={{ py: '6px', px: '12px' }}
+                  sx={{ py: '6px', px: '12px', ml: 4 }}
                 >
                   <Typography variant="body2" color="text.primary" sx={{ fontSize: '24px' }}>
                     Home
@@ -102,10 +103,18 @@ function AppAppBar({ mode, toggleColorMode }) {
                 </MenuItem>
                 <MenuItem
                   onClick={() => scrollToSection('car-stats')}
-                  sx={{ py: '6px', px: '12px' }}
+                  sx={{ py: '6px', px: '12px', ml: 4 }}
                 >
                   <Typography variant="body2" color="text.primary" sx={{ fontSize: '24px' }}>
                     Car Stats
+                  </Typography>
+                </MenuItem>
+                <MenuItem
+                  onClick={() => scrollToSection('faq')}
+                  sx={{ py: '6px', px: '12px', ml: 4 }}
+                >
+                  <Typography variant="body2" color="text.primary" sx={{ fontSize: '24px' }}>
+                    FAQ
                   </Typography>
                 </MenuItem>
               </Box>
