@@ -553,9 +553,10 @@ export default function getLPTheme(mode) {
               color: 'white',
             },
             '& .MuiInputBase-input': {
+              color: theme.palette.mode === 'dark' ? 'lightgrey' : 'darkgrey',
               boxSizing: 'border-box',
               '&::placeholder': {
-                opacity: 0.7,
+                opacity: 1,
               },
             },
             '& .MuiOutlinedInput-root': {
@@ -584,7 +585,8 @@ export default function getLPTheme(mode) {
             ...(theme.palette.mode === 'dark' && {
               '& .MuiOutlinedInput-root': {
                 boxSizing: 'border-box',
-                minWidth: 280,
+                minWidth: 200,
+                color: 'lightgrey',
                 minHeight: 40,
                 height: '100%',
                 borderRadius: '10px',
