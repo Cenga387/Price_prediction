@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 import { alpha } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -10,6 +11,21 @@ import heroImage from '../assets/merc_hero.png'
 import Dropdown from './Dropdown';
 
 export default function Hero() {
+
+  const [modelResponse, setModelResponse] = useState(null);
+  const [displacement, setDisplacement] = useState('');
+  const [mileage, setMileage] = useState('');
+  const [rimSize, setRimSize] = useState('');
+  const [year, setYear] = useState('');
+  const [kilowatts, setKilowatts] = useState('');
+
+  const handlePredict = () => {
+    // Add your request to the server here
+  };
+
+  const isButtonDisabled = !rimSize || !year || !kilowatts || !mileage || !displacement;
+
+
   return (
     <Box
       id="hero"
@@ -87,11 +103,12 @@ export default function Hero() {
               variant="outlined"
               aria-label="Enter displacement"
               placeholder="Displacement"
-              inputProps={{
+              onChange={(e) => setDisplacement(e.target.value)}
+              InputProps={{
                 autoComplete: 'off',
                 'aria-label': 'Enter displacement',
+                sx:{ borderRadius: 15,},
               }}
-              borderRadius={15}
             />
             <TextField
               id="mileage"
@@ -100,9 +117,14 @@ export default function Hero() {
               variant="outlined"
               aria-label="Enter mileage"
               placeholder="Mileage"
-              inputProps={{
+              onChange={(e) => setMileage(e.target.value)}
+              InputProps={{
                 autoComplete: 'off',
                 'aria-label': 'Enter mileage',
+                sx:{ borderRadius: 15 },
+                min: 0,
+                type: 'number',
+                step: 1000,
               }}
             />
             <TextField
@@ -112,9 +134,14 @@ export default function Hero() {
               variant="outlined"
               aria-label="Enter year"
               placeholder="Year"
-              inputProps={{
+              onChange={(e) => setYear(e.target.value)}
+              InputProps={{
                 autoComplete: 'off',
                 'aria-label': 'Enter year',
+                sx:{ borderRadius: 15 },
+                max: 2024,
+                type: 'number',
+                  
               }}
             />
             <TextField
@@ -124,9 +151,11 @@ export default function Hero() {
               variant="outlined"
               aria-label="Enter kilowatts"
               placeholder="Kilowatts"
-              inputProps={{
+              onChange={(e) => setKilowatts(e.target.value)}
+              InputProps={{
                 autoComplete: 'off',
                 'aria-label': 'Enter kilowatts',
+                sx:{ borderRadius: 15 }  
               }}
             />
             <TextField
@@ -136,16 +165,29 @@ export default function Hero() {
               variant="outlined"
               aria-label="Enter rim size"
               placeholder="Rim size"
-              inputProps={{
+              onChange={(e) => setRimSize(e.target.value)}
+              InputProps={{
                 autoComplete: 'off',
                 'aria-label': 'Enter rim size',
+                sx:{ borderRadius: 15, }  
               }}
             />
-            <Button variant="contained" color="primary" size='medium'>
+            <Button 
+              variant="contained" 
+              color="primary" 
+              size='medium' 
+              sx={{borderRadius: 15}}
+              onClick={handlePredict}
+              disabled={isButtonDisabled}
+            >
               Predict
             </Button>
           </Stack>
-          
+          {modelResponse &&(
+          <Container sx={{alignSelf: 'center', justifySelf: 'center'}}>
+            <Typography>Predicted  price of your car is: KM</Typography>
+          </Container>
+          )}
         </Stack>
         <Box
           id="image"
