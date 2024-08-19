@@ -1,14 +1,6 @@
 import React, { useState } from 'react';
-import {
-  Card,
-  CardActionArea,
-  CardContent,
-  CardMedia,
-  Typography,
-  Collapse,
-  Modal,
-  Box,
-} from '@mui/material';
+import { Card, CardActionArea, CardContent, CardMedia, Typography, Collapse, Modal, Box,} from '@mui/material';
+import cardImage from '../assets/audi_a7.png';
 
 const CarCard = ({ car }) => {
   const [expanded, setExpanded] = useState(false);
@@ -31,6 +23,7 @@ const CarCard = ({ car }) => {
       <Card
         sx={{
           maxWidth: 345,
+          display: 'flex',
           margin: '20px',
           transition: 'transform 0.2s',
           transform: expanded ? 'scale(1.05)' : 'scale(1)',
@@ -39,11 +32,22 @@ const CarCard = ({ car }) => {
         onMouseLeave={handleExpandClick}
         onClick={handleOpenModal}
       >
-        <CardActionArea>
+        <CardActionArea
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'start',
+          }}
+        >
           <CardMedia
             component="img"
-            height="140"
-            image={car.image} // Replace with your image URL
+            sx={{
+              width: 300,
+              height: 150,
+              objectFit: 'cover',
+              alignSelf: 'center',
+            }}
+            src={cardImage}
             alt={car.model}
           />
           <CardContent>
@@ -86,6 +90,8 @@ const CarCard = ({ car }) => {
             width: 400,
             bgcolor: 'background.paper',
             boxShadow: 24,
+            alignItems: 'center',
+            justifyContent: 'center',
             p: 4,
             borderRadius: 2,
           }}
@@ -95,8 +101,12 @@ const CarCard = ({ car }) => {
           </Typography>
           <CardMedia
             component="img"
-            height="200"
-            //image='' // Replace with your image URL
+            sx={{
+              width: 350,
+              height: 200,
+              objectFit: 'cover',
+            }}
+            src={cardImage}
             alt={car.model}
           />
           <Typography variant="h6" color="text.secondary">
