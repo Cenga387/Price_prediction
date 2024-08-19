@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { alpha } from '@mui/material';
+import { alpha, responsiveFontSizes } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
@@ -8,9 +8,15 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import heroImage from '../assets/merc_hero.png'
-import Dropdown from './Dropdown';
 import CarCard from './CarCard';
 import Grid from '@mui/material/Grid';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import axios from 'axios';
+
+axios.defaults.baseURL = 'http://localhost:5000';
 
 export default function Hero() {
 
@@ -20,155 +26,38 @@ export default function Hero() {
   const [rimSize, setRimSize] = useState('');
   const [year, setYear] = useState('');
   const [kilowatts, setKilowatts] = useState('');
-  const cars = [
-    {
-      image: 'car-image-url-1.jpg',
-      model: 'Toyota Camry',
-      year: 2020,
-      price: 25000,
-      mileage: 15000,
-      fuel: 'Gasoline',
-      transmission: 'Automatic',
-      color: 'Red',
-      engine: '2.5L',
-      description: 'A reliable family sedan...',
-    },
-    {
-      image: 'car-image-url-1.jpg',
-      model: 'Toyota Camry',
-      year: 2020,
-      price: 25000,
-      mileage: 15000,
-      fuel: 'Gasoline',
-      transmission: 'Automatic',
-      color: 'Red',
-      engine: '2.5L',
-      description: 'A reliable family sedan...',
-    },
-    {
-      image: 'car-image-url-1.jpg',
-      model: 'Toyota Camry',
-      year: 2020,
-      price: 25000,
-      mileage: 15000,
-      fuel: 'Gasoline',
-      transmission: 'Automatic',
-      color: 'Red',
-      engine: '2.5L',
-      description: 'A reliable family sedan...',
-    },
-    {
-      image: 'car-image-url-1.jpg',
-      model: 'Toyota Camry',
-      year: 2020,
-      price: 25000,
-      mileage: 15000,
-      fuel: 'Gasoline',
-      transmission: 'Automatic',
-      color: 'Red',
-      engine: '2.5L',
-      description: 'A reliable family sedan...',
-    },
-    {
-      image: 'car-image-url-1.jpg',
-      model: 'Toyota Camry',
-      year: 2020,
-      price: 25000,
-      mileage: 15000,
-      fuel: 'Gasoline',
-      transmission: 'Automatic',
-      color: 'Red',
-      engine: '2.5L',
-      description: 'A reliable family sedan...',
-    },
-    {
-      image: 'car-image-url-1.jpg',
-      model: 'Toyota Camry',
-      year: 2020,
-      price: 25000,
-      mileage: 15000,
-      fuel: 'Gasoline',
-      transmission: 'Automatic',
-      color: 'Red',
-      engine: '2.5L',
-      description: 'A reliable family sedan...',
-    },
-    {
-      image: 'car-image-url-1.jpg',
-      model: 'Toyota Camry',
-      year: 2020,
-      price: 25000,
-      mileage: 15000,
-      fuel: 'Gasoline',
-      transmission: 'Automatic',
-      color: 'Red',
-      engine: '2.5L',
-      description: 'A reliable family sedan...',
-    },
-    {
-      image: 'car-image-url-1.jpg',
-      model: 'Toyota Camry',
-      year: 2020,
-      price: 25000,
-      mileage: 15000,
-      fuel: 'Gasoline',
-      transmission: 'Automatic',
-      color: 'Red',
-      engine: '2.5L',
-      description: 'A reliable family sedan...',
-    },
-    {
-      image: 'car-image-url-1.jpg',
-      model: 'Toyota Camry',
-      year: 2020,
-      price: 25000,
-      mileage: 15000,
-      fuel: 'Gasoline',
-      transmission: 'Automatic',
-      color: 'Red',
-      engine: '2.5L',
-      description: 'A reliable family sedan...',
-    },
-    {
-      image: 'car-image-url-1.jpg',
-      model: 'Toyota Camry',
-      year: 2020,
-      price: 25000,
-      mileage: 15000,
-      fuel: 'Gasoline',
-      transmission: 'Automatic',
-      color: 'Red',
-      engine: '2.5L',
-      description: 'A reliable family sedan...',
-    },
-    {
-      image: 'car-image-url-1.jpg',
-      model: 'Toyota Camry',
-      year: 2020,
-      price: 25000,
-      mileage: 15000,
-      fuel: 'Gasoline',
-      transmission: 'Automatic',
-      color: 'Red',
-      engine: '2.5L',
-      description: 'A reliable family sedan...',
-    },
-    {
-      image: 'car-image-url-1.jpg',
-      model: 'Toyota Camry',
-      year: 2020,
-      price: 25000,
-      mileage: 15000,
-      fuel: 'Gasoline',
-      transmission: 'Automatic',
-      color: 'Red',
-      engine: '2.5L',
-      description: 'A reliable family sedan...',
-    },
-    
-  ];
-  const handlePredict = () => {
-    // Add your request to the server here
+  const [age, setAge] = React.useState('');
+  const [cars, setCars] = useState([])
+
+  const handleChange = (event) => {
+    setAge(event.target.value);
+  }
+  
+  const handlePredict = async () => {
+    let endpoint = '';
+    if (age === 'Volkswagen') {
+      endpoint = '/volkswagen';
+    } else if (age === 'Audi') {
+      endpoint = '/audi';
+    } else if (age === 'Mercedes') {
+      endpoint = '/mercedes';
+    }
+
+    try {
+      const response = await axios.get(endpoint, {
+        params: {
+          displacement: parseFloat(displacement),
+          mileage: parseInt(mileage, 10),
+          year: parseInt(year, 10),
+          kilowatts: parseInt(kilowatts),
+          rimSize: parseInt(rimSize),
+        }
+      });
+      setModelResponse(response.data.model);
+      setCars([...cars, response.data.model]);
+    } catch (error) {
+      console.error("There was an error predicting the car price!", error);
+    }
   };
 
   const isButtonDisabled = !rimSize || !year || !kilowatts || !mileage || !displacement;
@@ -236,7 +125,25 @@ export default function Hero() {
               src={heroImage}
             />
           </Stack>
-          <Dropdown />
+          <Container>
+            <FormControl size='small' sx={{width: 200}}>
+              <InputLabel id="demo-simple-select-autowidth-label">Manufacturer</InputLabel>
+              <Select
+                labelId="demo-simple-select-autowidth-label"
+                id="demo-simple-select-autowidth"
+                value={age}
+                onChange={handleChange}
+                autoWidth
+                sx={{borderRadius: 8}} 
+                label="Manufacturer"
+              >
+                <MenuItem value="None"><em>None</em></MenuItem>
+                <MenuItem value='Volkswagen'>Volkswagen</MenuItem>
+                <MenuItem value='Mercedes'>Mercedes</MenuItem>
+                <MenuItem value='Audi'>Audi</MenuItem>
+              </Select>
+            </FormControl>
+          </Container>
           <Stack
             direction={{ xs: 'column', sm: 'row' }}
             alignSelf="center"
@@ -333,10 +240,11 @@ export default function Hero() {
           </Stack>
           {modelResponse &&(
           <Container sx={{alignSelf: 'center', justifySelf: 'center'}}>
-            <Typography>Predicted  price of your car is: KM</Typography>
+            <Typography>Predicted  price of your car is: {modelResponse} KM</Typography>
           </Container>
           )}
         </Stack>
+        {modelResponse &&(
         <Box
           id="image"
           sx={(theme) => ({
@@ -369,6 +277,7 @@ export default function Hero() {
             ))}
           </Grid>
         </Box>
+        )}
       </Container>
     </Box>
   );
