@@ -125,16 +125,15 @@ export default function Hero() {
               src={heroImage}
             />
           </Stack>
-          <Container>
-            <FormControl size='small' sx={{width: 200}}>
+          <Box sx={{width: '100%'}}>
+            <FormControl size='small' sx={{width: {xs: '100%', sm: '100%'}}}>
               <InputLabel id="demo-simple-select-autowidth-label">Manufacturer</InputLabel>
               <Select
                 labelId="demo-simple-select-autowidth-label"
                 id="demo-simple-select-autowidth"
                 value={age}
                 onChange={handleChange}
-                autoWidth
-                sx={{borderRadius: 8}} 
+                sx={{borderRadius: 8, width: '100%'}} 
                 label="Manufacturer"
               >
                 <MenuItem value="None"><em>None</em></MenuItem>
@@ -143,7 +142,7 @@ export default function Hero() {
                 <MenuItem value='Audi'>Audi</MenuItem>
               </Select>
             </FormControl>
-          </Container>
+          </Box>
           <Stack
             direction={{ xs: 'column', sm: 'row' }}
             alignSelf="center"
@@ -159,11 +158,16 @@ export default function Hero() {
               aria-label="Enter displacement"
               placeholder="Displacement"
               onChange={(e) => setDisplacement(e.target.value)}
-              InputProps={{
+              inputProps={{
                 autoComplete: 'off',
                 'aria-label': 'Enter displacement',
-                sx:{ borderRadius: 15,},
+                min: 0,
+                step: 0.1,
               }}
+              InputProps={{
+                sx:{ borderRadius: 15,}
+              }}
+              type='number'
             />
             <TextField
               id="mileage"
@@ -173,14 +177,16 @@ export default function Hero() {
               aria-label="Enter mileage"
               placeholder="Mileage"
               onChange={(e) => setMileage(e.target.value)}
-              InputProps={{
+              inputProps={{
                 autoComplete: 'off',
                 'aria-label': 'Enter mileage',
-                sx:{ borderRadius: 15 },
                 min: 0,
-                type: 'number',
                 step: 1000,
               }}
+              InputProps={{
+                sx:{ borderRadius: 15, },
+              }}
+              type='number'
             />
             <TextField
               id="year"
@@ -190,14 +196,15 @@ export default function Hero() {
               aria-label="Enter year"
               placeholder="Year"
               onChange={(e) => setYear(e.target.value)}
-              InputProps={{
+              inputProps={{
                 autoComplete: 'off',
                 'aria-label': 'Enter year',
-                sx:{ borderRadius: 15 },
                 max: 2024,
-                type: 'number',
-                  
               }}
+              InputProps={{
+                sx:{ borderRadius: 15 },
+              }}
+              type= 'number'
             />
             <TextField
               id="kilowatts"
@@ -207,11 +214,15 @@ export default function Hero() {
               aria-label="Enter kilowatts"
               placeholder="Kilowatts"
               onChange={(e) => setKilowatts(e.target.value)}
-              InputProps={{
+              inputProps={{
                 autoComplete: 'off',
                 'aria-label': 'Enter kilowatts',
+                min: 0,
+              }}
+              InputProps={{
                 sx:{ borderRadius: 15 }  
               }}
+              type='number'
             />
             <TextField
               id="rimsize"
@@ -221,11 +232,16 @@ export default function Hero() {
               aria-label="Enter rim size"
               placeholder="Rim size"
               onChange={(e) => setRimSize(e.target.value)}
-              InputProps={{
+              inputProps={{
                 autoComplete: 'off',
-                'aria-label': 'Enter rim size',
+                'aria-label': 'Enter kilowatts',
+                min: 0,
+                
+              }}
+              InputProps={{
                 sx:{ borderRadius: 15, }  
               }}
+              type='number'
             />
             <Button 
               variant="contained" 
@@ -239,9 +255,9 @@ export default function Hero() {
             </Button>
           </Stack>
           {modelResponse &&(
-          <Container sx={{alignSelf: 'center', justifySelf: 'center'}}>
-            <Typography>Predicted  price of your car is: {modelResponse} KM</Typography>
-          </Container>
+          <Box sx={{alignSelf: 'center', justifySelf: 'center'}}>
+            <Typography sx={{fontSize: 20}}>Predicted  price of your car is: {modelResponse} KM</Typography>
+          </Box>
           )}
         </Stack>
         {modelResponse &&(

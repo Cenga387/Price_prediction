@@ -53,7 +53,7 @@ function AppAppBar({ mode, toggleColorMode }) {
           boxShadow: 0,
           bgcolor: 'transparent',
           backgroundImage: 'none',
-          mt: 0,
+          mt: 1,
         }}
       >
         <Container maxWidth="false">

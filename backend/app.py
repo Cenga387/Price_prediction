@@ -6,18 +6,18 @@ import joblib
 app = Flask(__name__)
 CORS(app)
 
-with open('backend/models/volkswagen_model.pkl', 'rb') as file:
+with open('models/volkswagen_model.pkl', 'rb') as file:
         volkswagen_model = joblib.load(file)
 
-with open('backend/models/audi_model.pkl', 'rb') as file:
+with open('models/audi_model.pkl', 'rb') as file:
         audi_model = joblib.load(file)
 
-with open('backend/models/mercedes_model.pkl', 'rb') as file:
+with open('models/mercedes_model.pkl', 'rb') as file:
         mercedes_model = joblib.load(file)
     
-volkswagen_all_columns = pd.read_csv('backend/datasets/volkswagen_cleaned.csv')
-audi_all_columns = pd.read_csv('backend/datasets/audi_cleaned.csv')
-mercedes_all_columns = pd.read_csv('backend/datasets/mercedes_cleaned.csv')
+volkswagen_all_columns = pd.read_csv('datasets/volkswagen_cleaned.csv')
+audi_all_columns = pd.read_csv('datasets/audi_cleaned.csv')
+mercedes_all_columns = pd.read_csv('datasets/mercedes_cleaned.csv')
 
 @app.route('/volkswagen', methods=['GET'])
 def volkswagen():
