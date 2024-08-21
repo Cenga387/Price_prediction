@@ -55,19 +55,19 @@ const CarCard = ({ car }) => {
               {car.model} - {car.year}
             </Typography>
             <Typography variant="h6" color="text.secondary">
-              ${car.price}
+              {car.price}KM
             </Typography>
           </CardContent>
           <Collapse in={expanded} timeout="auto" unmountOnExit>
             <CardContent>
               <Typography variant="body2" color="text.secondary">
-                Mileage: {car.mileage} miles
+                Kilometraža: {car.mileage} kilometara
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                Fuel: {car.fuel}
+                Gorivo: {car.fuel}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                Transmission: {car.transmission}
+                Mjenjač: {car.transmission}
               </Typography>
             </CardContent>
           </Collapse>
@@ -97,7 +97,7 @@ const CarCard = ({ car }) => {
           }}
         >
           <Typography id="car-details-modal-title" variant="h6" component="h2">
-            {car.model} - {car.year}
+            {car.title} - {car.year}
           </Typography>
           <CardMedia
             component="img"
@@ -110,25 +110,25 @@ const CarCard = ({ car }) => {
             alt={car.model}
           />
           <Typography variant="h6" color="text.secondary">
-            Price: ${car.price}
+            Cijena: {car.price}KM
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Mileage: {car.mileage} miles
+            Kilometraža: {car.mileage} kilometara
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Fuel: {car.fuel}
+            Gorivo: {car.fuel}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Transmission: {car.transmission}
+            Mjenjač: {car.transmission}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Color: {car.color}
+            Boja: {car.color}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Engine: {car.engine}
+            Motor: {car.displacement}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Description: {car.description}
+            Opis: {car.title}
           </Typography>
         </Box>
       </Modal>

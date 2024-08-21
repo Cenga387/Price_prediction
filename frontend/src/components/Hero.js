@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { alpha, responsiveFontSizes } from '@mui/material';
+import { alpha } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
@@ -43,6 +43,16 @@ export default function Hero() {
       endpoint = '/mercedes';
     }
 
+
+  // Log the parameters to ensure they are correctly set
+  console.log('Parameters:', {
+    displacement: parseFloat(displacement),
+    mileage: parseInt(mileage, 10),
+    year: parseInt(year, 10),
+    kilowatts: parseInt(kilowatts),
+    rimSize: parseInt(rimSize),
+  });
+
     try {
       const response = await axios.get(endpoint, {
         params: {
@@ -54,7 +64,7 @@ export default function Hero() {
         }
       });
       setModelResponse(response.data.model);
-      setCars([...cars, response.data.model]);
+      setCars(response.data.cars);
     } catch (error) {
       console.error("There was an error predicting the car price!", error);
     }
@@ -256,7 +266,7 @@ export default function Hero() {
           </Stack>
           {modelResponse &&(
           <Box sx={{alignSelf: 'center', justifySelf: 'center'}}>
-            <Typography sx={{fontSize: 20}}>Predicted  price of your car is: {modelResponse} KM</Typography>
+            <Typography sx={{fontSize: 16}}>Predicted  price of your car is: {modelResponse} KM</Typography>
           </Box>
           )}
         </Stack>
