@@ -10,6 +10,7 @@ import Highlights from './components/Highlights';
 import FAQ from './components/FAQ';
 import Footer from './components/Footer';
 import getLPTheme from './getLPTheme';
+import Graph1 from './components/graph1';
 
 export default function LandingPage() {
   const [mode, setMode] = React.useState('light');
@@ -28,6 +29,7 @@ export default function LandingPage() {
       <Hero />
       <Box sx={{ bgcolor: 'background.default' }}>
         <Divider />
+        <Graph1 />
         <FAQ />
         <Divider />
         <Footer />
