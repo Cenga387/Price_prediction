@@ -6,18 +6,29 @@ import joblib
 app = Flask(__name__)
 CORS(app)
 
+# Load models
 with open('models/volkswagen_model.pkl', 'rb') as file:
-        volkswagen_model = joblib.load(file)
-
+    volkswagen_model = joblib.load(file)
 with open('models/audi_model.pkl', 'rb') as file:
-        audi_model = joblib.load(file)
-
+    audi_model = joblib.load(file)
 with open('models/mercedes_model.pkl', 'rb') as file:
-        mercedes_model = joblib.load(file)
-    
+    mercedes_model = joblib.load(file)
+
+# Load datasets
 volkswagen_all_columns = pd.read_csv('datasets/volkswagen_cleaned.csv')
 audi_all_columns = pd.read_csv('datasets/audi_cleaned.csv')
 mercedes_all_columns = pd.read_csv('datasets/mercedes_cleaned.csv')
+all_cars = pd.read_csv('datasets/all_cars.csv')
+
+def get_dataset_by_manufacturer(manufacturer):
+    if manufacturer == 'volkswagen':
+        return volkswagen_all_columns
+    elif manufacturer == 'audi':
+        return audi_all_columns
+    elif manufacturer == 'mercedes':
+        return mercedes_all_columns
+    else:
+        return all_cars
 
 def validate_and_convert_param(param, param_name, param_type=float):
     """Validate and convert a request parameter to a specified type."""
@@ -109,6 +120,65 @@ def mercedes():
 
         return jsonify({'model': prediction, 'cars': filtered_data})
     except ValueError as e:
+        return jsonify({'error': str(e)}), 400
+
+@app.route('/<manufacturer>/models', methods=['GET'])
+def get_models_by_manufacturer(manufacturer):
+    manufacturer = manufacturer.lower()
+
+    if manufacturer == 'volkswagen':
+        cars = volkswagen_all_columns.to_dict(orient='records')
+    elif manufacturer == 'audi':
+        cars = audi_all_columns.to_dict(orient='records')
+    elif manufacturer == 'mercedes':
+        cars = mercedes_all_columns.to_dict(orient='records')
+    else:
+        return jsonify({'error': 'Manufacturer not found'}), 404
+
+    return jsonify({'cars': cars})
+
+@app.route('/filter', methods=['GET'])
+def filter_by_manufacturer_and_model():
+    try:
+        manufacturer = request.args.get('manufacturer', '').lower()
+        models = request.args.get('model', '').split(',')
+        doors = request.args.get('doors', '').split(',')
+        fuel = request.args.get('fuel', '').split(',')
+        color = request.args.get('color', '').split(',')
+        transmission = request.args.get('transmission', '').split(',')
+        page = int(request.args.get('page', 1))
+        limit = int(request.args.get('limit', 12))
+
+        print(f"Parameters: {request.args}")
+
+        # Select the appropriate dataset based on the manufacturer
+        df = get_dataset_by_manufacturer(manufacturer)
+
+        # Apply filters
+        if models:
+            df = df[df['model'].isin(models)]
+        if doors:
+            df = df[df['doors'].isin(doors)]
+        if fuel:
+            df = df[df['fuel'].isin(fuel)]
+        if color:
+            df = df[df['color'].isin(color)]
+        if transmission:
+            df = df[df['transmission'].isin(transmission)]
+
+        print(f"Filtered DataFrame Shape: {df.shape}")
+
+
+        # Paginate the filtered dataset
+        start = (page - 1) * limit
+        end = start + limit
+        filtered_data = df.iloc[start:end].to_dict(orient='records')
+
+        return jsonify({
+            'cars': filtered_data,
+            'total': len(filtered_data)
+        })
+    except Exception as e:
         return jsonify({'error': str(e)}), 400
 
 if __name__ == '__main__':
