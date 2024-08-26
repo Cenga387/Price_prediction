@@ -6,10 +6,10 @@ import Divider from '@mui/material/Divider';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import AppAppBar from './components/AppAppBar';
 import Hero from './components/Hero';
-import Highlights from './components/Highlights';
 import FAQ from './components/FAQ';
 import Footer from './components/Footer';
 import getLPTheme from './getLPTheme';
+import CarFilter from './components/CarFilter';
 
 export default function LandingPage() {
   const [mode, setMode] = React.useState('light');
@@ -27,6 +27,8 @@ export default function LandingPage() {
       <AppAppBar mode={mode} toggleColorMode={toggleColorMode} />
       <Hero />
       <Box sx={{ bgcolor: 'background.default' }}>
+        <Divider />
+        <CarFilter/>
         <Divider />
         <FAQ />
         <Divider />
