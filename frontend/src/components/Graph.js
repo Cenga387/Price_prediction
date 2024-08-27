@@ -1,25 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { Doughnut, Line, Bar} from "react-chartjs-2";
-import { Chart, ArcElement, LineElement, BarElement, PointElement, CategoryScale, LinearScale, Tooltip, Legend, Title } from 'chart.js';  // Import PointElement
-import { useTheme } from '@mui/material/styles'; // Import useTheme hook
+import axios from 'axios';
+import { Doughnut, Line } from "react-chartjs-2";
+import { Chart, ArcElement, LineElement, PointElement, CategoryScale, LinearScale, Tooltip, Legend, Title } from 'chart.js';
+import { useTheme } from '@mui/material/styles'; 
 import Typography from '@mui/material/Typography';
 
-import Graphcss from "../css/Graphcss.css"; 
-
-// Register components with Chart.js
-Chart.register(ArcElement, LineElement, BarElement, PointElement, CategoryScale, LinearScale, Tooltip, Legend, Title);
+Chart.register(ArcElement, LineElement, PointElement, CategoryScale, LinearScale, Tooltip, Legend, Title);
 
 export default function Graph({ mode }) {
-  const theme = useTheme(); // Get the current theme from MUI
+  const theme = useTheme();
   const [doughnutChartData, setDoughnutChartData] = useState(null);
   const [lineChartData2, setLineChartData2] = useState(null);
   const [lineChartData3, setLineChartData3] = useState(null);
 
   useEffect(() => {
     // Fetch Doughnut chart data
-    fetch("http://localhost:5000/api/car-stats")
-      .then((response) => response.json())
-      .then((data) => {
+    axios.get("http://localhost:5000/api/car-stats")
+      .then((response) => {
+        const data = response.data;
         setDoughnutChartData({
           labels: data.labels,
           datasets: [
@@ -41,13 +39,13 @@ export default function Graph({ mode }) {
         });
       })
       .catch((error) => {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching Doughnut chart data:", error);
       });
 
     // Fetch Line chart data for carstats2
-    fetch("http://localhost:5000/api/car-stats2")
-      .then((response) => response.json())
-      .then((data) => {
+    axios.get("http://localhost:5000/api/car-stats2")
+      .then((response) => {
+        const data = response.data;
         setLineChartData2({
           labels: data.labels,
           datasets: [
@@ -73,13 +71,13 @@ export default function Graph({ mode }) {
         });
       })
       .catch((error) => {
-        console.error("Error fetching line chart data for carstats2:", error);
+        console.error("Error fetching Line chart data for carstats2:", error);
       });
 
     // Fetch Line chart data for carstats3
-    fetch("http://localhost:5000/api/car-stats3")
-      .then((response) => response.json())
-      .then((data) => {
+    axios.get("http://localhost:5000/api/car-stats3")
+      .then((response) => {
+        const data = response.data;
         setLineChartData3({
           labels: data.labels,
           datasets: [
@@ -105,7 +103,7 @@ export default function Graph({ mode }) {
         });
       })
       .catch((error) => {
-        console.error("Error fetching line chart data for carstats3:", error);
+        console.error("Error fetching Line chart data for carstats3:", error);
       });
 
   }, [mode]);
@@ -117,20 +115,27 @@ export default function Graph({ mode }) {
   return (
     <div className="App">
       <div className="Title">
-      <Typography
-                variant="h1"
-                sx={{
-                  width: '100%',
-                  textAlign: 'center',
-                  fontSize: 'clamp(3.5rem, 10vw, 4rem)',
-                }}
-              >
-                Car Stats
-              </Typography>
+        <Typography
+          variant="h1"
+          sx={{
+            width: '100%',
+            textAlign: 'center',
+            fontSize: 'clamp(3.5rem, 10vw, 4rem)',
+          }}
+        >
+          Car Stats
+        </Typography>
       </div>
+      <div style={{ display: 'flex', justifyContent: 'center',padding:'5px', }}>
       <div
         className="dataCard carstats2"
         style={{
+          borderRadius: '15px',
+          width: '70%',
+          marginTop: '20px',
+          marginBottom: '5px',
+          marginLeft: '15px',
+          marginRight: '5px',
           backgroundColor: cardBackgroundColor,
           color: cardTextColor,
         }}
@@ -153,7 +158,6 @@ export default function Graph({ mode }) {
                     size: 20,
                     weight: 'bold',
                   },
-                  
                 },
                 legend: {
                   labels: {
@@ -202,6 +206,12 @@ export default function Graph({ mode }) {
       <div
         className="dataCard carstats1"
         style={{
+          borderRadius: '15px',
+          width: '30%',
+          marginTop: '20px',
+          marginBottom: '5px',
+          marginRight: '15px',
+          marginLeft: '5px',
           backgroundColor: cardBackgroundColor,
           color: cardTextColor,
         }}
@@ -233,10 +243,18 @@ export default function Graph({ mode }) {
           <div>Loading...</div>
         )}
       </div>
+      </div>
 
+      <div style={{ display: 'flex', justifyContent: 'center',  }}>
       <div
         className="dataCard carstats3"
         style={{
+          borderRadius: '15px',
+          width: '100%',
+          height: '700px',
+          marginLeft: '20px',
+          marginRight: '20px',
+          marginBottom: '20px',
           backgroundColor: cardBackgroundColor,
           color: cardTextColor,
         }}
@@ -303,8 +321,7 @@ export default function Graph({ mode }) {
           <div>Loading...</div>
         )}
       </div>
-      
+      </div>
     </div>
   );
 }
-
