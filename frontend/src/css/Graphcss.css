@@ -1,0 +1,46 @@
+/* Graphcss.css */
+.App {
+  height: 160vh;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  gap: 3vw;
+  flex-wrap: wrap;
+}
+
+.dataCard {
+  border-radius: 0.5em;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  padding: 1em;
+}
+
+.carstats1 {
+  width: 25%;
+  height: 60vh;
+  margin-right: 4vh;
+  margin-left: auto;
+}
+
+.carstats2 {
+  width: 65%;
+  height: 60vh;
+  margin-left: 4vh;
+  margin-right: auto;
+}
+
+.carstats3 {
+  width: 72%;
+  height: 70vh;
+  margin-left: 4vh;
+  margin-right: auto;
+}
+
+.Title {
+  width: 100%;
+  display: flex;
+  align-items: center; /* Center vertically */
+  justify-content: center; /* Center horizontally */
+}
