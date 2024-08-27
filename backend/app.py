@@ -52,10 +52,10 @@ def filter_and_predict(df, model, displacement, mileage, year, kilowatts, rim_si
     prediction = model.predict([[displacement, mileage, kilowatts, year, rim_size]])[0].round(2)
     
     # Define ranges for filtering
-    mileage_min = mileage - 20000
-    mileage_max = mileage + 20000
-    kilowatts_min = kilowatts - 50
-    kilowatts_max = kilowatts + 50
+    displacement_min = displacement - 0.5
+    displacement_max = displacement + 0.5
+    mileage_min = mileage - 35000
+    mileage_max = mileage + 35000
     price_min = prediction * 0.85 
     price_max = prediction * 1.15
     min_year = year - 5
@@ -63,10 +63,9 @@ def filter_and_predict(df, model, displacement, mileage, year, kilowatts, rim_si
 
     # Filter the dataset based on the input ranges
     filtered_df = df[
-        (df['displacement'] == displacement) &
+        (df['displacement'] >= displacement_min) & (df['displacement'] <= displacement_max) &
         (df['mileage'] >= mileage_min) & (df['mileage'] <= mileage_max) &
         (df['year'] >= min_year) & (df['year'] <= max_year) &
-        (df['kilowatts'] >= kilowatts_min) & (df['kilowatts'] <= kilowatts_max) &
         (df['price'] >= price_min) & (df['price'] <= price_max) 
        
     ]
