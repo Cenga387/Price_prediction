@@ -14,9 +14,15 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 import axios from 'axios';
 
 axios.defaults.baseURL = 'http://localhost:5000';
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 export default function Hero() {
 
@@ -26,32 +32,57 @@ export default function Hero() {
   const [rimSize, setRimSize] = useState('');
   const [year, setYear] = useState('');
   const [kilowatts, setKilowatts] = useState('');
-  const [age, setAge] = React.useState('');
+  const [manufacturer, setManufacturer] = useState('');
   const [cars, setCars] = useState([])
+  const [snackbarOpen, setSnackbarOpen] = useState({
+      kilowatts: false,
+      year: false,
+      rimSize: false,
+  });
 
-  const handleChange = (event) => {
-    setAge(event.target.value);
+  const handleSnackbarClose = () => {
+    setSnackbarOpen({ kilowatts: false, year: false, rimSize: false });
+  };
+
+  const handleKilowattsChange = (e) => {
+    const value = parseInt(e.target.value, 10);
+    if (value < 48 || value > 240) {
+      setSnackbarOpen(true);
+    } else {
+      setKilowatts(value);
+    }
+  };
+
+  const handleYearChange = (e) => {
+    const value = parseInt(e.target.value, 10);
+    if (value < 1950 || value > 2024) {
+      setSnackbarOpen({ ...snackbarOpen, year: true });
+    } else {
+      setYear(value);
+    }
+  };
+
+  const handleRimSizeChange = (e) => {
+    const value = parseInt(e.target.value, 10);
+    if (value < 13 || value > 23) {
+      setSnackbarOpen({ ...snackbarOpen, rimSize: true });
+    } else {
+      setRimSize(value);
+    }
+  };
+  const handleManufacturerChange = (event) => {
+    setManufacturer(event.target.value);
   }
   
   const handlePredict = async () => {
     let endpoint = '';
-    if (age === 'Volkswagen') {
+    if (manufacturer === 'Volkswagen') {
       endpoint = '/volkswagen';
-    } else if (age === 'Audi') {
+    } else if (manufacturer === 'Audi') {
       endpoint = '/audi';
-    } else if (age === 'Mercedes') {
+    } else if (manufacturer === 'Mercedes') {
       endpoint = '/mercedes';
     }
-
-
-  // Log the parameters to ensure they are correctly set
-  console.log('Parameters:', {
-    displacement: parseFloat(displacement),
-    mileage: parseInt(mileage, 10),
-    year: parseInt(year, 10),
-    kilowatts: parseInt(kilowatts),
-    rimSize: parseInt(rimSize),
-  });
 
     try {
       const response = await axios.get(endpoint, {
@@ -70,7 +101,7 @@ export default function Hero() {
     }
   };
 
-  const isButtonDisabled = !rimSize || !year || !kilowatts || !mileage || !displacement;
+  const isButtonDisabled = !rimSize || !year || !kilowatts || !mileage || !displacement || !manufacturer;
 
 
   return (
@@ -141,8 +172,8 @@ export default function Hero() {
               <Select
                 labelId="demo-simple-select-autowidth-label"
                 id="demo-simple-select-autowidth"
-                value={age}
-                onChange={handleChange}
+                value={manufacturer}
+                onChange={handleManufacturerChange}
                 sx={{borderRadius: 8, width: '100%'}} 
                 label="Manufacturer"
               >
@@ -177,6 +208,7 @@ export default function Hero() {
               InputProps={{
                 sx:{ borderRadius: 15,}
               }}
+              sx={{ width: { xs: '100%', sm: '200px' } }}
               type='number'
             />
             <TextField
@@ -196,6 +228,7 @@ export default function Hero() {
               InputProps={{
                 sx:{ borderRadius: 15, },
               }}
+              sx={{ width: { xs: '100%', sm: '200px' } }}
               type='number'
             />
             <TextField
@@ -205,15 +238,17 @@ export default function Hero() {
               variant="outlined"
               aria-label="Enter year"
               placeholder="Year"
-              onChange={(e) => setYear(e.target.value)}
+              onChange={handleYearChange}
               inputProps={{
                 autoComplete: 'off',
                 'aria-label': 'Enter year',
+                min: 1950,
                 max: 2024,
               }}
               InputProps={{
-                sx:{ borderRadius: 15 },
+                sx:{ borderRadius: 15, width: '100%' },
               }}
+              sx={{ width: { xs: '100%', sm: '200px' } }}
               type= 'number'
             />
             <TextField
@@ -223,15 +258,17 @@ export default function Hero() {
               variant="outlined"
               aria-label="Enter kilowatts"
               placeholder="Kilowatts"
-              onChange={(e) => setKilowatts(e.target.value)}
+              onChange={handleKilowattsChange}
               inputProps={{
                 autoComplete: 'off',
                 'aria-label': 'Enter kilowatts',
-                min: 0,
+                min: 34,
+                max: 560
               }}
               InputProps={{
-                sx:{ borderRadius: 15 }  
+                sx:{ borderRadius: 15}  
               }}
+              sx={{ width: { xs: '100%', sm: '200px' } }}
               type='number'
             />
             <TextField
@@ -241,23 +278,24 @@ export default function Hero() {
               variant="outlined"
               aria-label="Enter rim size"
               placeholder="Rim size"
-              onChange={(e) => setRimSize(e.target.value)}
+              onChange={handleRimSizeChange}
               inputProps={{
                 autoComplete: 'off',
                 'aria-label': 'Enter kilowatts',
-                min: 0,
-                
+                min: 13,
+                max: 23
               }}
               InputProps={{
                 sx:{ borderRadius: 15, }  
               }}
+              sx={{ width: { xs: '100%', sm: '200px' } }}
               type='number'
             />
             <Button 
               variant="contained" 
               color="primary" 
               size='medium' 
-              sx={{borderRadius: 15}}
+              sx={{borderRadius: 15, width: {xs: '100%', sm: '200px'}}}
               onClick={handlePredict}
               disabled={isButtonDisabled}
             >
@@ -276,7 +314,7 @@ export default function Hero() {
           sx={(theme) => ({
             mt: { xs: 8, sm: 10 },
             alignSelf: 'center',
-            height: { xs: 200, sm: 1200 },
+            height: { xs: 4000, sm: 1950, md: 1350 },
             width: '100%',
             backgroundImage:
               theme.palette.mode === 'light'
@@ -304,6 +342,17 @@ export default function Hero() {
           </Grid>
         </Box>
         )}
+        <Snackbar
+        open={snackbarOpen.kilowatts || snackbarOpen.year || snackbarOpen.rimSize}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+      >
+        <Alert onClose={handleSnackbarClose} severity="warning" sx={{ width: '100%' }}>
+          {snackbarOpen.kilowatts && 'Please enter a value between 34 and 540 for kilowatts.'}
+          {snackbarOpen.year && 'Please enter a value between 1950 and 2024 for year.'}
+          {snackbarOpen.rimSize && 'Please enter a value between 13 and 23 for rim size.'}
+        </Alert>
+      </Snackbar>
       </Container>
     </Box>
   );

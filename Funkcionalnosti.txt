@@ -19,3 +19,26 @@
 
 8. Chatbot
 
+
+
+Filter componenta
+
+displacement - range slider;
+doors - dropdown (read unique values from the dataset);
+fuel - dropdown (read unique values from the dataset);
+kilowatts - range slider;
+location - dropdown (read unique values from the dataset);
+manufacturer - dropdown (read unique values from the dataset);	
+mileage - range slider;
+model - dropdown (read unique values from the dataset BASED ON THE SELECTED MANUFACTURER);
+price - range slider;
+year - min max dropdown (read unique values from the dataset);	
+color - dropdown (read unique values from the dataset);
+cruiseControl - radio button (if selected pick values that have this as TRUE in the dataset);	
+drivetrain - dropdown (read unique values from the dataset);
+rimSize	- dropdown (read unique values from the dataset);
+transmission - dropdown (read unique values from the dataset);
+type - dropdown (read unique values from the dataset);
+airCondition - radio button (if selected pick values that have this as TRUE in the dataset);
+navigation - radio button (if selected pick values that have this as TRUE in the dataset);
+registration - radio button (if selected pick values that have this as TRUE in the dataset);

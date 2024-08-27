@@ -9,6 +9,7 @@ import Graph from './components/Graph';
 import FAQ from './components/FAQ';
 import Footer from './components/Footer';
 import getLPTheme from './getLPTheme';
+import CarFilter from './components/CarFilter';
 
 export default function LandingPage() {
   const [mode, setMode] = React.useState('light');
@@ -37,6 +38,8 @@ export default function LandingPage() {
         <Hero />
         <Divider />
         <Graph mode={mode} />
+        <Divider />
+        <CarFilter/>
         <Divider />
         <FAQ />
         <Divider />
