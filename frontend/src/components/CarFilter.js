@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Box, FormControl, InputLabel, MenuItem, Select, Button, Stack, Container } from '@mui/material';
+import React, { useState} from 'react';
+import { FormControl, InputLabel, MenuItem, Select, Button, Stack, Container, Grid } from '@mui/material';
 import CarCard from './CarCard';
 import axios from 'axios';
 
@@ -245,11 +245,13 @@ export default function CarFilter() {
         Filter
       </Button>
 
-      <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', marginTop: '20px' }}>
+      <Grid container spacing={2}>
         {cars.map((car, index) => (
-          <CarCard key={index} car={car} />
+           <Grid item xs={12} sm={6} md={4} key={index}>
+             <CarCard car={car} />
+          </Grid>
         ))}
-      </Box>
+      </Grid>
 
       {cars.length > 0 && hasMoreCars && (
         <Button variant="contained" color="primary" onClick={handleShowMore} sx={{ marginTop: '20px' }}>
