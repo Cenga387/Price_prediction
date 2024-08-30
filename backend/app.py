@@ -49,7 +49,7 @@ def validate_and_convert_param(param, param_name, param_type=float):
 
 def filter_and_predict(df, model, displacement, mileage, year, kilowatts, rim_size):
     # Make a prediction
-    prediction = model.predict([[displacement, mileage, kilowatts, year, rim_size]])[0].round(2)
+    prediction = model.predict([[displacement, kilowatts, mileage, year, rim_size]])[0].round(2)
     
     # Define ranges for filtering
     displacement_min = displacement - 0.5
@@ -58,8 +58,8 @@ def filter_and_predict(df, model, displacement, mileage, year, kilowatts, rim_si
     mileage_max = mileage + 35000
     price_min = prediction * 0.85 
     price_max = prediction * 1.15
-    min_year = year - 5
-    max_year = year + 5 
+    min_year = year - 3
+    max_year = year + 3
 
     # Filter the dataset based on the input ranges
     filtered_df = df[
@@ -69,9 +69,10 @@ def filter_and_predict(df, model, displacement, mileage, year, kilowatts, rim_si
         (df['price'] >= price_min) & (df['price'] <= price_max) 
        
     ]
+    sorted_filtered_df = filtered_df.sort_values(by='price', ascending=False)
 
-    # Get the first 12 rows of the filtered dataset
-    filtered_data = filtered_df.head(12).to_dict(orient='records')
+    # Get the first 12 rows of the sorted dataset
+    filtered_data = sorted_filtered_df.head(12).to_dict(orient='records')
 
     return prediction, filtered_data
 
