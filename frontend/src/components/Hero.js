@@ -46,7 +46,7 @@ export default function Hero() {
 
   const handleKilowattsChange = (e) => {
     const value = parseInt(e.target.value, 10);
-    if (value < 48 || value > 240) {
+    if (value < 0 || value > 1000000) {
       setSnackbarOpen(true);
     } else {
       setKilowatts(value);
@@ -55,7 +55,7 @@ export default function Hero() {
 
   const handleYearChange = (e) => {
     const value = parseInt(e.target.value, 10);
-    if (value < 1950 || value > 2024) {
+    if (value < 0 || value > 1000000) {
       setSnackbarOpen({ ...snackbarOpen, year: true });
     } else {
       setYear(value);
@@ -64,7 +64,7 @@ export default function Hero() {
 
   const handleRimSizeChange = (e) => {
     const value = parseInt(e.target.value, 10);
-    if (value < 13 || value > 23) {
+    if (value < 0 || value > 1000000) {
       setSnackbarOpen({ ...snackbarOpen, rimSize: true });
     } else {
       setRimSize(value);
@@ -357,3 +357,4 @@ export default function Hero() {
     </Box>
   );
 }
+
