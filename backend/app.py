@@ -14,6 +14,7 @@ with open('models/volkswagen_model.pkl', 'rb') as file:
 
 with open('models/audi_model.pkl', 'rb') as file:
     audi_model = joblib.load(file)
+
 with open('models/mercedes_model.pkl', 'rb') as file:
     mercedes_model = joblib.load(file)
 
@@ -24,6 +25,7 @@ all_cars = pd.read_csv('datasets/all_cars.csv')
 
 df_all_numeric = pd.read_csv('datasets/all_cleaned_numeric.csv')
 
+
 def get_dataset_by_manufacturer(manufacturer):
     if manufacturer == 'volkswagen':
         return volkswagen_all_columns
@@ -33,8 +35,6 @@ def get_dataset_by_manufacturer(manufacturer):
         return mercedes_all_columns
     else:
         return all_cars
-
-df_all_numeric = pd.read_csv('datasets/all_cleaned_numeric.csv')
 
 def validate_and_convert_param(param, param_name, param_type=float):
     """Validate and convert a request parameter to a specified type."""
@@ -213,41 +213,92 @@ def car_stats2():
 
 @app.route('/api/car-stats3', methods=['GET'])
 def car_stats3():
+    x_axis = request.args.get('x_axis', 'year').lower()  # Default to 'year' if not provided
+    
+    # Map the x_axis parameter to the correct database column name
+    x_axis_mapping = {
+        'year': 'year',
+        'kilowatts': 'kilowatts',
+        'mileage': 'mileage',
+        'displacement': 'displacement',
+        'rimsize': 'rimSize'  # Correct the mapping for rimSize
+    }
+    
+    if x_axis not in x_axis_mapping:
+        return jsonify({'error': 'Invalid x_axis parameter'}), 400
+    
+    x_axis_column = x_axis_mapping[x_axis]
+    
     # Assuming df_all_numeric is your DataFrame
-    # Filter the data for each manufacturer with price 
+    # Filter the data for each manufacturer with price
     filtered_df = df_all_numeric[df_all_numeric['price'] <= 1_000_000]
+    
+    # Extract the unique values for the selected x-axis and sort them
+    x_values = sorted(filtered_df[x_axis_column].unique())
+    
+    # Determine the number of bins (max 30) if necessary
+    if len(x_values) > 30 and x_axis in ['kilowatts', 'mileage', 'displacement']:
+        # Calculate bin size based on the length of x_values and max bins
+        bin_size = len(x_values) // 30
+        
+        # Bin the x values by averaging within each bin
+        binned_x_values = []
+        for i in range(0, len(x_values), bin_size):
+            avg_x_value = np.mean(x_values[i:i + bin_size])
+            
+            if x_axis == 'kilowatts':
+                # Round up to the nearest 5 for kilowatts
+                rounded_value = int(np.ceil(avg_x_value / 5) * 5)
+            elif x_axis == 'mileage':
+                # Round up to the nearest 1000 for mileage
+                rounded_value = int(np.ceil(avg_x_value / 1000) * 1000)
+            elif x_axis == 'displacement':
+                # Round to the nearest 0.1 for displacement
+                rounded_value = round(avg_x_value, 1)
+            
+            binned_x_values.append(rounded_value)
+    else:
+        # Use the values directly for 'year', 'displacement', and 'rimSize'
+        binned_x_values = x_values
+        bin_size = 1  # Set a default value for bin_size when it's not used
 
-    # Extract unique years in ascending order
-    years = sorted(filtered_df['year'].unique().astype(int))
-
-    # Initialize the lists to store average prices per year for each manufacturer
+    # Initialize the lists to store average prices per x-axis value for each manufacturer
+    filtered_labels = []
     volkswagen_prices = []
     audi_prices = []
     mercedes_prices = []
 
-    for year in years:
-        # Filter data by year
-        yearly_data = filtered_df[filtered_df['year'] == year]
+    for x_value in binned_x_values:
+        if x_axis in ['kilowatts', 'mileage', 'displacement'] and len(x_values) > 30:
+            # Apply binning logic only when necessary
+            filtered_data = filtered_df[(filtered_df[x_axis_column] >= x_value - bin_size / 2) & 
+                                        (filtered_df[x_axis_column] < x_value + bin_size / 2)]
+        else:
+            filtered_data = filtered_df[filtered_df[x_axis_column] == x_value]
         
-        # Calculate the average price for each manufacturer in that year
-        volkswagen_avg_price = yearly_data[yearly_data['manufacturer'] == 'Volkswagen']['price'].mean()
-        audi_avg_price = yearly_data[yearly_data['manufacturer'] == 'Audi']['price'].mean()
-        mercedes_avg_price = yearly_data[yearly_data['manufacturer'] == 'Mercedes-Benz']['price'].mean()
+        # Calculate the average price for each manufacturer
+        volkswagen_avg_price = filtered_data[filtered_data['manufacturer'] == 'Volkswagen']['price'].mean()
+        audi_avg_price = filtered_data[filtered_data['manufacturer'] == 'Audi']['price'].mean()
+        mercedes_avg_price = filtered_data[filtered_data['manufacturer'] == 'Mercedes-Benz']['price'].mean()
 
-        # Append the results to the respective lists (handling NaN cases by replacing with 0 or other placeholder)
-        volkswagen_prices.append(round(volkswagen_avg_price if not pd.isna(volkswagen_avg_price) else 0, 2))
-        audi_prices.append(round(audi_avg_price if not pd.isna(audi_avg_price) else 0, 2))
-        mercedes_prices.append(round(mercedes_avg_price if not pd.isna(mercedes_avg_price) else 0, 2))
+        # Filter out x_values where all prices are NaN or 0
+        if (not pd.isna(volkswagen_avg_price) and volkswagen_avg_price != 0) or \
+           (not pd.isna(audi_avg_price) and audi_avg_price != 0) or \
+           (not pd.isna(mercedes_avg_price) and mercedes_avg_price != 0):
+            filtered_labels.append(str(int(x_value)) if x_axis in ['year', 'rimsize'] else str(x_value))
+            volkswagen_prices.append(round(volkswagen_avg_price if not pd.isna(volkswagen_avg_price) else 0, 2))
+            audi_prices.append(round(audi_avg_price if not pd.isna(audi_avg_price) else 0, 2))
+            mercedes_prices.append(round(mercedes_avg_price if not pd.isna(mercedes_avg_price) else 0, 2))
 
-    # Prepare the data for JSON response
     data = {
-        "labels": [str(year) for year in years],  # Convert years to strings for labeling
+        "labels": filtered_labels,  # Use the filtered labels
         "volkswagen": volkswagen_prices,
         "audi": audi_prices,
         "mercedes": mercedes_prices
     }
 
     return jsonify(data)
+
 
 @app.route('/<manufacturer>/models', methods=['GET'])
 def get_models_by_manufacturer(manufacturer):

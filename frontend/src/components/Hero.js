@@ -60,6 +60,7 @@ export default function Hero() {
   };
   const handleKilowattsChange = (e) => {
     const value = parseInt(e.target.value, 10);
+
     if (value < 48 || value > 240) {
       setSnackbarOpen({ ...snackbarOpen, kilowatts: true });
     } 
@@ -67,14 +68,14 @@ export default function Hero() {
 
   const handleYearChange = (e) => {
     const value = parseInt(e.target.value, 10);
-    if (value < 1950 || value > 2024) {
+    if (value < 0 || value > 1000000) {
       setSnackbarOpen({ ...snackbarOpen, year: true });
     } 
   };
 
   const handleRimSizeChange = (e) => {
     const value = parseInt(e.target.value, 10);
-    if (value < 13 || value > 23) {
+    if (value < 0 || value > 1000000) {
       setSnackbarOpen({ ...snackbarOpen, rimSize: true });
     }
   };
@@ -372,3 +373,4 @@ export default function Hero() {
     </Box>
   );
 }
+
