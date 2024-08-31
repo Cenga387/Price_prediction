@@ -69,7 +69,7 @@ def filter_and_predict(df, model, displacement, mileage, year, kilowatts, rim_si
         (df['price'] >= price_min) & (df['price'] <= price_max) 
        
     ]
-    sorted_filtered_df = filtered_df.sort_values(by='price', ascending=False)
+    sorted_filtered_df = filtered_df.sort_values(by='price', ascending=True)
 
     # Get the first 12 rows of the sorted dataset
     filtered_data = sorted_filtered_df.head(12).to_dict(orient='records')

@@ -61,21 +61,21 @@ export default function Hero() {
   const handleKilowattsChange = (e) => {
     const value = parseInt(e.target.value, 10);
 
-    if (value < 48 || value > 240) {
+    if (value < 34 || value > 560) {
       setSnackbarOpen({ ...snackbarOpen, kilowatts: true });
     } 
   };
 
   const handleYearChange = (e) => {
     const value = parseInt(e.target.value, 10);
-    if (value < 0 || value > 1000000) {
+    if (value < 1950 || value > 2024) {
       setSnackbarOpen({ ...snackbarOpen, year: true });
     } 
   };
 
   const handleRimSizeChange = (e) => {
     const value = parseInt(e.target.value, 10);
-    if (value < 0 || value > 1000000) {
+    if (value < 13 || value > 23) {
       setSnackbarOpen({ ...snackbarOpen, rimSize: true });
     }
   };
@@ -212,7 +212,8 @@ export default function Hero() {
               inputProps={{
                 autoComplete: 'off',
                 'aria-label': 'Enter displacement',
-                min: 0,
+                min: 0.6,
+                max: 7.3,
                 step: 0.1,
               }}
               InputProps={{
@@ -234,6 +235,7 @@ export default function Hero() {
                 autoComplete: 'off',
                 'aria-label': 'Enter mileage',
                 min: 0,
+                max: 1_000_000,
                 step: 1000,
               }}
               InputProps={{
@@ -363,8 +365,8 @@ export default function Hero() {
       >
         <Alert onClose={handleSnackbarClose} severity="warning" sx={{ width: '100%' }}>
           {snackbarOpen.displacement && 'Please enter a value between 0.6 and 7.3 for displacement.'}
-          {snackbarOpen.mileage && 'Please enter a value between 0 and 1000000 for mileage.'}
-          {snackbarOpen.kilowatts && 'Please enter a value between 34 and 540 for kilowatts.'}
+          {snackbarOpen.mileage && 'Please enter a value between 0 and 1,000,000 for mileage.'}
+          {snackbarOpen.kilowatts && 'Please enter a value between 34 and 560 for kilowatts.'}
           {snackbarOpen.year && 'Please enter a value between 1950 and 2024 for year.'}
           {snackbarOpen.rimSize && 'Please enter a value between 13 and 23 for rim size.'}
         </Alert>
