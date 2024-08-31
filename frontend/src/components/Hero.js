@@ -35,39 +35,48 @@ export default function Hero() {
   const [manufacturer, setManufacturer] = useState('');
   const [cars, setCars] = useState([])
   const [snackbarOpen, setSnackbarOpen] = useState({
+      displacement: false,
+      mileage: false,
       kilowatts: false,
       year: false,
       rimSize: false,
   });
 
   const handleSnackbarClose = () => {
-    setSnackbarOpen({ kilowatts: false, year: false, rimSize: false });
+    setSnackbarOpen({ displacement: false, mileage: false, kilowatts: false, year: false, rimSize: false });
   };
 
+  const handleDisplacementChange = (e) => {
+    const value = parseFloat(e.target.value, 10);
+    if (value < 0.6 || value > 7.3) {
+      setSnackbarOpen({ ...snackbarOpen, displacement: true });
+    } 
+  };
+  const handleMileageChange = (e) => {
+    const value = parseInt(e.target.value, 10);
+    if (value < 0 || value > 1000000) {
+      setSnackbarOpen({ ...snackbarOpen, mileage: true });
+    } 
+  };
   const handleKilowattsChange = (e) => {
     const value = parseInt(e.target.value, 10);
+
     if (value < 48 || value > 240) {
-      setSnackbarOpen(true);
-    } else {
-      setKilowatts(value);
-    }
+      setSnackbarOpen({ ...snackbarOpen, kilowatts: true });
+    } 
   };
 
   const handleYearChange = (e) => {
     const value = parseInt(e.target.value, 10);
-    if (value < 1950 || value > 2024) {
+    if (value < 0 || value > 1000000) {
       setSnackbarOpen({ ...snackbarOpen, year: true });
-    } else {
-      setYear(value);
-    }
+    } 
   };
 
   const handleRimSizeChange = (e) => {
     const value = parseInt(e.target.value, 10);
-    if (value < 13 || value > 23) {
+    if (value < 0 || value > 1000000) {
       setSnackbarOpen({ ...snackbarOpen, rimSize: true });
-    } else {
-      setRimSize(value);
     }
   };
   const handleManufacturerChange = (event) => {
@@ -101,7 +110,7 @@ export default function Hero() {
     }
   };
 
-  const isButtonDisabled = !rimSize || !year || !kilowatts || !mileage || !displacement || !manufacturer;
+  const isButtonDisabled = !rimSize ||  !kilowatts || !mileage || !displacement || !manufacturer;
 
 
   return (
@@ -199,6 +208,7 @@ export default function Hero() {
               aria-label="Enter displacement"
               placeholder="Displacement"
               onChange={(e) => setDisplacement(e.target.value)}
+              onBlur={handleDisplacementChange}
               inputProps={{
                 autoComplete: 'off',
                 'aria-label': 'Enter displacement',
@@ -219,6 +229,7 @@ export default function Hero() {
               aria-label="Enter mileage"
               placeholder="Mileage"
               onChange={(e) => setMileage(e.target.value)}
+              onBlur={handleMileageChange}
               inputProps={{
                 autoComplete: 'off',
                 'aria-label': 'Enter mileage',
@@ -238,7 +249,8 @@ export default function Hero() {
               variant="outlined"
               aria-label="Enter year"
               placeholder="Year"
-              onChange={handleYearChange}
+              onChange={(e) => setYear(e.target.value)}
+              onBlur={handleYearChange}
               inputProps={{
                 autoComplete: 'off',
                 'aria-label': 'Enter year',
@@ -258,7 +270,8 @@ export default function Hero() {
               variant="outlined"
               aria-label="Enter kilowatts"
               placeholder="Kilowatts"
-              onChange={handleKilowattsChange}
+              onChange={(e) => setKilowatts(e.target.value)}
+              onBlur={handleKilowattsChange}
               inputProps={{
                 autoComplete: 'off',
                 'aria-label': 'Enter kilowatts',
@@ -278,7 +291,8 @@ export default function Hero() {
               variant="outlined"
               aria-label="Enter rim size"
               placeholder="Rim size"
-              onChange={handleRimSizeChange}
+              onChange={(e) => setRimSize(e.target.value)}
+              onBlur={handleRimSizeChange}
               inputProps={{
                 autoComplete: 'off',
                 'aria-label': 'Enter kilowatts',
@@ -343,11 +357,13 @@ export default function Hero() {
         </Box>
         )}
         <Snackbar
-        open={snackbarOpen.kilowatts || snackbarOpen.year || snackbarOpen.rimSize}
+        open={snackbarOpen.displacement || snackbarOpen.mileage || snackbarOpen.kilowatts || snackbarOpen.year || snackbarOpen.rimSize}
         autoHideDuration={6000}
         onClose={handleSnackbarClose}
       >
         <Alert onClose={handleSnackbarClose} severity="warning" sx={{ width: '100%' }}>
+          {snackbarOpen.displacement && 'Please enter a value between 0.6 and 7.3 for displacement.'}
+          {snackbarOpen.mileage && 'Please enter a value between 0 and 1000000 for mileage.'}
           {snackbarOpen.kilowatts && 'Please enter a value between 34 and 540 for kilowatts.'}
           {snackbarOpen.year && 'Please enter a value between 1950 and 2024 for year.'}
           {snackbarOpen.rimSize && 'Please enter a value between 13 and 23 for rim size.'}
@@ -357,3 +373,4 @@ export default function Hero() {
     </Box>
   );
 }
+

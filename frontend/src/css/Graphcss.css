@@ -34,13 +34,13 @@
 .carstats3 {
   width: 72%;
   height: 70vh;
-  margin-left: 4vh;
+  margin-left: 0vh;
   margin-right: auto;
 }
 
 .Title {
   width: 100%;
   display: flex;
-  align-items: center; /* Center vertically */
-  justify-content: center; /* Center horizontally */
+  align-items: center;
+  justify-content: center;
 }
