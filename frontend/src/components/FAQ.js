@@ -110,6 +110,7 @@ export default function FAQ() {
             >
              We use an advanced machine learning algorithm, <b>RandomForestRegressor</b>, as well
              as <b>GridSearchCV</b> in order to find the optimal combination of hyperparameters for a given model.
+             The R2 score of the model is <b>0.94</b>. 
 
             </Typography>
           </AccordionDetails>

@@ -2,6 +2,8 @@ import React, { useState} from 'react';
 import { FormControl, InputLabel, MenuItem, Select, Button, Stack, Container, Grid } from '@mui/material';
 import CarCard from './CarCard';
 import axios from 'axios';
+import Typography from '@mui/material/Typography';
+import { Box } from "@mui/material";
 
 // Set the base URL for axios requests
 axios.defaults.baseURL = 'http://localhost:5000';
@@ -116,7 +118,8 @@ export default function CarFilter() {
   };
 
   return (
-    <Container sx={{
+    <Box id="CarFilter">
+    <Container  sx={{
         pt: { xs: 4, sm: 12 },
         pb: { xs: 8, sm: 16 },
         position: 'relative',
@@ -125,6 +128,19 @@ export default function CarFilter() {
         alignItems: 'center',
         gap: { xs: 3, sm: 6 },
       }}>
+        <div className="Title">
+          <Typography
+            variant="h1"
+            sx={{
+              marginTop: '-50px',
+              width: '100%',
+              textAlign: 'center',
+              fontSize: 'clamp(3.5rem, 10vw, 4rem)',
+            }}
+          >
+            Car Filter
+          </Typography>
+      </div>
       <Stack direction={{ xs: 'column', sm: 'row' }}
             alignSelf="center"
             alignItems={{ xs: 'center', sm: 'flex-start' }}
@@ -259,5 +275,6 @@ export default function CarFilter() {
         </Button>
       )}
     </Container>
+    </Box>
   );
 }

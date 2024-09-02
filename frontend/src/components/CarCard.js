@@ -50,6 +50,7 @@ import caddyMercedes from '../assets/mercedes_types/caddy_mercedes.png'
 import pickupMercedes from '../assets/mercedes_types/pickup_mercedes.png'
 import deafultMercedes from '../assets/mercedes_types/deafult_mercedes.png'
 
+
 const CarCard = ({ car }) => {
   const [expanded, setExpanded] = useState(false);
   const [open, setOpen] = useState(false);
@@ -130,15 +131,20 @@ const CarCard = ({ car }) => {
   return (
     <>
       <Card
-        sx={{
+        sx={(theme) => ({
           maxWidth: 345,
-          display: 'flex',
-          margin: '20px',
-          transition: 'transform 0.2s ease-in-out',
-          '&:hover': {
-            transform: 'scale(1.05)',
-          },
-        }}
+          display: 'flex', 
+          margin: '20px', 
+          transition: 'transform 0.2s ease-in-out', 
+          borderRadius: '20px', 
+          '&:hover': 
+          { transform: 'scale(1.05)', },
+          backgroundColor:
+            theme.palette.mode === 'light'
+              ? theme.palette.grey[300]
+              : theme.palette.grey[900],
+        })}
+        
         onMouseEnter={handleExpandClick}
         onMouseLeave={handleExpandClick}
         onClick={handleOpenModal}

@@ -116,15 +116,7 @@ export default function Hero() {
   return (
     <Box
       id="hero"
-      sx={(theme) => ({
-        width: '100%',
-        backgroundImage:
-          theme.palette.mode === 'light'
-            ? 'linear-gradient(180deg, #CEE5FD, #FFF)'
-            : `linear-gradient(#02294F, ${alpha('#090E10', 0.0)})`,
-        backgroundSize: '100% 20%',
-        backgroundRepeat: 'no-repeat',
-      })}
+      
     >
       <Container
         sx={{
@@ -319,9 +311,24 @@ export default function Hero() {
             </Button>
           </Stack>
           {modelResponse &&(
-          <Box sx={{alignSelf: 'center', justifySelf: 'center'}}>
-            <Typography sx={{fontSize: 16}}>Predicted  price of your car is: {modelResponse} KM</Typography>
-          </Box>
+          <Box
+          sx={(theme) => ({
+            alignSelf: 'center',
+            justifySelf: 'center',
+            padding: '16px', // Padding around the text
+            borderRadius: '40px', // Rounded corners
+            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', // Optional: Adds a subtle shadow
+            backgroundColor:
+              theme.palette.mode === 'light'
+                ? theme.palette.grey[300]
+                : theme.palette.grey[900],
+          })}
+        >
+          <Typography sx={{ fontSize: 26 }}>
+            Predicted price of your car is: <b>{modelResponse} KM</b>
+          </Typography>
+        </Box>
+        
           )}
         </Stack>
         {modelResponse &&(

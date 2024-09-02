@@ -7,6 +7,7 @@ import Typography from '@mui/material/Typography';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import { Box } from "@mui/material";
 
 Chart.register(ArcElement, LineElement, PointElement, CategoryScale, LinearScale, Tooltip, Legend, Title);
 
@@ -122,16 +123,24 @@ export default function Graph({ mode }) {
   const cardTextColor = mode === 'dark' ? theme.palette.grey[300] : theme.palette.grey[900];
 
   return (
+  <Box 
+  id="CarStats">
     <div className="App">
-      <div className="Title">
+      <div className="Title" >
         <Typography
           variant="h1"
-          sx={{
-            marginTop: '20px',
-            width: '100%',
-            textAlign: 'center',
+          sx={(theme) => ({
             fontSize: 'clamp(3.5rem, 10vw, 4rem)',
-          }}
+            alignSelf: 'center',
+            justifySelf: 'center',
+            padding: '4px', // Padding around the text
+            borderRadius: '40px', // Rounded corners
+            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', // Optional: Adds a subtle shadow
+            backgroundColor:
+              theme.palette.mode === 'light'
+                ? theme.palette.grey[300]
+                : theme.palette.grey[900],
+          })}
         >
           Car Stats
         </Typography>
@@ -360,5 +369,6 @@ export default function Graph({ mode }) {
         </div>
       </div>
     </div>
+    </Box> 
   );
 }

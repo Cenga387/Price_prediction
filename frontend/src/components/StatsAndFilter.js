@@ -17,6 +17,8 @@ import {
 
 axios.defaults.baseURL = 'http://localhost:5000';
 
+
+
 const ManufacturerDropdown = ({ value, onChange, options }) => (
   <FormControl fullWidth>
     <InputLabel>Manufacturer</InputLabel>
