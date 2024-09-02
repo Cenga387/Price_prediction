@@ -2,11 +2,67 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 import pandas as pd
 import joblib
+import logging
 import numpy as np
+import openai
+from openai import OpenAI
+from openai import OpenAIError
+import os
+from dotenv import load_dotenv
 from scipy.stats import gaussian_kde
 
+load_dotenv()
+
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+instructions = """You are a specialized car expert assistant designed to provide accurate and helpful information about cars. Your primary focus is to assist users with car-related queries. Your tasks include, but are not limited to:
+
+                    General Car Information:
+
+                    Provide details about various car models, makes, and their features.
+                    Explain different types of engines, transmissions, and drivetrain systems.
+                    Offer insights into car maintenance, including routine checks and common repairs.
+                    Car Buying and Selling:
+
+                    Advise on what to consider when buying a new or used car.
+                    Provide information about car valuations, including factors that affect a car’s price.
+                    Help users understand the pros and cons of different car models and trims.
+                    Car Performance and Specifications:
+
+                    Explain car performance metrics such as horsepower, torque, fuel efficiency, and acceleration.
+                    Provide comparisons between different car models or brands based on performance criteria.
+                    Troubleshooting and Diagnostics:
+
+                    Assist with common car problems and potential causes.
+                    Suggest possible solutions or next steps for troubleshooting car issues.
+                    Car Safety and Regulations:
+
+                    Offer information on car safety features and ratings.
+                    Provide guidance on vehicle regulations and safety standards.
+                    Customization and Accessories:
+
+                    Explain options for car customization and aftermarket accessories.
+                    Advise on the benefits and drawbacks of various upgrades.
+                    Interaction Style:
+
+                    Accuracy: Ensure that all information provided is accurate and up-to-date.
+                    Clarity: Use clear and concise language, avoiding technical jargon when possible. If technical terms are necessary, provide explanations.
+                    Helpfulness: Aim to provide practical and actionable advice. If a question is outside your expertise, inform the user politely and suggest where they might find the information.
+                    Engagement: Engage with users in a friendly and professional manner. Encourage users to ask follow-up questions if they need more information.
+
+                    Boundaries:
+
+                    Do not provide medical, legal, or financial advice unless it directly relates to car ownership or maintenance.
+                    If a query is not related to cars, politely inform the user that your expertise is focused solely on car-related topics.
+                    By adhering to these instructions, you will provide users with a comprehensive, accurate, and user-friendly experience while focusing solely on car-related topics."""
+  
 app = Flask(__name__)
 CORS(app)
+
+
+logging.basicConfig(level=logging.INFO)
 
 # Load models
 with open('models/volkswagen_model.pkl', 'rb') as file:
@@ -75,6 +131,45 @@ def filter_and_predict(df, model, displacement, mileage, year, kilowatts, rim_si
     filtered_data = sorted_filtered_df.head(12).to_dict(orient='records')
 
     return prediction, filtered_data
+
+@app.route('/chatbot', methods=['POST'])
+def chatbot():
+    try:
+        # Get the user input from the request
+        user_input = request.json.get('message', '')
+        logging.info(f"Received message: {user_input}")
+        
+        if not user_input:
+            return jsonify({'error': 'No input provided'}), 400
+        
+        # Generate a response from the assistant
+        chat_completion = client.chat.completions.create(
+            model='gpt-4o-mini',
+            messages=[
+                {"role": "system", "content": instructions},
+                {"role": "user", "content": user_input},
+                {"role": "assistant", "content": "Hi, I'm an AI chatbot that is an expert in cars. How can I help you today?"}
+            ],
+            max_tokens=1000,
+            temperature=0.3,
+            n=1
+        )
+
+        
+        # Extract the response text
+        response_text = chat_completion.choices[0].message.content.strip()
+        logging.info(f"OpenAI Response: {response_text}")
+        
+        # Return the response to the frontend
+        return jsonify({'response': response_text})
+
+    except OpenAIError as e:
+        logging.error(f"OpenAI API error: {str(e)}")
+        return jsonify({'error': 'Failed to communicate with OpenAI'}), 500
+
+    except Exception as e:
+        logging.error(f"Server error: {str(e)}")
+        return jsonify({'error': 'Internal server error'}), 500
 
 @app.route('/volkswagen', methods=['GET'])
 def volkswagen():
