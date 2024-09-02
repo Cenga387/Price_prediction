@@ -10,7 +10,7 @@ import FAQ from './components/FAQ';
 import Footer from './components/Footer';
 import getLPTheme from './getLPTheme';
 import CarFilter from './components/CarFilter';
-import ChatForm from './components/ChatForm';
+import Chatbot from './components/ChatBot';
 
 export default function LandingPage() {
   const [mode, setMode] = React.useState('light');
@@ -45,7 +45,7 @@ export default function LandingPage() {
         <FAQ />
         <Divider />
         <Footer />
-        <ChatForm />
+        <Chatbot mode={mode} />
       </Box>
     </ThemeProvider>
   );
