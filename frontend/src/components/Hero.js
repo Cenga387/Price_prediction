@@ -317,17 +317,30 @@ export default function Hero() {
             justifySelf: 'center',
             padding: '16px', // Padding around the text
             borderRadius: '40px', // Rounded corners
-            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', // Optional: Adds a subtle shadow
+            outline: '1px solid',
+            outlineColor:
+              theme.palette.mode === 'light'
+                ? alpha('#BFCCD9', 0.5)
+                : alpha('#9CCCFC', 0.1),
+            boxShadow:
+            theme.palette.mode === 'light'
+              ? `0 0 12px 8px ${alpha('#9CCCFC', 0.4)}`
+              : `0 0 24px 12px ${alpha('#033363', 0.2)}`, // Optional: Adds a subtle shadow
             backgroundColor:
               theme.palette.mode === 'light'
                 ? theme.palette.grey[300]
                 : theme.palette.grey[900],
+            transition: 'opacity 0.3s ease', // Smooth transition for opacity change
+            '&:hover': {
+              opacity: 0.8, // Change opacity on hover
+            },
           })}
         >
           <Typography sx={{ fontSize: 26 }}>
             Predicted price of your car is: <b>{modelResponse} KM</b>
           </Typography>
         </Box>
+        
         
           )}
         </Stack>
@@ -352,8 +365,8 @@ export default function Hero() {
                 : alpha('#9CCCFC', 0.1),
             boxShadow:
               theme.palette.mode === 'light'
-                ? `0 0 12px 8px ${alpha('#9CCCFC', 0.2)}`
-                : `0 0 24px 12px ${alpha('#033363', 0.2)}`,
+                ? `0 0 12px 8px ${alpha('#9CCCFC', 0.9)}`
+                : `0 0 24px 12px ${alpha('#033363', 0.4)}`,
           })}
         >
           <Grid container spacing={2}>

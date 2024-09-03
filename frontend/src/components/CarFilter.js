@@ -119,6 +119,44 @@ export default function CarFilter() {
 
   return (
     <Box id="CarFilter">
+      <div className="Title">
+        <Typography
+          variant="h1"
+          sx={(theme) => ({
+            fontSize: 'clamp(3.5rem, 10vw, 4rem)',
+            alignSelf: 'flex-start', // Aligns the text to the start (left) of the container
+            justifySelf: 'flex-start', // Ensures the box is aligned to the left
+            padding: '4px', // Padding around the text
+            borderRadius: '40px', // Rounded corners
+            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', // Optional: Adds a subtle shadow
+            backgroundColor:
+              theme.palette.mode === 'light'
+                ? `rgba(189, 189, 189, 0.3)` // Light mode with 50% opacity grey
+                : `rgba(33, 33, 33, 0.3)`, // Dark mode with 50% opacity grey
+            textAlign: 'center', // Aligns text to the left inside the box
+            marginLeft: '5vw', // Ensures the box is positioned on the left side
+            marginRight: '60vw',
+            marginTop: '3vw',
+            outline: '2px solid',
+          })}
+        >
+          Car Filter
+        </Typography>
+      </div>
+      <div>
+      <Typography
+          variant="h1"
+          sx={{
+            fontSize: '3vh',
+            marginTop: '3vw',
+            marginBottom: '-3vw',
+            marginLeft: '5vw'
+
+          }}
+        >
+          Choose between different characteristics, to filter out the cars you want to see:
+        </Typography>
+       </div>
     <Container  sx={{
         pt: { xs: 4, sm: 12 },
         pb: { xs: 8, sm: 16 },
@@ -128,19 +166,7 @@ export default function CarFilter() {
         alignItems: 'center',
         gap: { xs: 3, sm: 6 },
       }}>
-        <div className="Title">
-          <Typography
-            variant="h1"
-            sx={{
-              marginTop: '-50px',
-              width: '100%',
-              textAlign: 'center',
-              fontSize: 'clamp(3.5rem, 10vw, 4rem)',
-            }}
-          >
-            Car Filter
-          </Typography>
-      </div>
+        
       <Stack direction={{ xs: 'column', sm: 'row' }}
             alignSelf="center"
             alignItems={{ xs: 'center', sm: 'flex-start' }}

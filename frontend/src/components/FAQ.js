@@ -29,16 +29,27 @@ export default function FAQ() {
       }}
     >
       <Typography
-        component="h2"
-        variant="h4"
-        color="text.primary"
-        sx={{
-          width: { sm: '100%', md: '60%' },
-          textAlign: { sm: 'left', md: 'center' },
-        }}
-      >
-        Frequently asked questions
-      </Typography>
+          component="h2"
+          variant="h4"
+          sx={(theme) => ({
+            
+            alignSelf: 'center', // Aligns the text to the start (left) of the container
+            justifySelf: 'center', // Ensures the box is aligned to the left
+            padding: '4px', // Padding around the text
+            borderRadius: '40px', // Rounded corners
+            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', // Optional: Adds a subtle shadow
+            backgroundColor:
+              theme.palette.mode === 'light'
+                ? `rgba(189, 189, 189, 0.3)` // Light mode with 50% opacity grey
+                : `rgba(33, 33, 33, 0.3)`, // Dark mode with 50% opacity grey
+            textAlign: 'center', // Aligns text to the left inside the box
+            marginLeft: '0vw', // Ensures the box is positioned on the left side
+            marginRight: '0vw',
+            marginTop: '3vw',
+          })}
+        >
+          Frequently Asked Questions
+        </Typography>
       <Box sx={{ width: '100%' }}>
         <Accordion
           expanded={expanded === 'panel1'}

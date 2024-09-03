@@ -8,6 +8,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { Box } from "@mui/material";
+import { alpha } from '@mui/material';
 
 Chart.register(ArcElement, LineElement, PointElement, CategoryScale, LinearScale, Tooltip, Legend, Title);
 
@@ -131,15 +132,21 @@ export default function Graph({ mode }) {
           variant="h1"
           sx={(theme) => ({
             fontSize: 'clamp(3.5rem, 10vw, 4rem)',
-            alignSelf: 'center',
-            justifySelf: 'center',
+            alignSelf: 'flex-start', // Aligns the text to the start (left) of the container
+            justifySelf: 'flex-start', // Ensures the box is aligned to the left
             padding: '4px', // Padding around the text
             borderRadius: '40px', // Rounded corners
             boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', // Optional: Adds a subtle shadow
             backgroundColor:
               theme.palette.mode === 'light'
-                ? theme.palette.grey[300]
-                : theme.palette.grey[900],
+                ? `rgba(189, 189, 189, 0.3)` // Light mode with 50% opacity grey
+                : `rgba(33, 33, 33, 0.3)`, // Dark mode with 50% opacity grey
+            textAlign: 'center', // Aligns text to the left inside the box
+            marginLeft: '5vw', // Ensures the box is positioned on the left side
+            marginRight: '60vw',
+            marginTop: '3vw',
+            marginBottom: '1vw',
+            outline: '2px solid',
           })}
         >
           Car Stats
@@ -158,6 +165,15 @@ export default function Graph({ mode }) {
             marginRight: '30px',
             backgroundColor: cardBackgroundColor,
             color: cardTextColor,
+            outline: '1px solid',
+            outlineColor:
+              theme.palette.mode === 'light'
+                ? alpha('#BFCCD9', 0.5)
+                : alpha('#9CCCFC', 0.1),
+            boxShadow:
+              theme.palette.mode === 'light'
+                ? `0 0 12px 8px ${alpha('#9CCCFC', 0.9)}`
+                : `0 0 24px 12px ${alpha('#033363', 0.4)}`,
           }}
         >
           {lineChartData2 ? (
@@ -234,6 +250,15 @@ export default function Graph({ mode }) {
             marginLeft: '30px',
             backgroundColor: cardBackgroundColor,
             color: cardTextColor,
+            outline: '1px solid',
+            outlineColor:
+              theme.palette.mode === 'light'
+                ? alpha('#BFCCD9', 0.5)
+                : alpha('#9CCCFC', 0.1),
+            boxShadow:
+              theme.palette.mode === 'light'
+                ? `0 0 12px 8px ${alpha('#9CCCFC', 0.9)}`
+                : `0 0 24px 12px ${alpha('#033363', 0.4)}`,
           }}
         >
           {doughnutChartData ? (
@@ -298,9 +323,18 @@ export default function Graph({ mode }) {
             marginTop: '80px',
             marginLeft: '20px',
             marginRight: '20px',
-            marginBottom: '20px',
+            marginBottom: '60px',
             backgroundColor: cardBackgroundColor,
             color: cardTextColor,
+            outline: '1px solid',
+            outlineColor:
+              theme.palette.mode === 'light'
+                ? alpha('#BFCCD9', 0.5)
+                : alpha('#9CCCFC', 0.1),
+            boxShadow:
+              theme.palette.mode === 'light'
+                ? `0 0 12px 8px ${alpha('#9CCCFC', 0.9)}`
+                : `0 0 24px 12px ${alpha('#033363', 0.4)}`,
           }}
         >
           {lineChartData3 ? (
