@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useState, useEffect} from 'react';
 import { FormControl, InputLabel, MenuItem, Select, Button, Stack, Container, Grid } from '@mui/material';
 import CarCard from './CarCard';
 import axios from 'axios';
@@ -21,6 +21,27 @@ export default function CarFilter() {
   const [selectedTransmission, setSelectedTransmission] = useState([]);
   const [page, setPage] = useState(1);
   const [hasMoreCars, setHasMoreCars] = useState(true);
+
+
+
+  const fetchFilterOptions = async () => {
+    try {
+      const response = await axios.get('/filter-options', {
+        params: { models: selectedModels.join(',') }
+      });
+      setDoors(response.data.doors);
+      setFuel(response.data.fuel);
+      setColor(response.data.color);
+      setTransmission(response.data.transmission);
+    } catch (error) {
+      console.error('Error fetching filter options:', error);
+    }
+  };
+  useEffect(() => {
+    if (selectedModels.length > 0) {
+      fetchFilterOptions();
+    }
+  }, [selectedModels]);
 
   // Function to handle manufacturer change
   const handleManufacturerChange = (event) => {
@@ -68,7 +89,7 @@ export default function CarFilter() {
   };
 
   // Function to handle changes in any filter
-  const handleFilterChange = (setter, value, filterType) => {
+  const handleFilterChange = (setter, value) => {
     setter(value);
   };
 
@@ -112,6 +133,14 @@ export default function CarFilter() {
       setHasMoreCars(response.data.cars.length === 12);
     } catch (error) {
       console.error('Error fetching more cars:', error);
+    }
+  };
+
+  const handleSelectAllModels = () => {
+    if (selectedModels.length === models.length) {
+      setSelectedModels([]); // Deselect all if all are selected
+    } else {
+      setSelectedModels(models); // Select all models
     }
   };
 
@@ -160,6 +189,9 @@ export default function CarFilter() {
             sx={{ borderRadius: 8, width: '100%' }}
             label="Model"
           >
+            <Button onClick={handleSelectAllModels} fullWidth>
+              {selectedModels.length === models.length ? 'Deselect All' : 'Select All'}
+            </Button>
             {models.map((model) => (
               <MenuItem key={model} value={model}>
                 {model}
@@ -167,6 +199,7 @@ export default function CarFilter() {
             ))}
           </Select>
         </FormControl>
+        
 
         <FormControl size="small" sx={{ width: { xs: '100%', sm: '200px' } }}>
           <InputLabel id="doors-select-label">Doors</InputLabel>

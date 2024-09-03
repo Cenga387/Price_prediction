@@ -410,6 +410,29 @@ def get_models_by_manufacturer(manufacturer):
 
     return jsonify({'cars': cars})
 
+@app.route('/filter-options', methods=['GET'])
+def filter_options():
+    try:
+        models = request.args.get('models', '').split(',')
+        if not models:
+            return jsonify({'error': 'No models provided'}), 400
+
+        df = all_cars[all_cars['model'].isin(models)]
+
+        doors = df['doors'].unique().tolist()
+        fuel = df['fuel'].unique().tolist()
+        color = df['color'].unique().tolist()
+        transmission = df['transmission'].unique().tolist()
+
+        return jsonify({
+            'doors': doors,
+            'fuel': fuel,
+            'color': color,
+            'transmission': transmission
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 @app.route('/filter', methods=['GET'])
 def filter_by_manufacturer_and_model():
     try:
@@ -427,20 +450,19 @@ def filter_by_manufacturer_and_model():
         # Select the appropriate dataset based on the manufacturer
         df = get_dataset_by_manufacturer(manufacturer)
 
-        # Apply filters
-        if models:
-            df = df[df['model'].isin(models)]
-        if doors:
+        # Apply filters only if they are provided
+        if models and models[0]:
+            df = df[df['model'].str.lower().isin([model.lower() for model in models])]
+        if doors and doors[0]:
             df = df[df['doors'].isin(doors)]
-        if fuel:
-            df = df[df['fuel'].isin(fuel)]
-        if color:
-            df = df[df['color'].isin(color)]
-        if transmission:
-            df = df[df['transmission'].isin(transmission)]
+        if fuel and fuel[0]:
+            df = df[df['fuel'].str.lower().isin([f.lower() for f in fuel])]
+        if color and color[0]:
+            df = df[df['color'].str.lower().isin([c.lower() for c in color])]
+        if transmission and transmission[0]:
+            df = df[df['transmission'].str.lower().isin([t.lower() for t in transmission])]
 
         print(f"Filtered DataFrame Shape: {df.shape}")
-
 
         # Paginate the filtered dataset
         start = (page - 1) * limit
@@ -449,11 +471,10 @@ def filter_by_manufacturer_and_model():
 
         return jsonify({
             'cars': filtered_data,
-            'total': len(filtered_data)
+            'total': df.shape[0]  # Return the total number of cars that match the filters
         })
     except Exception as e:
         return jsonify({'error': str(e)}), 400
-
-
+    
 if __name__ == '__main__':
     app.run(debug=True)
