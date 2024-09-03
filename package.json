@@ -1,6 +1,8 @@
 {
   "dependencies": {
     "chart.js": "^4.4.4",
+    "framer-motion": "^11.3.31",
+    "openai": "^4.57.0",
     "react-chartjs-2": "^5.2.0"
   }
 }
