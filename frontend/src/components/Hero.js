@@ -61,21 +61,21 @@ export default function Hero() {
   const handleKilowattsChange = (e) => {
     const value = parseInt(e.target.value, 10);
 
-    if (value < 48 || value > 240) {
+    if (value < 34 || value > 560) {
       setSnackbarOpen({ ...snackbarOpen, kilowatts: true });
     } 
   };
 
   const handleYearChange = (e) => {
     const value = parseInt(e.target.value, 10);
-    if (value < 0 || value > 1000000) {
+    if (value < 1950 || value > 2024) {
       setSnackbarOpen({ ...snackbarOpen, year: true });
     } 
   };
 
   const handleRimSizeChange = (e) => {
     const value = parseInt(e.target.value, 10);
-    if (value < 0 || value > 1000000) {
+    if (value < 13 || value > 23) {
       setSnackbarOpen({ ...snackbarOpen, rimSize: true });
     }
   };
@@ -116,15 +116,7 @@ export default function Hero() {
   return (
     <Box
       id="hero"
-      sx={(theme) => ({
-        width: '100%',
-        backgroundImage:
-          theme.palette.mode === 'light'
-            ? 'linear-gradient(180deg, #CEE5FD, #FFF)'
-            : `linear-gradient(#02294F, ${alpha('#090E10', 0.0)})`,
-        backgroundSize: '100% 20%',
-        backgroundRepeat: 'no-repeat',
-      })}
+      
     >
       <Container
         sx={{
@@ -212,7 +204,8 @@ export default function Hero() {
               inputProps={{
                 autoComplete: 'off',
                 'aria-label': 'Enter displacement',
-                min: 0,
+                min: 0.6,
+                max: 7.3,
                 step: 0.1,
               }}
               InputProps={{
@@ -234,6 +227,7 @@ export default function Hero() {
                 autoComplete: 'off',
                 'aria-label': 'Enter mileage',
                 min: 0,
+                max: 1_000_000,
                 step: 1000,
               }}
               InputProps={{
@@ -317,9 +311,37 @@ export default function Hero() {
             </Button>
           </Stack>
           {modelResponse &&(
-          <Box sx={{alignSelf: 'center', justifySelf: 'center'}}>
-            <Typography sx={{fontSize: 16}}>Predicted  price of your car is: {modelResponse} KM</Typography>
-          </Box>
+          <Box
+          sx={(theme) => ({
+            alignSelf: 'center',
+            justifySelf: 'center',
+            padding: '16px', // Padding around the text
+            borderRadius: '40px', // Rounded corners
+            outline: '1px solid',
+            outlineColor:
+              theme.palette.mode === 'light'
+                ? alpha('#BFCCD9', 0.5)
+                : alpha('#9CCCFC', 0.1),
+            boxShadow:
+            theme.palette.mode === 'light'
+              ? `0 0 12px 8px ${alpha('#9CCCFC', 0.4)}`
+              : `0 0 24px 12px ${alpha('#033363', 0.2)}`, // Optional: Adds a subtle shadow
+            backgroundColor:
+              theme.palette.mode === 'light'
+                ? theme.palette.grey[300]
+                : theme.palette.grey[900],
+            transition: 'opacity 0.3s ease', // Smooth transition for opacity change
+            '&:hover': {
+              opacity: 0.8, // Change opacity on hover
+            },
+          })}
+        >
+          <Typography sx={{ fontSize: 26 }}>
+            Predicted price of your car is: <b>{modelResponse} KM</b>
+          </Typography>
+        </Box>
+        
+        
           )}
         </Stack>
         {modelResponse &&(
@@ -343,8 +365,8 @@ export default function Hero() {
                 : alpha('#9CCCFC', 0.1),
             boxShadow:
               theme.palette.mode === 'light'
-                ? `0 0 12px 8px ${alpha('#9CCCFC', 0.2)}`
-                : `0 0 24px 12px ${alpha('#033363', 0.2)}`,
+                ? `0 0 12px 8px ${alpha('#9CCCFC', 0.9)}`
+                : `0 0 24px 12px ${alpha('#033363', 0.4)}`,
           })}
         >
           <Grid container spacing={2}>
@@ -363,8 +385,8 @@ export default function Hero() {
       >
         <Alert onClose={handleSnackbarClose} severity="warning" sx={{ width: '100%' }}>
           {snackbarOpen.displacement && 'Please enter a value between 0.6 and 7.3 for displacement.'}
-          {snackbarOpen.mileage && 'Please enter a value between 0 and 1000000 for mileage.'}
-          {snackbarOpen.kilowatts && 'Please enter a value between 34 and 540 for kilowatts.'}
+          {snackbarOpen.mileage && 'Please enter a value between 0 and 1,000,000 for mileage.'}
+          {snackbarOpen.kilowatts && 'Please enter a value between 34 and 560 for kilowatts.'}
           {snackbarOpen.year && 'Please enter a value between 1950 and 2024 for year.'}
           {snackbarOpen.rimSize && 'Please enter a value between 13 and 23 for rim size.'}
         </Alert>

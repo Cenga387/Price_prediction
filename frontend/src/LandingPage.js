@@ -12,6 +12,7 @@ import getLPTheme from './getLPTheme';
 import CarFilter from './components/CarFilter';
 import Chatbot from './components/ChatBot';
 
+
 export default function LandingPage() {
   const [mode, setMode] = React.useState('light');
   const showCustomTheme = false;
@@ -29,11 +30,14 @@ export default function LandingPage() {
     <ThemeProvider theme={appliedTheme}>
       <CssBaseline />
       <Box 
-        sx={{
-          bgcolor: 'background.default',
-          color: 'text.primary',
-          minHeight: '100vh',
-        }}
+       sx={(theme) => ({
+        width: '100%',
+        backgroundImage:
+          theme.palette.mode === 'light'
+            ? 'radial-gradient(circle, #a7bdd4, #FFF, #a7bdd4, #FFF)'
+            : 'radial-gradient(circle, #001529, #090E10, #001529, #090E10)',
+      })}
+      
       >
         <AppAppBar mode={mode} toggleColorMode={toggleColorMode} />
         <Hero />

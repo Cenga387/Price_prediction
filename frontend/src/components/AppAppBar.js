@@ -101,14 +101,25 @@ function AppAppBar({ mode, toggleColorMode }) {
                     Home
                   </Typography>
                 </MenuItem>
+
                 <MenuItem
-                  onClick={() => scrollToSection('car-stats')}
+                  onClick={() => scrollToSection('CarStats')}
                   sx={{ py: '6px', px: '12px', ml: 4 }}
                 >
                   <Typography variant="body2" color="text.primary" sx={{ fontSize: '24px' }}>
                     Car Stats
                   </Typography>
                 </MenuItem>
+
+                <MenuItem
+                  onClick={() => scrollToSection('CarFilter')}
+                  sx={{ py: '6px', px: '12px', ml: 4 }}
+                >
+                  <Typography variant="body2" color="text.primary" sx={{ fontSize: '24px' }}>
+                    Car Filter
+                  </Typography>
+                </MenuItem>
+
                 <MenuItem
                   onClick={() => scrollToSection('faq')}
                   sx={{ py: '6px', px: '12px', ml: 4 }}
@@ -160,8 +171,11 @@ function AppAppBar({ mode, toggleColorMode }) {
                   <MenuItem onClick={() => scrollToSection('hero')}>
                     Home
                   </MenuItem>
-                  <MenuItem onClick={() => scrollToSection('car-stats')}>
+                  <MenuItem onClick={() => scrollToSection('CarStats')}>
                     Car Stats
+                  </MenuItem>
+                  <MenuItem onClick={() => scrollToSection('CarFilter')}>
+                    Car Filter
                   </MenuItem>
                   <MenuItem onClick={() => scrollToSection('faq')}>
                     FAQ
