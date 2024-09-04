@@ -29,23 +29,18 @@ export default function FAQ() {
       }}
     >
       <Typography
-          component="h2"
-          variant="h4"
+          component="h1"
+          variant="h3"
           sx={(theme) => ({
-            
             alignSelf: 'center', // Aligns the text to the start (left) of the container
             justifySelf: 'center', // Ensures the box is aligned to the left
             padding: '4px', // Padding around the text
             borderRadius: '40px', // Rounded corners
-            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', // Optional: Adds a subtle shadow
-            backgroundColor:
-              theme.palette.mode === 'light'
-                ? `rgba(189, 189, 189, 0.3)` // Light mode with 50% opacity grey
-                : `rgba(33, 33, 33, 0.3)`, // Dark mode with 50% opacity grey
             textAlign: 'center', // Aligns text to the left inside the box
             marginLeft: '0vw', // Ensures the box is positioned on the left side
             marginRight: '0vw',
             marginTop: '3vw',
+            marginBottom: '1vw',
           })}
         >
           Frequently Asked Questions
@@ -54,12 +49,17 @@ export default function FAQ() {
         <Accordion
           expanded={expanded === 'panel1'}
           onChange={handleChange('panel1')}
+          sx={(theme) => ({
+            backgroundColor:
+              theme.palette.mode === 'light'
+                ? `#d1e0f0` 
+                : theme.palette.grey[1000], 
+          })}
         >
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel1d-content"
-            id="panel1d-header"
-          >
+            id="panel1d-header">
             <Typography component="h3" variant="subtitle2">
             What is this website for?
             </Typography>
@@ -78,6 +78,12 @@ export default function FAQ() {
         <Accordion
           expanded={expanded === 'panel2'}
           onChange={handleChange('panel2')}
+          sx={(theme) => ({
+            backgroundColor:
+              theme.palette.mode === 'light'
+                ? `#d1e0f0` 
+                : theme.palette.grey[1000], 
+          })}
         >
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
@@ -103,6 +109,12 @@ export default function FAQ() {
         <Accordion
           expanded={expanded === 'panel3'}
           onChange={handleChange('panel3')}
+          sx={(theme) => ({
+            backgroundColor:
+              theme.palette.mode === 'light'
+                ? `#d1e0f0` 
+                : theme.palette.grey[1000], 
+          })}
         >
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
@@ -129,6 +141,12 @@ export default function FAQ() {
         <Accordion
           expanded={expanded === 'panel4'}
           onChange={handleChange('panel4')}
+          sx={(theme) => ({
+            backgroundColor:
+              theme.palette.mode === 'light'
+                ? `#d1e0f0` 
+                : theme.palette.grey[1000], 
+          })}
         >
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
