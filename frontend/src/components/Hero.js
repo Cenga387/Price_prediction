@@ -328,7 +328,7 @@ export default function Hero() {
               : `0 0 24px 12px ${alpha('#033363', 0.2)}`, // Optional: Adds a subtle shadow
             backgroundColor:
               theme.palette.mode === 'light'
-                ? theme.palette.grey[300]
+                ? '#d1e0f0'
                 : theme.palette.grey[900],
             transition: 'opacity 0.3s ease', // Smooth transition for opacity change
             '&:hover': {

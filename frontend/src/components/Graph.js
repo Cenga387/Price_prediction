@@ -120,33 +120,27 @@ export default function Graph({ mode }) {
   }, [xAxisOption, mode]);
 
   // Define chart background color based on the mode
-  const cardBackgroundColor = mode === 'dark' ? theme.palette.grey[900] : theme.palette.grey[300];
-  const cardTextColor = mode === 'dark' ? theme.palette.grey[300] : theme.palette.grey[900];
+  const cardBackgroundColor = mode === 'dark' ? theme.palette.grey[900] : '#d1e0f0';
+  const cardTextColor = mode === 'dark' ? '#d1e0f0' : theme.palette.grey[900];
 
   return (
   <Box 
   id="CarStats">
     <div className="App">
       <div className="Title" >
-        <Typography
-          variant="h1"
+      <Typography
+          component="h1"
+          variant="h3"
           sx={(theme) => ({
-            fontSize: 'clamp(3.5rem, 10vw, 4rem)',
             alignSelf: 'flex-start', // Aligns the text to the start (left) of the container
             justifySelf: 'flex-start', // Ensures the box is aligned to the left
             padding: '4px', // Padding around the text
             borderRadius: '40px', // Rounded corners
-            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', // Optional: Adds a subtle shadow
-            backgroundColor:
-              theme.palette.mode === 'light'
-                ? `rgba(189, 189, 189, 0.3)` // Light mode with 50% opacity grey
-                : `rgba(33, 33, 33, 0.3)`, // Dark mode with 50% opacity grey
             textAlign: 'center', // Aligns text to the left inside the box
-            marginLeft: '5vw', // Ensures the box is positioned on the left side
-            marginRight: '60vw',
+            marginLeft: '0vw', // Ensures the box is positioned on the left side
+            marginRight: '0vw',
             marginTop: '3vw',
             marginBottom: '1vw',
-            outline: '2px solid',
           })}
         >
           Car Stats
@@ -301,7 +295,7 @@ export default function Graph({ mode }) {
             marginBottom: '20px'
           }}
         >
-          Choose which data you want to showcase on the graph:
+          ▹Choose which data you want to showcase on the graph:
         </Typography>
         <Select
           value={xAxisOption}

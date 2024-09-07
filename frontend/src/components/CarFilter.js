@@ -217,22 +217,21 @@ export default function CarFilter() {
 
   return (
     <Box id="CarFilter">
-      <Container className="Title">
-        <Typography
-          variant="h1"
+      <div className="Title">
+      <Typography
+          component="h1"
+          variant="h3"
           sx={(theme) => ({
-            fontSize: 'clamp(3.5rem, 10vw, 4rem)',
-            alignSelf: 'flex-start',
-            justifySelf: 'flex-start',
-            padding: '4px',
-            borderRadius: '40px',
-            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-            backgroundColor: theme.palette.mode === 'light' ? `rgba(189, 189, 189, 0.3)` : `rgba(33, 33, 33, 0.3)`,
-            textAlign: 'center',
-            marginLeft: '5vw',
-            marginRight: '60vw',
+            alignSelf: 'flex-start', // Aligns the text to the start (left) of the container
+            justifySelf: 'flex-start', // Ensures the box is aligned to the left
+            padding: '4px', // Padding around the text
+            borderRadius: '40px', // Rounded corners
+            textAlign: 'center', // Aligns text to the left inside the box
+            marginLeft: '0vw', // Ensures the box is positioned on the left side
+            marginRight: '0vw',
+
             marginTop: '3vw',
-            outline: '2px solid',
+            marginBottom: '1vw',
           })}
         >
           Car Filter
@@ -245,10 +244,12 @@ export default function CarFilter() {
             fontSize: '3vh',
             marginTop: '3vw',
             marginBottom: '-3vw',
-            marginLeft: '5vw'
+            marginLeft: '12.5vw'
+
+
           }}
         >
-          Choose between different characteristics, to filter out the cars you want to see:
+          ▹Choose between different characteristics, to filter out the cars you want to see:
         </Typography>
       </Container>
       <Container sx={{

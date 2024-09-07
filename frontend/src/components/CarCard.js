@@ -141,7 +141,7 @@ const CarCard = ({ car }) => {
           { transform: 'scale(1.05)', },
           backgroundColor:
             theme.palette.mode === 'light'
-              ? theme.palette.grey[300]
+              ? '#d1e0f0'
               : theme.palette.grey[900],
         })}
         
@@ -199,18 +199,21 @@ const CarCard = ({ car }) => {
         aria-describedby="car-details-modal-description"
       >
         <Box
-          sx={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: 500,
-            bgcolor: 'background.paper',
-            boxShadow: 24,
-            p: 4,
-            borderRadius: 2,
+          sx={(theme) => ({
+            position: 'absolute', 
+            top: '50%', 
+            left: '50%', 
+            transform: 'translate(-50%, -50%)', 
+            width: 500, 
+            backgroundColor:
+              theme.palette.mode === 'light'
+                ? `#d1e0f0` 
+                : theme.palette.grey[900], 
+            boxShadow: 24, 
+            p: 4, 
+            borderRadius: 2, 
             outline: 'none',
-          }}
+          })}
         >
           <IconButton
             aria-label="close"
