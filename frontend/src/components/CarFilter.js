@@ -217,13 +217,13 @@ export default function CarFilter() {
 
   return (
     <Box id="CarFilter">
-      <div className="Title">
+      <Container title="Title">
       <Typography
           component="h1"
           variant="h3"
           sx={(theme) => ({
-            alignSelf: 'flex-start', // Aligns the text to the start (left) of the container
-            justifySelf: 'flex-start', // Ensures the box is aligned to the left
+            alignSelf: 'center', // Aligns the text to the start (left) of the container
+            justifySelf: 'center', // Ensures the box is aligned to the left
             padding: '4px', // Padding around the text
             borderRadius: '40px', // Rounded corners
             textAlign: 'center', // Aligns text to the left inside the box
@@ -237,19 +237,16 @@ export default function CarFilter() {
           Car Filter
         </Typography>
       </Container>
-      <Container>
+      <Container sx={{ justifyContent: 'center', alignContent: 'center', alignItems: 'center',}}>
         <Typography
           variant="h1"
           sx={{
             fontSize: '3vh',
-            marginTop: '3vw',
-            marginBottom: '-3vw',
-            marginLeft: '12.5vw'
-
-
+            marginTop: 4,
+            textAlign: 'center',
           }}
         >
-          ▹Choose between different characteristics, to filter out the cars you want to see:
+          Choose between different characteristics, to filter out the cars you want to see:
         </Typography>
       </Container>
       <Container sx={{
