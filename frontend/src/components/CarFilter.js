@@ -1,12 +1,12 @@
-import React, { useState, useEffect} from 'react';
-import { FormControl, InputLabel, MenuItem, Select, Button, Stack, Container, Grid } from '@mui/material';
+import React, { useState, useEffect, useCallback } from 'react';
+import { FormControl, InputLabel, MenuItem, Select, Button, Stack, Container, Grid, Typography, Box, Slider, RadioGroup, FormControlLabel, Radio } from '@mui/material';
 import CarCard from './CarCard';
 import axios from 'axios';
-import Typography from '@mui/material/Typography';
-import { Box } from "@mui/material";
 
 // Set the base URL for axios requests
 axios.defaults.baseURL = 'http://localhost:5000';
+
+const MANUFACTURERS = ['Volkswagen', 'Mercedes', 'Audi'];
 
 export default function CarFilter() {
   const [manufacturer, setManufacturer] = useState('');
@@ -21,32 +21,38 @@ export default function CarFilter() {
   const [selectedColor, setSelectedColor] = useState([]);
   const [transmission, setTransmission] = useState([]);
   const [selectedTransmission, setSelectedTransmission] = useState([]);
+  const [displacementRange, setDisplacementRange] = useState([0.6, 5]);
+  const [kilowattsRange, setKilowattsRange] = useState([48, 240]);
+  const [mileageRange, setMileageRange] = useState([0, 300000]);
+  const [priceRange, setPriceRange] = useState([0, 100000]);
+  const [yearRange, setYearRange] = useState([1950, 2024]);
+  const [cruiseControl, setCruiseControl] = useState('');
+  const [airCondition, setAirCondition] = useState('');
+  const [navigation, setNavigation] = useState('');
+  const [registration, setRegistration] = useState('');
   const [page, setPage] = useState(1);
   const [hasMoreCars, setHasMoreCars] = useState(true);
 
-
-
-  const fetchFilterOptions = async () => {
-    try {
-      const response = await axios.get('/filter-options', {
-        params: { models: selectedModels.join(',') }
-      });
-      setDoors(response.data.doors);
-      setFuel(response.data.fuel);
-      setColor(response.data.color);
-      setTransmission(response.data.transmission);
-    } catch (error) {
-      console.error('Error fetching filter options:', error);
-    }
-  };
   useEffect(() => {
     if (selectedModels.length > 0) {
+      const fetchFilterOptions = async () => {
+        try {
+          const response = await axios.get('/filter-options', {
+            params: {manufacturer, models: selectedModels.join(',') }
+          });
+          setDoors(response.data.doors);
+          setFuel(response.data.fuel);
+          setColor(response.data.color);
+          setTransmission(response.data.transmission);
+        } catch (error) {
+          console.error('Error fetching filter options:', error);
+        }
+      };
       fetchFilterOptions();
     }
-  }, [selectedModels]);
+  }, [manufacturer,selectedModels]);
 
-  // Function to handle manufacturer change
-  const handleManufacturerChange = (event) => {
+  const handleManufacturerChange = useCallback((event) => {
     const selectedManufacturer = event.target.value;
     setManufacturer(selectedManufacturer);
     setSelectedModels([]);
@@ -55,18 +61,16 @@ export default function CarFilter() {
     setSelectedColor([]);
     setSelectedTransmission([]);
 
-    let endpoint = '';
+    const endpointMap = {
+      'Volkswagen': '/volkswagen/models',
+      'Audi': '/audi/models',
+      'Mercedes': '/mercedes/models'
+    };
 
-    if (selectedManufacturer === 'Volkswagen') {
-      endpoint = '/volkswagen/models';
-    } else if (selectedManufacturer === 'Audi') {
-      endpoint = '/audi/models';
-    } else if (selectedManufacturer === 'Mercedes') {
-      endpoint = '/mercedes/models';
-    }
+    const endpoint = endpointMap[selectedManufacturer] || '';
 
     if (!endpoint) {
-      setModels([]);  // Clear models if no valid manufacturer is selected
+      setModels([]);
       setDoors([]);
       setFuel([]);
       setColor([]);
@@ -74,28 +78,27 @@ export default function CarFilter() {
       return;
     }
 
-    // Fetch models and other filter options based on the selected manufacturer
     axios.get(endpoint)
-      .then((response) => {
-        const cars = response.data.cars;
-        const sortedModels = cars.map(car => car.model).filter((v, i, a) => a.indexOf(v) === i).sort((a, b) => a.localeCompare(b));
-        setModels(sortedModels);
-        setDoors(cars.map(car => car.doors.toString()).filter((v, i, a) => a.indexOf(v) === i).sort());
-        setFuel(cars.map(car => car.fuel).filter((v, i, a) => a.indexOf(v) === i).sort());
-        setColor(cars.map(car => car.color).filter((v, i, a) => a.indexOf(v) === i).sort());
-        setTransmission(cars.map(car => car.transmission).filter((v, i, a) => a.indexOf(v) === i).sort());
-      })
-      .catch((error) => {
-        console.error('Error fetching models:', error);
-      });
-  };
+    .then((response) => {
+      console.log(response.data);
+      const models = response.data.model; // Access the 'model' array returned from Flask
+      if (!Array.isArray(models)) {
+        throw new Error('Invalid response format');
+      }
+      
+      // Since we only fetch models in this endpoint, setModels accordingly
+      setModels(models.sort()); // Sort the models and update the state
+    })
+    .catch((error) => {
+      console.error('Error fetching models:', error);
+    });
+  }, []);
+  
 
-  // Function to handle changes in any filter
-  const handleFilterChange = (setter, value) => {
+  const handleFilterChange = useCallback((setter, value) => {
     setter(value);
-  };
-
-  const handleFilter = async () => {
+  }, []);
+  const handleFilter = useCallback(async () => {
     try {
       const params = {
         manufacturer,
@@ -104,66 +107,129 @@ export default function CarFilter() {
         fuel: selectedFuel.join(','),
         color: selectedColor.join(','),
         transmission: selectedTransmission.join(','),
+        displacementRangeMin: displacementRange[0],
+        displacementRangeMax: displacementRange[1],
+        kilowattsRangeMin: kilowattsRange[0],
+        kilowattsRangeMax: kilowattsRange[1],
+        mileageRangeMin: mileageRange[0],
+        mileageRangeMax: mileageRange[1],
+        priceRangeMin: priceRange[0],
+        priceRangeMax: priceRange[1],
+        yearRangeMin: yearRange[0],
+        yearRangeMax: yearRange[1],
+        cruiseControl: cruiseControl.toUpperCase(),
+        airCondition: airCondition.toUpperCase(),
+        navigation: navigation.toUpperCase(),
+        registration: registration.toUpperCase(),
         page: 1,
         limit: 12,
       };
       const response = await axios.get('/filter', { params });
       setCars(response.data.cars);
-      setPage(2); // Reset to the next page
+      setPage(2);
       setHasMoreCars(response.data.cars.length === 12);
     } catch (error) {
       console.error('Error fetching cars:', error);
     }
-  };
-
-  const handleShowMore = async () => {
+  }, [manufacturer, selectedModels, selectedDoors, selectedFuel, selectedColor, selectedTransmission, displacementRange, kilowattsRange, mileageRange, priceRange, yearRange, cruiseControl, airCondition, navigation, registration]);
+  
+  const handleShowMore = useCallback(async () => {
     try {
-      const response = await axios.get('/filter', {
-        params: {
-          manufacturer,
-          model: selectedModels.join(','),
-          doors: selectedDoors.join(','),
-          fuel: selectedFuel.join(','),
-          color: selectedColor.join(','),
-          transmission: selectedTransmission.join(','),
-          page,
-          limit: 12,
-        },
-      });
+      const params = {
+        manufacturer,
+        model: selectedModels.join(','),
+        doors: selectedDoors.join(','),
+        fuel: selectedFuel.join(','),
+        color: selectedColor.join(','),
+        transmission: selectedTransmission.join(','),
+        displacementRangeMin: displacementRange[0],
+        displacementRangeMax: displacementRange[1],
+        kilowattsRangeMin: kilowattsRange[0],
+        kilowattsRangeMax: kilowattsRange[1],
+        mileageRangeMin: mileageRange[0],
+        mileageRangeMax: mileageRange[1],
+        priceRangeMin: priceRange[0],
+        priceRangeMax: priceRange[1],
+        yearRangeMin: yearRange[0],
+        yearRangeMax: yearRange[1],
+        cruiseControl: cruiseControl.toUpperCase(),
+        airCondition: airCondition.toUpperCase(),
+        navigation: navigation.toUpperCase(),
+        registration: registration.toUpperCase(),
+        page,
+        limit: 12,
+      };
+      const response = await axios.get('/filter', { params });
       setCars((prevCars) => [...prevCars, ...response.data.cars]);
       setPage(page + 1);
       setHasMoreCars(response.data.cars.length === 12);
     } catch (error) {
       console.error('Error fetching more cars:', error);
     }
-  };
+  }, [manufacturer, selectedModels, selectedDoors, selectedFuel, selectedColor, selectedTransmission, displacementRange, kilowattsRange, mileageRange, priceRange, yearRange, cruiseControl, airCondition, navigation, registration, page]);
+  const handleSelectAllModels = useCallback(() => {
+    setSelectedModels(selectedModels.length === models.length ? [] : models);
+  }, [selectedModels, models]);
 
-  const handleSelectAllModels = () => {
-    if (selectedModels.length === models.length) {
-      setSelectedModels([]); // Deselect all if all are selected
-    } else {
-      setSelectedModels(models); // Select all models
-    }
-  };
+  const renderSelect = useCallback((label, value, onChange, options) => (
+    <FormControl size="small" sx={{ width: { xs: '100%', sm: '200px' } }}>
+      <InputLabel id={`${label}-select-label`}>{label}</InputLabel>
+      <Select
+        labelId={`${label}-select-label`}
+        multiple
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        sx={{ borderRadius: 8, width: '100%' }}
+        label={label}
+      >
+        {options.map((option) => (
+          <MenuItem key={option} value={option}>
+            {option}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
+  ), []);
+
+  const renderSlider = useCallback((label, value, onChange, min, max, step) => (
+    <Box sx={{ width: { xs: '100%', sm: '100%' } }}>
+      <Typography gutterBottom>{label}</Typography>
+      <Slider
+        value={value}
+        onChange={(e, newValue) => onChange(newValue)}
+        valueLabelDisplay="auto"
+        min={min}
+        max={max}
+        step={step}
+      />
+    </Box>
+  ), []);
+
+  const renderBooleanRadioGroup = useCallback((label, value, onChange) => (
+    <FormControl component="fieldset" sx={{ width: { xs: '100%', sm: '100%' }, alignItems: 'center' }}>
+      <Typography>{label}</Typography>
+      <RadioGroup value={value} onChange={(e) => onChange(e.target.value)}>
+        <FormControlLabel value="TRUE" control={<Radio />} label="No" />
+        <FormControlLabel value="FALSE" control={<Radio />} label="Yes" />
+      </RadioGroup>
+    </FormControl>
+  ), []);
 
   return (
     <Box id="CarFilter">
-      <div className="Title">
+      <Container className="Title">
         <Typography
           variant="h1"
           sx={(theme) => ({
             fontSize: 'clamp(3.5rem, 10vw, 4rem)',
-            alignSelf: 'flex-start', // Aligns the text to the start (left) of the container
-            justifySelf: 'flex-start', // Ensures the box is aligned to the left
-            padding: '4px', // Padding around the text
-            borderRadius: '40px', // Rounded corners
-            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', // Optional: Adds a subtle shadow
-            backgroundColor:
-              theme.palette.mode === 'light'
-                ? `rgba(189, 189, 189, 0.3)` // Light mode with 50% opacity grey
-                : `rgba(33, 33, 33, 0.3)`, // Dark mode with 50% opacity grey
-            textAlign: 'center', // Aligns text to the left inside the box
-            marginLeft: '5vw', // Ensures the box is positioned on the left side
+            alignSelf: 'flex-start',
+            justifySelf: 'flex-start',
+            padding: '4px',
+            borderRadius: '40px',
+            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+            backgroundColor: theme.palette.mode === 'light' ? `rgba(189, 189, 189, 0.3)` : `rgba(33, 33, 33, 0.3)`,
+            textAlign: 'center',
+            marginLeft: '5vw',
             marginRight: '60vw',
             marginTop: '3vw',
             outline: '2px solid',
@@ -171,169 +237,105 @@ export default function CarFilter() {
         >
           Car Filter
         </Typography>
-      </div>
-      <div>
-      <Typography
+      </Container>
+      <Container>
+        <Typography
           variant="h1"
           sx={{
             fontSize: '3vh',
             marginTop: '3vw',
             marginBottom: '-3vw',
             marginLeft: '5vw'
-
           }}
         >
           Choose between different characteristics, to filter out the cars you want to see:
         </Typography>
-       </div>
-    <Container  sx={{
+      </Container>
+      <Container sx={{
         pt: { xs: 4, sm: 12 },
         pb: { xs: 8, sm: 16 },
-        position: 'relative',
         display: 'flex',
         flexDirection: 'column',
+        justifyContent: 'center',
+        alignContent: 'center',
         alignItems: 'center',
         gap: { xs: 3, sm: 6 },
       }}>
-        
-      <Stack direction={{ xs: 'column', sm: 'row' }}
-            alignSelf="center"
-            alignItems={{ xs: 'center', sm: 'flex-start' }}
-            spacing={1}
-            useFlexGap
-            sx={{ width: { xs: '100%', sm: '100%' }}}>
-        <FormControl size="small" sx={{ width: { xs: '100%', sm: '200px' } }}>
-          <InputLabel id="manufacturer-select-label">Manufacturer</InputLabel>
-          <Select
-            labelId="manufacturer-select-label"
-            id="manufacturer-select"
-            value={manufacturer}
-            onChange={handleManufacturerChange}
-            sx={{ borderRadius: 8, width: '100%' }}
-            label="Manufacturer"
-          >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            <MenuItem value="Volkswagen">Volkswagen</MenuItem>
-            <MenuItem value="Mercedes">Mercedes</MenuItem>
-            <MenuItem value="Audi">Audi</MenuItem>
-          </Select>
-        </FormControl>
-
-        <FormControl size="small" sx={{ width: { xs: '100%', sm: '200px' } }}>
-          <InputLabel id="model-select-label">Model</InputLabel>
-          <Select
-            labelId="model-select-label"
-            multiple
-            value={selectedModels}
-            onChange={(e) => handleFilterChange(setSelectedModels, e.target.value, 'model')}
-            sx={{ borderRadius: 8, width: '100%' }}
-            label="Model"
-          >
-            <Button onClick={handleSelectAllModels} fullWidth>
-              {selectedModels.length === models.length ? 'Deselect All' : 'Select All'}
-            </Button>
-            {models.map((model) => (
-              <MenuItem key={model} value={model}>
-                {model}
+        <Stack direction={{ xs: 'column', sm: 'row' }}
+          alignSelf="center"
+          alignItems={{ xs: 'center', sm: 'flex-start' }}
+          spacing={2}
+          useFlexGap
+          sx={{ width: { xs: '100%', sm: '100%' } }}>
+          <FormControl size="small" sx={{ width: { xs: '100%', sm: '200px' } }}>
+            <InputLabel id="manufacturer-select-label">Manufacturer</InputLabel>
+            <Select
+              labelId="manufacturer-select-label"
+              id="manufacturer-select"
+              value={manufacturer}
+              onChange={handleManufacturerChange}
+              sx={{ borderRadius: 8, width: '100%' }}
+              label="Manufacturer"
+            >
+              <MenuItem value="">
+                <em>None</em>
               </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        
+              {MANUFACTURERS.map((manu) => (
+                <MenuItem key={manu} value={manu}>
+                  {manu}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
 
-        <FormControl size="small" sx={{ width: { xs: '100%', sm: '200px' } }}>
-          <InputLabel id="doors-select-label">Doors</InputLabel>
-          <Select
-            labelId="doors-select-label"
-            multiple
-            value={selectedDoors}
-            onChange={(e) => handleFilterChange(setSelectedDoors, e.target.value, 'doors')}
-            sx={{ borderRadius: 8, width: '100%' }}
-            label="Doors"
-          >
-            {doors.map((doorOption) => (
-              <MenuItem key={doorOption} value={doorOption}>
-                {doorOption}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+          {renderSelect('Model', selectedModels, setSelectedModels, models)}
+          {renderSelect('Doors', selectedDoors, setSelectedDoors, doors)}
+          {renderSelect('Fuel', selectedFuel, setSelectedFuel, fuel)}
+          {renderSelect('Color', selectedColor, setSelectedColor, color)}
+          {renderSelect('Transmission', selectedTransmission, setSelectedTransmission, transmission)}
+        </Stack>
+        <Stack direction={{ xs: 'column', sm: 'row' }}
+          alignSelf="center"
+          alignItems={{ xs: 'center', sm: 'flex-start' }}
+          spacing={4}
+          useFlexGap
+          sx={{ width: { xs: '100%', sm: '100%' } }}>
+          {renderSlider('Displacement', displacementRange, setDisplacementRange, 0.6, 5, 0.1)}
+          {renderSlider('Kilowatts', kilowattsRange, setKilowattsRange, 48, 240, 1)}
+          {renderSlider('Mileage', mileageRange, setMileageRange, 0, 300000, 1000)}
+          {renderSlider('Price', priceRange, setPriceRange, 0, 100000, 1000)}
+          {renderSlider('Year', yearRange, setYearRange, 1950, 2024, 1)}
+        </Stack>
 
-        <FormControl size="small" sx={{ width: { xs: '100%', sm: '200px' } }}>
-          <InputLabel id="fuel-select-label">Fuel</InputLabel>
-          <Select
-            labelId="fuel-select-label"
-            multiple
-            value={selectedFuel}
-            onChange={(e) => handleFilterChange(setSelectedFuel, e.target.value, 'fuel')}
-            sx={{ borderRadius: 8, width: '100%' }}
-            label="Fuel"
-          >
-            {fuel.map((fuelOption) => (
-              <MenuItem key={fuelOption} value={fuelOption}>
-                {fuelOption}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        <Stack direction={{ xs: 'row', sm: 'row' }}
+          alignSelf="center"
+          alignItems={{ xs: 'center', sm: 'center' }}
+          spacing={2}
+          sx={{ width: { xs: '100%', sm: '100%' } }}>
+          {renderBooleanRadioGroup('Cruise Control', cruiseControl, setCruiseControl)}
+          {renderBooleanRadioGroup('Air Condition', airCondition, setAirCondition)}
+          {renderBooleanRadioGroup('Navigation', navigation, setNavigation)}
+          {renderBooleanRadioGroup('Registration', registration, setRegistration)}
+        </Stack>
 
-        <FormControl size="small" sx={{ width: { xs: '100%', sm: '200px' } }}>
-          <InputLabel id="color-select-label">Color</InputLabel>
-          <Select
-            labelId="color-select-label"
-            multiple
-            value={selectedColor}
-            onChange={(e) => handleFilterChange(setSelectedColor, e.target.value, 'color')}
-            sx={{ borderRadius: 8, width: '100%' }}
-            label="Color"
-          >
-            {color.map((colorOption) => (
-              <MenuItem key={colorOption} value={colorOption}>
-                {colorOption}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-
-        <FormControl size="small" sx={{ width: { xs: '100%', sm: '200px' } }}>
-          <InputLabel id="transmission-select-label">Transmission</InputLabel>
-          <Select
-            labelId="transmission-select-label"
-            multiple
-            value={selectedTransmission}
-            onChange={(e) => handleFilterChange(setSelectedTransmission, e.target.value, 'transmission')}
-            sx={{ borderRadius: 8, width: '100%' }}
-            label="Transmission"
-          >
-            {transmission.map((transmissionOption) => (
-              <MenuItem key={transmissionOption} value={transmissionOption}>
-                {transmissionOption}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </Stack>
-
-      <Button variant="contained" color="primary" onClick={handleFilter} sx={{ marginTop: '20px' }}>
-        Filter
-      </Button>
-
-      <Grid container spacing={2}>
-        {cars.map((car, index) => (
-           <Grid item xs={12} sm={6} md={4} key={index}>
-             <CarCard car={car} />
-          </Grid>
-        ))}
-      </Grid>
-
-      {cars.length > 0 && hasMoreCars && (
-        <Button variant="contained" color="primary" onClick={handleShowMore} sx={{ marginTop: '20px' }}>
-          Show more
+        <Button variant="contained"  onClick={handleFilter} color="primary" size='medium' sx={{borderRadius: 15, width: {xs: '100%', sm: '200px'}}}>
+          Filter
         </Button>
-      )}
-    </Container>
+
+        <Grid container spacing={2}>
+          {cars.map((car, index) => (
+            <Grid item xs={12} sm={6} md={4} key={index}>
+              <CarCard car={car} />
+            </Grid>
+          ))}
+        </Grid>
+
+        {cars.length > 0 && hasMoreCars && (
+        <Button variant="contained"  onClick={handleFilter} color="primary" size='medium' sx={{borderRadius: 15, width: {xs: '100%', sm: '200px'}}}>
+            Show more
+          </Button>
+        )}
+      </Container>
     </Box>
   );
 }

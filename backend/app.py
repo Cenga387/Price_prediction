@@ -77,7 +77,7 @@ with open('models/mercedes_model.pkl', 'rb') as file:
 volkswagen_all_columns = pd.read_csv('datasets/volkswagen_cleaned.csv')
 audi_all_columns = pd.read_csv('datasets/audi_cleaned.csv')
 mercedes_all_columns = pd.read_csv('datasets/mercedes_cleaned.csv')
-all_cars = pd.read_csv('datasets/all_cars.csv')
+all_cars = pd.read_csv('datasets/all_cleaned.csv')
 
 df_all_numeric = pd.read_csv('datasets/all_cleaned_numeric.csv')
 
@@ -114,8 +114,8 @@ def filter_and_predict(df, model, displacement, mileage, year, kilowatts, rim_si
     mileage_max = mileage + 35000
     price_min = prediction * 0.85 
     price_max = prediction * 1.15
-    min_year = year - 3
-    max_year = year + 3
+    min_year = year - 1
+    max_year = year + 1
 
     # Filter the dataset based on the input ranges
     filtered_df = df[
@@ -125,7 +125,7 @@ def filter_and_predict(df, model, displacement, mileage, year, kilowatts, rim_si
         (df['price'] >= price_min) & (df['price'] <= price_max) 
        
     ]
-    sorted_filtered_df = filtered_df.sort_values(by='price', ascending=True)
+    sorted_filtered_df = filtered_df.sort_values(by='price', ascending=False)
 
     # Get the first 12 rows of the sorted dataset
     filtered_data = sorted_filtered_df.head(12).to_dict(orient='records')
@@ -398,26 +398,37 @@ def car_stats3():
 @app.route('/<manufacturer>/models', methods=['GET'])
 def get_models_by_manufacturer(manufacturer):
     manufacturer = manufacturer.lower()
+    try: 
+        if manufacturer == 'volkswagen':
+            model = volkswagen_all_columns['model'].unique().tolist()
+            logging.info(f"Volkswagen DataFrame: {volkswagen_all_columns.columns}")
 
-    if manufacturer == 'volkswagen':
-        cars = volkswagen_all_columns.to_dict(orient='records')
-    elif manufacturer == 'audi':
-        cars = audi_all_columns.to_dict(orient='records')
-    elif manufacturer == 'mercedes':
-        cars = mercedes_all_columns.to_dict(orient='records')
-    else:
-        return jsonify({'error': 'Manufacturer not found'}), 404
-
-    return jsonify({'cars': cars})
+        elif manufacturer == 'audi':
+            model = audi_all_columns['model'].unique().tolist()
+        elif manufacturer == 'mercedes':
+            model = mercedes_all_columns['model'].unique().tolist()
+        else:
+            return jsonify({'error': 'Manufacturer not found'}), 404
+    except Exception as e:
+        logging.error(f"Error fetching Volkswagen models: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+    logging.info(f"Manufacturer parameter: '{manufacturer}'")  
+    return jsonify({'model': model})
 
 @app.route('/filter-options', methods=['GET'])
 def filter_options():
     try:
+        manufacturer = request.args.get('manufacturer', '').lower()
+        logging.info(f"Manufacturer parameter: '{manufacturer}'")
+
         models = request.args.get('models', '').split(',')
         if not models:
             return jsonify({'error': 'No models provided'}), 400
 
-        df = all_cars[all_cars['model'].isin(models)]
+        df = get_dataset_by_manufacturer(manufacturer)
+        logging.info(f"Selected dataset for manufacturer '{manufacturer}': {df.shape}")
+
+        df = df[df['model'].isin(models)]
 
         doors = df['doors'].unique().tolist()
         fuel = df['fuel'].unique().tolist()
@@ -433,6 +444,7 @@ def filter_options():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+
 @app.route('/filter', methods=['GET'])
 def filter_by_manufacturer_and_model():
     try:
@@ -442,6 +454,20 @@ def filter_by_manufacturer_and_model():
         fuel = request.args.get('fuel', '').split(',')
         color = request.args.get('color', '').split(',')
         transmission = request.args.get('transmission', '').split(',')
+        displacement_min = float(request.args.get('displacementRangeMin', ''))
+        displacement_max = float(request.args.get('displacementRangeMax', ''))
+        kilowatts_min = float(request.args.get('kilowattsRangeMin', ''))
+        kilowatts_max = float(request.args.get('kilowattsRangeMax', ''))
+        mileage_min = float(request.args.get('mileageRangeMin', ''))
+        mileage_max = float(request.args.get('mileageRangeMax', ''))
+        price_min = float(request.args.get('priceRangeMin', ''))
+        price_max = float(request.args.get('priceRangeMax', ''))
+        year_min = int(request.args.get('yearRangeMin', ''))
+        year_max = int(request.args.get('yearRangeMax', ''))
+        cruise_control = request.args.get('cruiseControl', '').upper() == 'TRUE'
+        air_condition = request.args.get('airCondition', '').upper() == 'TRUE'
+        navigation = request.args.get('navigation', '').upper() == 'TRUE'
+        registration = request.args.get('registration', '').upper() == 'TRUE'
         page = int(request.args.get('page', 1))
         limit = int(request.args.get('limit', 12))
 
@@ -449,6 +475,7 @@ def filter_by_manufacturer_and_model():
 
         # Select the appropriate dataset based on the manufacturer
         df = get_dataset_by_manufacturer(manufacturer)
+        logging.info(f"Selected dataset for manufacturer '{manufacturer}': {df.shape}")
 
         # Apply filters only if they are provided
         if models and models[0]:
@@ -461,6 +488,24 @@ def filter_by_manufacturer_and_model():
             df = df[df['color'].str.lower().isin([c.lower() for c in color])]
         if transmission and transmission[0]:
             df = df[df['transmission'].str.lower().isin([t.lower() for t in transmission])]
+        if displacement_min and displacement_max:
+            df = df[(df['displacement'] >= displacement_min) & (df['displacement'] <= displacement_max)]
+        if kilowatts_min and kilowatts_max:
+            df = df[(df['kilowatts'] >= kilowatts_min) & (df['kilowatts'] <= kilowatts_max)]
+        if mileage_min and mileage_max:
+            df = df[(df['mileage'] >= mileage_min) & (df['mileage'] <= mileage_max)]
+        if price_min and price_max:
+            df = df[(df['price'] >= price_min) & (df['price'] <= price_max)]
+        if year_min and year_max:
+            df = df[(df['year'] >= year_min) & (df['year'] <= year_max)]
+        if cruise_control is not None:
+            df = df[df['cruiseControl'] == cruise_control]
+        if air_condition is not None:
+            df = df[df['airCondition'] == air_condition]
+        if navigation is not None:
+            df = df[df['navigation'] == navigation]
+        if registration is not None:
+            df = df[df['registration'] == registration]
 
         print(f"Filtered DataFrame Shape: {df.shape}")
 
@@ -475,6 +520,6 @@ def filter_by_manufacturer_and_model():
         })
     except Exception as e:
         return jsonify({'error': str(e)}), 400
-    
+
 if __name__ == '__main__':
     app.run(debug=True)
