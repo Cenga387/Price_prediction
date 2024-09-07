@@ -71,13 +71,13 @@ with open('models/volkswagen_model.pkl', 'rb') as file:
 with open('models/audi_model.pkl', 'rb') as file:
     audi_model = joblib.load(file)
 
-with open('models/mercedes_model.pkl', 'rb') as file:
-    mercedes_model = joblib.load(file)
+with open('models/skoda_model.pkl', 'rb') as file:
+    skoda_model = joblib.load(file)
 
 volkswagen_all_columns = pd.read_csv('datasets/volkswagen_cleaned.csv')
 audi_all_columns = pd.read_csv('datasets/audi_cleaned.csv')
-mercedes_all_columns = pd.read_csv('datasets/mercedes_cleaned.csv')
-all_cars = pd.read_csv('datasets/all_cars.csv')
+skoda_all_columns = pd.read_csv('datasets/skoda_cleaned.csv')
+all_cars = pd.read_csv('datasets/all_cleaned.csv')
 
 df_all_numeric = pd.read_csv('datasets/all_cleaned_numeric.csv')
 
@@ -87,8 +87,8 @@ def get_dataset_by_manufacturer(manufacturer):
         return volkswagen_all_columns
     elif manufacturer == 'audi':
         return audi_all_columns
-    elif manufacturer == 'mercedes':
-        return mercedes_all_columns
+    elif manufacturer == 'Škoda':
+        return skoda_all_columns
     else:
         return all_cars
 
@@ -215,7 +215,7 @@ def mercedes():
         rim_size = validate_and_convert_param('rimSize', 'rimSize', int)
 
         prediction, filtered_data = filter_and_predict(
-            mercedes_all_columns, mercedes_model, displacement, mileage, year, kilowatts, rim_size
+            skoda_all_columns, skoda_model, displacement, mileage, year, kilowatts, rim_size
         )
 
         return jsonify({'model': prediction, 'cars': filtered_data})
@@ -227,11 +227,62 @@ def car_stats():
 
     count1 = volkswagen_all_columns.shape[0]
     count2 = audi_all_columns.shape[0]
-    count3 = mercedes_all_columns.shape[0]
+    count3 = skoda_all_columns.shape[0]
 
     data = {
-        "labels": ["Volkswagen", "Audi", "Mercedes"],
+        "labels": ["Volkswagen", "Audi", "Škoda"],
         "values": [count1, count2, count3]
+    }
+    return jsonify(data)
+
+@app.route('/api/car-stats4', methods=['GET'])
+def car_stats4():
+
+    label_list = []
+    value_list = []
+
+    for type in volkswagen_all_columns["type"].unique():
+        count = volkswagen_all_columns[volkswagen_all_columns["type"]==type].shape[0]
+        value_list.append(count)
+        label_list.append(type)
+
+    data = {
+        "labels": label_list,
+        "values": value_list
+    }
+    return jsonify(data)
+
+@app.route('/api/car-stats5', methods=['GET'])
+def car_stats5():
+
+    label_list = []
+    value_list = []
+
+    for type in audi_all_columns["type"].unique():
+        count = audi_all_columns[audi_all_columns["type"]==type].shape[0]
+        value_list.append(count)
+        label_list.append(type)
+
+    data = {
+        "labels": label_list,
+        "values": value_list
+    }
+    return jsonify(data)
+
+@app.route('/api/car-stats6', methods=['GET'])
+def car_stats6():
+
+    label_list = []
+    value_list = []
+
+    for type in skoda_all_columns["type"].unique():
+        count = skoda_all_columns[skoda_all_columns["type"]==type].shape[0]
+        value_list.append(count)
+        label_list.append(type)
+
+    data = {
+        "labels": label_list,
+        "values": value_list
     }
     return jsonify(data)
 
@@ -240,16 +291,16 @@ def car_stats2():
 
     # Assuming df_all_numeric is your DataFrame with filtered prices <= 100,000
     # Filter the data for each manufacturer
-    filtered_df = df_all_numeric[df_all_numeric['price'] <= 1_000_000]
+    filtered_df = all_cars[all_cars['price'] <= 1_000_000]
 
     volkswagen_data = filtered_df[filtered_df['manufacturer'] == 'Volkswagen']['price']
     audi_data = filtered_df[filtered_df['manufacturer'] == 'Audi']['price']
-    mercedes_data = filtered_df[filtered_df['manufacturer'] == 'Mercedes-Benz']['price']
+    skoda_data = filtered_df[filtered_df['manufacturer'] == 'Škoda']['price']
 
     # Fit KDE for each manufacturer's price data
     kde_volkswagen = gaussian_kde(volkswagen_data)
     kde_audi = gaussian_kde(audi_data)
-    kde_mercedes = gaussian_kde(mercedes_data)
+    kde_skoda = gaussian_kde(skoda_data)
 
     # Define the price points of interest
     price_points = np.arange(5000, 100001, 5000)
@@ -261,13 +312,13 @@ def car_stats2():
     label_data = []
     volkswagen_data = []
     audi_data = []
-    mercedes_data = []
+    skoda_data = []
 
     # Evaluate the KDE at each price point and store the results in the desired format
     for x_point in price_points:
         y_point_volkswagen = kde_volkswagen(x_point)[0] * scale_factor
         y_point_audi = kde_audi(x_point)[0] * scale_factor
-        y_point_mercedes = kde_mercedes(x_point)[0] * scale_factor
+        y_point_skoda = kde_skoda(x_point)[0] * scale_factor
     
         data_entry1 = str(x_point)
         label_data.append(data_entry1)
@@ -278,8 +329,8 @@ def car_stats2():
         data_entry3 = round(y_point_audi, 2)
         audi_data.append(data_entry3)
 
-        data_entry4 = round(y_point_mercedes, 2)
-        mercedes_data.append(data_entry4)
+        data_entry4 = round(y_point_skoda, 2)
+        skoda_data.append(data_entry4)
     
     labels = []
     for x in range(20):
@@ -293,15 +344,15 @@ def car_stats2():
     for x in range(20):
         audis.append(audi_data[x])
     
-    mercedeses = []
+    skodas = []
     for x in range(20):
-        mercedeses.append(mercedes_data[x])
+        skodas.append(skoda_data[x])
 
     data = {
         "labels": labels,
         "volkswagen": volkswagens,
         "audi": audis,
-        "mercedes": mercedeses
+        "skoda": skodas
     }
 
     return jsonify(data)
@@ -316,7 +367,8 @@ def car_stats3():
         'kilowatts': 'kilowatts',
         'mileage': 'mileage',
         'displacement': 'displacement',
-        'rimsize': 'rimSize'  # Correct the mapping for rimSize
+        'transmission': 'transmission',  # Switch to the 'transmission' column (string values)
+        'type': 'type'
     }
     
     if x_axis not in x_axis_mapping:
@@ -326,45 +378,44 @@ def car_stats3():
     
     # Assuming df_all_numeric is your DataFrame
     # Filter the data for each manufacturer with price
-    filtered_df = df_all_numeric[df_all_numeric['price'] <= 1_000_000]
+    filtered_df = all_cars[all_cars['price'] <= 1_000_000]
     
-    # Extract the unique values for the selected x-axis and sort them
-    x_values = sorted(filtered_df[x_axis_column].unique())
-    
-    # Determine the number of bins (max 30) if necessary
-    if len(x_values) > 30 and x_axis in ['kilowatts', 'mileage', 'displacement']:
-        # Calculate bin size based on the length of x_values and max bins
-        bin_size = len(x_values) // 30
-        
-        # Bin the x values by averaging within each bin
-        binned_x_values = []
-        for i in range(0, len(x_values), bin_size):
-            avg_x_value = np.mean(x_values[i:i + bin_size])
-            
-            if x_axis == 'kilowatts':
-                # Round up to the nearest 5 for kilowatts
-                rounded_value = int(np.ceil(avg_x_value / 5) * 5)
-            elif x_axis == 'mileage':
-                # Round up to the nearest 1000 for mileage
-                rounded_value = int(np.ceil(avg_x_value / 1000) * 1000)
-            elif x_axis == 'displacement':
-                # Round to the nearest 0.1 for displacement
-                rounded_value = round(avg_x_value, 1)
-            
-            binned_x_values.append(rounded_value)
+    # Extract unique values for 'transmission' or 'type' or bin the values based on x_axis
+    if x_axis in ['transmission', 'type']:
+        x_values = sorted(filtered_df[x_axis_column].unique())
+        binned_x_values = x_values  # Use unique string values directly as x-axis
+        bin_size = None  # No binning required for string columns like 'transmission'
     else:
-        # Use the values directly for 'year', 'displacement', and 'rimSize'
-        binned_x_values = x_values
-        bin_size = 1  # Set a default value for bin_size when it's not used
-
+        x_values = sorted(filtered_df[x_axis_column].unique())
+        # Binning logic for kilowatts, mileage, and displacement if more than 30 unique values
+        if len(x_values) > 30 and x_axis in ['kilowatts', 'mileage', 'displacement']:
+            bin_edges = np.linspace(min(x_values), max(x_values), num=31)  # Create 30 bins
+            binned_x_values = []
+            bin_size = bin_edges[1] - bin_edges[0]  # Calculate the bin size from the bin edges
+            for i in range(len(bin_edges) - 1):
+                # Get the values within the current bin range
+                bin_range_values = [x for x in x_values if bin_edges[i] <= x < bin_edges[i + 1]]
+                if bin_range_values:
+                    avg_x_value = np.mean(bin_range_values)
+                    if x_axis == 'kilowatts':
+                        rounded_value = int(np.ceil(avg_x_value / 5) * 5)
+                    elif x_axis == 'mileage':
+                        rounded_value = int(np.ceil(avg_x_value / 1000) * 1000)
+                    elif x_axis == 'displacement':
+                        rounded_value = round(avg_x_value, 1)
+                    binned_x_values.append(rounded_value)
+        else:
+            binned_x_values = sorted(x_values)
+            bin_size = None  # No binning required for these cases
+    
     # Initialize the lists to store average prices per x-axis value for each manufacturer
     filtered_labels = []
     volkswagen_prices = []
     audi_prices = []
-    mercedes_prices = []
+    skoda_prices = []
 
     for x_value in binned_x_values:
-        if x_axis in ['kilowatts', 'mileage', 'displacement'] and len(x_values) > 30:
+        if bin_size and x_axis in ['kilowatts', 'mileage', 'displacement']:
             # Apply binning logic only when necessary
             filtered_data = filtered_df[(filtered_df[x_axis_column] >= x_value - bin_size / 2) & 
                                         (filtered_df[x_axis_column] < x_value + bin_size / 2)]
@@ -374,23 +425,24 @@ def car_stats3():
         # Calculate the average price for each manufacturer
         volkswagen_avg_price = filtered_data[filtered_data['manufacturer'] == 'Volkswagen']['price'].mean()
         audi_avg_price = filtered_data[filtered_data['manufacturer'] == 'Audi']['price'].mean()
-        mercedes_avg_price = filtered_data[filtered_data['manufacturer'] == 'Mercedes-Benz']['price'].mean()
+        skoda_avg_price = filtered_data[filtered_data['manufacturer'] == 'Škoda']['price'].mean()
 
         # Filter out x_values where all prices are NaN or 0
         if (not pd.isna(volkswagen_avg_price) and volkswagen_avg_price != 0) or \
            (not pd.isna(audi_avg_price) and audi_avg_price != 0) or \
-           (not pd.isna(mercedes_avg_price) and mercedes_avg_price != 0):
-            filtered_labels.append(str(int(x_value)) if x_axis in ['year', 'rimsize'] else str(x_value))
+           (not pd.isna(skoda_avg_price) and skoda_avg_price != 0):
+            filtered_labels.append(str(x_value))  # Use string values for 'transmission'
             volkswagen_prices.append(round(volkswagen_avg_price if not pd.isna(volkswagen_avg_price) else 0, 2))
             audi_prices.append(round(audi_avg_price if not pd.isna(audi_avg_price) else 0, 2))
-            mercedes_prices.append(round(mercedes_avg_price if not pd.isna(mercedes_avg_price) else 0, 2))
+            skoda_prices.append(round(skoda_avg_price if not pd.isna(skoda_avg_price) else 0, 2))
 
     data = {
         "labels": filtered_labels,  # Use the filtered labels
         "volkswagen": volkswagen_prices,
         "audi": audi_prices,
-        "mercedes": mercedes_prices
+        "skoda": skoda_prices
     }
+
 
     return jsonify(data)
 
@@ -403,8 +455,8 @@ def get_models_by_manufacturer(manufacturer):
         cars = volkswagen_all_columns.to_dict(orient='records')
     elif manufacturer == 'audi':
         cars = audi_all_columns.to_dict(orient='records')
-    elif manufacturer == 'mercedes':
-        cars = mercedes_all_columns.to_dict(orient='records')
+    elif manufacturer == 'Škoda':
+        cars = skoda_all_columns.to_dict(orient='records')
     else:
         return jsonify({'error': 'Manufacturer not found'}), 404
 

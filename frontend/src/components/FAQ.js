@@ -71,7 +71,7 @@ export default function FAQ() {
               sx={{ maxWidth: { sm: '100%', md: '70%' } }}
             >
               This website helps users estimate the price of a car based on various factors
-               such as <b>Mileage, Year, Kilowatts, Rim size,</b> and <b>Displacement</b>.
+               such as <b>Type, Mileage, Year, Kilowatts, Transmission,</b> and <b>Displacement</b>.
             </Typography>
           </AccordionDetails>
         </Accordion>
@@ -103,6 +103,7 @@ export default function FAQ() {
               The predictions are based on historical data and machine learning algorithms.
                While we strive for accuracy, the estimates may vary due to market
                 fluctuations and other factors.
+                The R2 score of the model is <b>0.94</b>. 
             </Typography>
           </AccordionDetails>
         </Accordion>
@@ -133,8 +134,6 @@ export default function FAQ() {
             >
              We use an advanced machine learning algorithm, <b>RandomForestRegressor</b>, as well
              as <b>GridSearchCV</b> in order to find the optimal combination of hyperparameters for a given model.
-             The R2 score of the model is <b>0.94</b>. 
-
             </Typography>
           </AccordionDetails>
         </Accordion>
