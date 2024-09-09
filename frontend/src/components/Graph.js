@@ -572,7 +572,7 @@ export default function Graph({ mode }) {
 
       <div style={{ display: 'flex', justifyContent: 'center' }}>
               {/* X-axis selection dropdown */}
-      <FormControl fullWidth sx={{ marginTop: '100px', marginBottom: '20px',marginLeft: '30px', width: '20%', borderRadius: '300px',}}>
+      <FormControl fullWidth sx={{ marginTop: '100px', marginBottom: '20px', marginRight: '20px', width: '10%', borderRadius: '300px',}}>
       <Typography
           variant="h1"
           sx={{
@@ -599,10 +599,10 @@ export default function Graph({ mode }) {
   className="dataCard carstats3"
   style={{
     borderRadius: '15px', 
-    width: '70%', 
+    width: '80%', 
     marginTop: '80px', 
-    marginLeft: '20px', 
-    marginRight: '20px', 
+    marginLeft: 6,
+    marginRight: 6,  
     marginBottom: '60px',
     backgroundColor: cardBackgroundColor,
     color: cardTextColor,
@@ -739,19 +739,15 @@ export default function Graph({ mode }) {
       <div>
   {/* Render statistics for each manufacturer under the chart */}
   {columnStats && (
-    <Box sx={{ marginTop: '0px', marginBottom: '80px' }}>
-      <Grid container spacing={2} marginLeft={"0px"}>
+    <Box sx={{  marginBottom: '80px', width: '100%', paddingRight: '50px', paddingLeft: '50px'}}>
+      <Grid container spacing={2} sx={{width: '100%', justifyContent: 'space-between'}}>
         {/* Volkswagen Stats */}
         <Grid item xs={2}>
-        <Typography variant="h1"
-          sx={{
-            fontSize: '3vh',
-            marginTop: '30px',
-          }}>
-        ▹Statistics for <b>{xAxisOption.charAt(0).toUpperCase() + xAxisOption.slice(1)}</b>:
-      </Typography>
+        <Typography variant="h6">
+          Statistics for <b>{xAxisOption.charAt(0).toUpperCase() + xAxisOption.slice(1)}</b> column:
+        </Typography>
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={3} sx={{width: '30%'}}>
           <Box sx={{ padding: '16px', backgroundColor: cardBackgroundColor, color: cardTextColor, borderRadius: '15px',
             outline: '1px solid',
             outlineColor:
@@ -776,7 +772,7 @@ export default function Graph({ mode }) {
         </Grid>
 
         {/* Audi Stats */}
-        <Grid item xs={3}>
+        <Grid item xs={3} sx={{width: '30%'}}>
           <Box sx={{ padding: '16px', backgroundColor: cardBackgroundColor, color: cardTextColor, borderRadius: '15px',
             outline: '1px solid',
             outlineColor:

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Card, CardActionArea, CardContent, CardMedia, Typography, Collapse, Modal, Box, IconButton } from '@mui/material';
+import { Card, CardActionArea, CardContent, CardMedia, Typography, Collapse, Modal, Box, IconButton, Container } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
 import deafultCar from '../assets/deafult_car.png'
@@ -243,55 +243,74 @@ const CarCard = ({ car }) => {
               alt={car.model}
             />
           </Box>
+
           <Typography variant="h6" color="text.secondary">
             Cijena: {car.price}KM
           </Typography>
           <Typography variant="body2" color="text.secondary">
             Opis: {car.title}
           </Typography>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 3 }}>
-            <Box sx={{ flex: 1, mr: 2 }}>
-              <Typography variant="body2" color="text.secondary">
-                Kilometraža: {car.mileage}km
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Gorivo: {car.fuel}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Mjenjač: {car.transmission}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Motor: {car.displacement}L
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Kilovati: {car.kilowatts}kW
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Standard emisija: {car.emissionStandard}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Pogon: {car.drivetrain}
-              </Typography>
+
+          <Box sx={{  mt: 3 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between'}}>
+              <Box sx={{ mr: 2 , width: 200}} id='car-details-1'>
+                <Typography variant="body2" color="text.secondary" >
+                  Kilometraža: {car.mileage}km
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Gorivo: {car.fuel}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Mjenjač: {car.transmission}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Motor: {car.displacement}L
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Kilovati: {car.kilowatts}kW
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Standard emisija: {car.emissionStandard}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Pogon: {car.drivetrain}
+                </Typography>
+              </Box>
+
+              <Box sx={{ pl: 7 }} id='car-details-2'>
+                <Typography variant="body2" color="text.secondary" width={150}>
+                  Tip: {car.type}
+                </Typography>
+                <Typography variant="body2" color="text.secondary" width={150}>
+                  Veličina felgi: {car.rimSize}
+                </Typography>
+                <Typography variant="body2" color="text.secondary" width={150}>
+                  Boja: {car.color}
+                </Typography>
+                <Typography variant="body2" color="text.secondary" width={150}>
+                  Godina: {car.year}
+                </Typography>
+                <Typography variant="body2" color="text.secondary" width={150}>
+                  Broj vrata: {car.doors}
+                </Typography>
+                <Typography variant="body2" color="text.secondary" width={150}>
+                  Lokacija: {car.location}
+                </Typography>
+              </Box>
             </Box>
 
-            <Box sx={{ flex: 1, pl: 7 }}>
+            <Box id='car-details-3' sx={{mt:3, justifyContent: 'space-between', display: 'flex'}}>
               <Typography variant="body2" color="text.secondary" width={150}>
-                Tip: {car.type}
+                Cruise Control: {car.cruiseControl ? 'Nema' : 'Ima'}
               </Typography>
               <Typography variant="body2" color="text.secondary" width={150}>
-                Veličina felgi: {car.rimSize}
+                Air Condition: {car.airCondition ? 'Nema' : 'Ima'}
               </Typography>
               <Typography variant="body2" color="text.secondary" width={150}>
-                Boja: {car.color}
+                Navigacija: {car.navigation ? 'Nema' : 'Ima'}
               </Typography>
               <Typography variant="body2" color="text.secondary" width={150}>
-                Godina: {car.year}
-              </Typography>
-              <Typography variant="body2" color="text.secondary" width={150}>
-                Broj vrata: {car.doors}
-              </Typography>
-              <Typography variant="body2" color="text.secondary" width={150}>
-                Lokacija: {car.location}
+                Registracija: {car.registration ? 'Nema' : 'Ima'}
               </Typography>
             </Box>
           </Box>

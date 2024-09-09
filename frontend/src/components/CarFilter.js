@@ -6,7 +6,7 @@ import axios from 'axios';
 // Set the base URL for axios requests
 axios.defaults.baseURL = 'http://localhost:5000';
 
-const MANUFACTURERS = ['Volkswagen', 'Mercedes', 'Audi'];
+const MANUFACTURERS = ['Volkswagen', 'Skoda', 'Audi'];
 
 export default function CarFilter() {
   const [manufacturer, setManufacturer] = useState('');
@@ -64,7 +64,7 @@ export default function CarFilter() {
     const endpointMap = {
       'Volkswagen': '/volkswagen/models',
       'Audi': '/audi/models',
-      'Mercedes': '/mercedes/models'
+      'Skoda': '/skoda/models'
     };
 
     const endpoint = endpointMap[selectedManufacturer] || '';
@@ -81,7 +81,7 @@ export default function CarFilter() {
     axios.get(endpoint)
     .then((response) => {
       console.log(response.data);
-      const models = response.data.model; // Access the 'model' array returned from Flask
+      const models = response.data.models; // Access the 'model' array returned from Flask
       if (!Array.isArray(models)) {
         throw new Error('Invalid response format');
       }
@@ -329,7 +329,7 @@ export default function CarFilter() {
         </Grid>
 
         {cars.length > 0 && hasMoreCars && (
-        <Button variant="contained"  onClick={handleFilter} color="primary" size='medium' sx={{borderRadius: 15, width: {xs: '100%', sm: '200px'}}}>
+        <Button variant="contained"  onClick={handleShowMore} color="primary" size='medium' sx={{borderRadius: 15, width: {xs: '100%', sm: '200px'}}}>
             Show more
           </Button>
         )}

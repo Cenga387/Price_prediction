@@ -201,7 +201,11 @@ export default function Hero() {
               src={heroImage}
             />
           </Stack>
-          <Box sx={{width: '100%'}}>
+          <Stack 
+            direction={{ xs: 'column', sm: 'row' }}
+            spacing={1}
+            sx={{ width: { xs: '100%', sm: '100%' } }}
+            >
             <FormControl size='small' sx={{width: {xs: '100%', sm: '100%'}}}>
               <InputLabel id="demo-simple-select-autowidth-label">Manufacturer</InputLabel>
               <Select
@@ -252,12 +256,10 @@ export default function Hero() {
                 )}
               </Select>
             </FormControl>
-          </Box>
+          </Stack>
           <Stack
             direction={{ xs: 'column', sm: 'row' }}
-            alignSelf="center"
             spacing={1}
-            useFlexGap
             sx={{ width: { xs: '100%', sm: '100%' } }}
           >
             <TextField
@@ -279,7 +281,7 @@ export default function Hero() {
               InputProps={{
                 sx:{ borderRadius: 15,}
               }}
-              sx={{ width: { xs: '100%', sm: '200px' } }}
+              sx={{ width: { xs: '100%', sm: '100%' } }}
               type='number'
             />
             <TextField
@@ -301,7 +303,7 @@ export default function Hero() {
               InputProps={{
                 sx:{ borderRadius: 15, },
               }}
-              sx={{ width: { xs: '100%', sm: '200px' } }}
+              sx={{ width: { xs: '100%', sm: '100%' } }}
               type='number'
             />
             <TextField
@@ -322,7 +324,7 @@ export default function Hero() {
               InputProps={{
                 sx:{ borderRadius: 15, width: '100%' },
               }}
-              sx={{ width: { xs: '100%', sm: '200px' } }}
+              sx={{ width: { xs: '100%', sm: '100%' } }}
               type= 'number'
             />
             <TextField
@@ -343,14 +345,14 @@ export default function Hero() {
               InputProps={{
                 sx:{ borderRadius: 15}  
               }}
-              sx={{ width: { xs: '100%', sm: '200px' } }}
+              sx={{ width: { xs: '100%', sm: '100%' } }}
               type='number'
             />
             <Button 
               variant="contained" 
               color="primary" 
               size='medium' 
-              sx={{borderRadius: 15, width: {xs: '100%', sm: '200px'}}}
+              sx={{borderRadius: 15, width: {xs: '100%', sm: '100%'}}}
               onClick={handlePredict}
               disabled={isButtonDisabled}
             >

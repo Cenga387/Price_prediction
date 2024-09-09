@@ -483,15 +483,15 @@ def get_models_by_manufacturer(manufacturer):
     manufacturer = manufacturer.lower()
 
     if manufacturer == 'volkswagen':
-        cars = volkswagen_all_columns.to_dict(orient='records')
+        models = volkswagen_all_columns['model'].unique().tolist()
     elif manufacturer == 'audi':
-        cars = audi_all_columns.to_dict(orient='records')
+        models = audi_all_columns['model'].unique().tolist()
     elif manufacturer == 'Škoda':
-        cars = skoda_all_columns.to_dict(orient='records')
+        models = skoda_all_columns['model'].unique().tolist()
     else:
         return jsonify({'error': 'Manufacturer not found'}), 404
 
-    return jsonify({'cars': cars})
+    return jsonify({'models': models})
 
 @app.route('/filter-options', methods=['GET'])
 def filter_options():
