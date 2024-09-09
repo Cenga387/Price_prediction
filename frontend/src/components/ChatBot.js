@@ -31,6 +31,7 @@ const Chatbot = ({mode}) => {
     };
 
     setMessages([...messages, newMessage]);
+    setInputMessage('');
 
     try {
       // Send the user message to the backend
@@ -53,28 +54,42 @@ const Chatbot = ({mode}) => {
     }
   };
 
-  // Handle "Enter" key press
+
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
       handleSendMessage();
     }
   };
 
-  // Toggle chat window
+
   const toggleChat = () => {
     setIsOpen(!isOpen);
+    if (!isOpen) {
+      setMessages([
+        {
+          sender: 'Bot',
+          text: "Hi, my name is Car Genie. I'm a car expert and I can help you with any car-related questions you have. How can I assist you today?"
+        }
+      ]);
+    }
   };
 
   return (
     <Box sx={{ position: 'fixed', bottom: 16, right: 16, zIndex: 1000}}>
-      {/* Chat button to open/close the chat window */}
       {!isOpen && (
-        <IconButton color="primary" onClick={toggleChat} sx={{ backgroundColor: 'white', '&:hover': { backgroundColor: '#f0f0f0' }, width: 50, height: 50 }}>
+        <IconButton color="primary" onClick={toggleChat}           
+        sx={{ 
+          backgroundColor: mode === 'dark' ? 'dark' : 'light', 
+          '&:hover': { 
+            backgroundColor: mode === 'dark' ? 'grey' : 'skyblue' 
+          }, 
+          width: 50, 
+          height: 50 
+        }}>
           <ChatBubbleOutlineIcon sx={{ width: 35, height: 35 }} />
         </IconButton>
       )}
 
-      {/* Chat window */}
       {isOpen && (
         <Paper elevation={4} sx={{ width: 400, height: 500, display: 'flex', flexDirection: 'column', borderTopRightRadius: 15, borderTopLeftRadius: 15, borderBottomLeftRadius: 15, borderBottomRightRadius: 15 }}>
           <Box sx={{ p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: mode === 'dark' ? 'grey.900': 'primary.main', borderTopRightRadius: 15, borderTopLeftRadius: 15}}>

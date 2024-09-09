@@ -71,12 +71,12 @@ with open('models/volkswagen_model.pkl', 'rb') as file:
 with open('models/audi_model.pkl', 'rb') as file:
     audi_model = joblib.load(file)
 
-with open('models/mercedes_model.pkl', 'rb') as file:
-    mercedes_model = joblib.load(file)
+with open('models/skoda_model.pkl', 'rb') as file:
+    skoda_model = joblib.load(file)
 
 volkswagen_all_columns = pd.read_csv('datasets/volkswagen_cleaned.csv')
 audi_all_columns = pd.read_csv('datasets/audi_cleaned.csv')
-mercedes_all_columns = pd.read_csv('datasets/mercedes_cleaned.csv')
+skoda_all_columns = pd.read_csv('datasets/skoda_cleaned.csv')
 all_cars = pd.read_csv('datasets/all_cleaned.csv')
 
 df_all_numeric = pd.read_csv('datasets/all_cleaned_numeric.csv')
@@ -87,8 +87,8 @@ def get_dataset_by_manufacturer(manufacturer):
         return volkswagen_all_columns
     elif manufacturer == 'audi':
         return audi_all_columns
-    elif manufacturer == 'mercedes':
-        return mercedes_all_columns
+    elif manufacturer == 'skoda':
+        return skoda_all_columns
     else:
         return all_cars
 
@@ -103,27 +103,43 @@ def validate_and_convert_param(param, param_name, param_type=float):
         raise ValueError(f"Invalid value for parameter: {param_name}")
 
 
-def filter_and_predict(df, model, displacement, mileage, year, kilowatts, rim_size):
+def filter_and_predict(df, model, displacement, kilowatts, mileage, year, transmission_encoded, type_encoded):
     # Make a prediction
-    prediction = model.predict([[displacement, kilowatts, mileage, year, rim_size]])[0].round(2)
+    prediction = model.predict([[displacement, kilowatts, mileage, year, transmission_encoded, type_encoded]])[0].round(2)
     
     # Define ranges for filtering
-    displacement_min = displacement - 0.5
-    displacement_max = displacement + 0.5
+    transmission_map = {0: 'Manuelni', 1: 'Polu-automatik', 2: 'Automatik'}
+    transmission = transmission_map.get(transmission_encoded, 'Unknown')
+
+    type_map = {
+        'volkswagen': {0: 'Off-road', 1: 'Oldtimer', 2: 'Cabriolet', 3: 'Malo auto', 4: 'Monovolumen', 5: 'Sportski/kupe', 6: 'Limuzina', 7: 'Caddy', 8: 'Kombi', 9: 'SUV', 10: 'Pickup'},
+        'audi': {0: 'Oldtimer', 1: 'Cabriolet', 2: 'Malo auto', 3: 'Limuzina', 4: 'Karavan', 5: 'Sportski/kupe', 6: 'SUV'},
+        'skoda': {0: 'Malo auto', 1: 'Caddy', 2: 'Limuzina', 3: 'Karavan', 4: 'Sportski/kupe', 5: 'SUV'}
+    }
+
+    if df.equals(volkswagen_all_columns):
+        type = type_map['volkswagen'].get(type_encoded, 'Unknown')
+    elif df.equals(audi_all_columns):
+        type = type_map['audi'].get(type_encoded, 'Unknown')
+    elif df.equals(skoda_all_columns):
+        type = type_map['skoda'].get(type_encoded, 'Unknown')
+    else:
+        type = 'Unknown'
+
     mileage_min = mileage - 35000
     mileage_max = mileage + 35000
     price_min = prediction * 0.85 
     price_max = prediction * 1.15
-    min_year = year - 1
-    max_year = year + 1
+    min_year = year - 3
+    max_year = year + 3
 
     # Filter the dataset based on the input ranges
     filtered_df = df[
-        (df['displacement'] >= displacement_min) & (df['displacement'] <= displacement_max) &
         (df['mileage'] >= mileage_min) & (df['mileage'] <= mileage_max) &
+        (df['transmission'] == transmission) &
+        (df['type'] == type) &
         (df['year'] >= min_year) & (df['year'] <= max_year) &
         (df['price'] >= price_min) & (df['price'] <= price_max) 
-       
     ]
     sorted_filtered_df = filtered_df.sort_values(by='price', ascending=False)
 
@@ -175,13 +191,14 @@ def chatbot():
 def volkswagen():
     try:
         displacement = validate_and_convert_param('displacement', 'displacement', float)
+        kilowatts = validate_and_convert_param('kilowatts', 'kilowatts', int)
         mileage = validate_and_convert_param('mileage', 'mileage', int)
         year = validate_and_convert_param('year', 'year', int)
-        kilowatts = validate_and_convert_param('kilowatts', 'kilowatts', int)
-        rim_size = validate_and_convert_param('rimSize', 'rimSize', int)
+        transmission = validate_and_convert_param('transmission', 'transmission', int)
+        type = validate_and_convert_param('type', 'type', int)
 
         prediction, filtered_data = filter_and_predict(
-            volkswagen_all_columns, volkswagen_model, displacement, mileage, year, kilowatts, rim_size
+            volkswagen_all_columns, volkswagen_model, displacement, kilowatts, mileage, year, transmission, type
         )
 
         return jsonify({'model': prediction, 'cars': filtered_data})
@@ -192,30 +209,32 @@ def volkswagen():
 def audi():
     try:
         displacement = validate_and_convert_param('displacement', 'displacement', float)
+        kilowatts = validate_and_convert_param('kilowatts', 'kilowatts', int)
         mileage = validate_and_convert_param('mileage', 'mileage', int)
         year = validate_and_convert_param('year', 'year', int)
-        kilowatts = validate_and_convert_param('kilowatts', 'kilowatts', int)
-        rim_size = validate_and_convert_param('rimSize', 'rimSize', int)
+        transmission = validate_and_convert_param('transmission', 'transmission', int)
+        type = validate_and_convert_param('type', 'type', int)
 
         prediction, filtered_data = filter_and_predict(
-            audi_all_columns, audi_model, displacement, mileage, year, kilowatts, rim_size
+            volkswagen_all_columns, volkswagen_model, displacement, kilowatts, mileage, year, transmission, type
         )
 
         return jsonify({'model': prediction, 'cars': filtered_data})
     except ValueError as e:
         return jsonify({'error': str(e)}), 400
 
-@app.route('/mercedes', methods=['GET'])
-def mercedes():
+@app.route('/skoda', methods=['GET'])
+def skoda():
     try:
         displacement = validate_and_convert_param('displacement', 'displacement', float)
+        kilowatts = validate_and_convert_param('kilowatts', 'kilowatts', int)
         mileage = validate_and_convert_param('mileage', 'mileage', int)
         year = validate_and_convert_param('year', 'year', int)
-        kilowatts = validate_and_convert_param('kilowatts', 'kilowatts', int)
-        rim_size = validate_and_convert_param('rimSize', 'rimSize', int)
+        transmission = validate_and_convert_param('transmission', 'transmission', int)
+        type = validate_and_convert_param('type', 'type', int)
 
         prediction, filtered_data = filter_and_predict(
-            mercedes_all_columns, mercedes_model, displacement, mileage, year, kilowatts, rim_size
+            skoda_all_columns, skoda_model, displacement, kilowatts, mileage, year, transmission, type
         )
 
         return jsonify({'model': prediction, 'cars': filtered_data})
@@ -227,10 +246,10 @@ def car_stats():
 
     count1 = volkswagen_all_columns.shape[0]
     count2 = audi_all_columns.shape[0]
-    count3 = mercedes_all_columns.shape[0]
+    count3 = skoda_all_columns.shape[0]
 
     data = {
-        "labels": ["Volkswagen", "Audi", "Mercedes"],
+        "labels": ["Volkswagen", "Audi", "Skoda"],
         "values": [count1, count2, count3]
     }
     return jsonify(data)
@@ -244,12 +263,12 @@ def car_stats2():
 
     volkswagen_data = filtered_df[filtered_df['manufacturer'] == 'Volkswagen']['price']
     audi_data = filtered_df[filtered_df['manufacturer'] == 'Audi']['price']
-    mercedes_data = filtered_df[filtered_df['manufacturer'] == 'Mercedes-Benz']['price']
+    skoda_data = filtered_df[filtered_df['manufacturer'] == 'Skoda']['price']
 
     # Fit KDE for each manufacturer's price data
     kde_volkswagen = gaussian_kde(volkswagen_data)
     kde_audi = gaussian_kde(audi_data)
-    kde_mercedes = gaussian_kde(mercedes_data)
+    kde_skoda = gaussian_kde(skoda_data)
 
     # Define the price points of interest
     price_points = np.arange(5000, 100001, 5000)
@@ -261,13 +280,13 @@ def car_stats2():
     label_data = []
     volkswagen_data = []
     audi_data = []
-    mercedes_data = []
+    skoda_data = []
 
     # Evaluate the KDE at each price point and store the results in the desired format
     for x_point in price_points:
         y_point_volkswagen = kde_volkswagen(x_point)[0] * scale_factor
         y_point_audi = kde_audi(x_point)[0] * scale_factor
-        y_point_mercedes = kde_mercedes(x_point)[0] * scale_factor
+        y_point_skoda = kde_skoda(x_point)[0] * scale_factor
     
         data_entry1 = str(x_point)
         label_data.append(data_entry1)
@@ -278,8 +297,8 @@ def car_stats2():
         data_entry3 = round(y_point_audi, 2)
         audi_data.append(data_entry3)
 
-        data_entry4 = round(y_point_mercedes, 2)
-        mercedes_data.append(data_entry4)
+        data_entry4 = round(y_point_skoda, 2)
+        skoda_data.append(data_entry4)
     
     labels = []
     for x in range(20):
@@ -293,15 +312,15 @@ def car_stats2():
     for x in range(20):
         audis.append(audi_data[x])
     
-    mercedeses = []
+    skodas = []
     for x in range(20):
-        mercedeses.append(mercedes_data[x])
+        skodas.append(skoda_data[x])
 
     data = {
         "labels": labels,
         "volkswagen": volkswagens,
         "audi": audis,
-        "mercedes": mercedeses
+        "skoda": skodas
     }
 
     return jsonify(data)
@@ -361,7 +380,7 @@ def car_stats3():
     filtered_labels = []
     volkswagen_prices = []
     audi_prices = []
-    mercedes_prices = []
+    skoda_prices = []
 
     for x_value in binned_x_values:
         if x_axis in ['kilowatts', 'mileage', 'displacement'] and len(x_values) > 30:
@@ -374,22 +393,22 @@ def car_stats3():
         # Calculate the average price for each manufacturer
         volkswagen_avg_price = filtered_data[filtered_data['manufacturer'] == 'Volkswagen']['price'].mean()
         audi_avg_price = filtered_data[filtered_data['manufacturer'] == 'Audi']['price'].mean()
-        mercedes_avg_price = filtered_data[filtered_data['manufacturer'] == 'Mercedes-Benz']['price'].mean()
+        skoda_avg_price = filtered_data[filtered_data['manufacturer'] == 'Skoda']['price'].mean()
 
         # Filter out x_values where all prices are NaN or 0
         if (not pd.isna(volkswagen_avg_price) and volkswagen_avg_price != 0) or \
            (not pd.isna(audi_avg_price) and audi_avg_price != 0) or \
-           (not pd.isna(mercedes_avg_price) and mercedes_avg_price != 0):
+           (not pd.isna(skoda_avg_price) and skoda_avg_price != 0):
             filtered_labels.append(str(int(x_value)) if x_axis in ['year', 'rimsize'] else str(x_value))
             volkswagen_prices.append(round(volkswagen_avg_price if not pd.isna(volkswagen_avg_price) else 0, 2))
             audi_prices.append(round(audi_avg_price if not pd.isna(audi_avg_price) else 0, 2))
-            mercedes_prices.append(round(mercedes_avg_price if not pd.isna(mercedes_avg_price) else 0, 2))
+            skoda_prices.append(round(skoda_avg_price if not pd.isna(skoda_avg_price) else 0, 2))
 
     data = {
         "labels": filtered_labels,  # Use the filtered labels
         "volkswagen": volkswagen_prices,
         "audi": audi_prices,
-        "mercedes": mercedes_prices
+        "skoda": skoda_prices
     }
 
     return jsonify(data)
@@ -401,16 +420,13 @@ def get_models_by_manufacturer(manufacturer):
     try: 
         if manufacturer == 'volkswagen':
             model = volkswagen_all_columns['model'].unique().tolist()
-            logging.info(f"Volkswagen DataFrame: {volkswagen_all_columns.columns}")
-
         elif manufacturer == 'audi':
             model = audi_all_columns['model'].unique().tolist()
-        elif manufacturer == 'mercedes':
-            model = mercedes_all_columns['model'].unique().tolist()
+        elif manufacturer == 'skoda':
+            model = skoda_all_columns['model'].unique().tolist()
         else:
             return jsonify({'error': 'Manufacturer not found'}), 404
     except Exception as e:
-        logging.error(f"Error fetching Volkswagen models: {str(e)}")
         return jsonify({'error': str(e)}), 500
     logging.info(f"Manufacturer parameter: '{manufacturer}'")  
     return jsonify({'model': model})

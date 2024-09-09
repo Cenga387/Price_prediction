@@ -295,7 +295,7 @@ export default function Graph({ mode }) {
             marginBottom: '20px'
           }}
         >
-          ▹Choose which data you want to showcase on the graph:
+          Choose which data you want to showcase on the graph:
         </Typography>
         <Select
           value={xAxisOption}

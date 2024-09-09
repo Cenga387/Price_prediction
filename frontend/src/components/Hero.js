@@ -24,26 +24,61 @@ const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
+const carTypes = {
+   volkswagen: [
+    { label: 'Off-road', value: 0 },
+    { label: 'Oldtimer', value: 1 },
+    { label: 'Cabriolet', value: 2 },
+    { label: 'Malo auto', value: 3 },
+    { label: 'Monovolumen', value: 4 },
+    { label: 'Sportski/kupe', value: 5 },
+    { label: 'Limuzina', value: 6 },
+    { label: 'Caddy', value: 7 },
+    { label: 'Kombi', value: 8 },
+    { label: 'SUV', value: 9 },
+    { label: 'Pickup', value: 10 }
+  ],
+  audi: [
+    { label: 'Oldtimer', value: 0 },
+    { label: 'Cabriolet', value: 1 },
+    { label: 'Malo auto', value: 2 },
+    { label: 'Limuzina', value: 3 },
+    { label: 'Karavan', value: 4 },
+    { label: 'Sportski/kupe', value: 5 },
+    { label: 'SUV', value: 6 }
+  ],
+  skoda: [
+    { label: 'Malo auto', value: 0 },
+    { label: 'Caddy', value: 1 },
+    { label: 'Limuzina', value: 2 },
+    { label: 'Karavan', value: 3 },
+    { label: 'Sportski/kupe', value: 4 },
+    { label: 'SUV', value: 5 }
+  ]
+};
+
 export default function Hero() {
 
   const [modelResponse, setModelResponse] = useState(null);
   const [displacement, setDisplacement] = useState('');
   const [mileage, setMileage] = useState('');
-  const [rimSize, setRimSize] = useState('');
   const [year, setYear] = useState('');
   const [kilowatts, setKilowatts] = useState('');
   const [manufacturer, setManufacturer] = useState('');
+  const [transmission, setTransmission] = useState('');
   const [cars, setCars] = useState([])
+  const [carType, setCarType] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState({
       displacement: false,
       mileage: false,
       kilowatts: false,
       year: false,
-      rimSize: false,
+      carType: false,
+      transmission: false,
   });
 
   const handleSnackbarClose = () => {
-    setSnackbarOpen({ displacement: false, mileage: false, kilowatts: false, year: false, rimSize: false });
+    setSnackbarOpen({ displacement: false, mileage: false, kilowatts: false, year: false, carType: false, transmission: false });
   };
 
   const handleDisplacementChange = (e) => {
@@ -66,6 +101,10 @@ export default function Hero() {
     } 
   };
 
+  const handleCarTypeChange = (event) => {
+    setCarType(event.target.value);
+  };
+
   const handleYearChange = (e) => {
     const value = parseInt(e.target.value, 10);
     if (value < 1950 || value > 2024) {
@@ -73,24 +112,21 @@ export default function Hero() {
     } 
   };
 
-  const handleRimSizeChange = (e) => {
-    const value = parseInt(e.target.value, 10);
-    if (value < 13 || value > 23) {
-      setSnackbarOpen({ ...snackbarOpen, rimSize: true });
-    }
-  };
   const handleManufacturerChange = (event) => {
     setManufacturer(event.target.value);
+  }
+  const handleTransmissionChange = (event) => {
+    setTransmission(event.target.value);
   }
   
   const handlePredict = async () => {
     let endpoint = '';
-    if (manufacturer === 'Volkswagen') {
+    if (manufacturer === 'volkswagen') {
       endpoint = '/volkswagen';
-    } else if (manufacturer === 'Audi') {
+    } else if (manufacturer === 'audi') {
       endpoint = '/audi';
-    } else if (manufacturer === 'Mercedes') {
-      endpoint = '/mercedes';
+    } else if (manufacturer === 'skoda') {
+      endpoint = '/skoda';
     }
 
     try {
@@ -100,7 +136,8 @@ export default function Hero() {
           mileage: parseInt(mileage, 10),
           year: parseInt(year, 10),
           kilowatts: parseInt(kilowatts),
-          rimSize: parseInt(rimSize),
+          transmission: parseInt(transmission),
+          type: parseInt(carType),
         }
       });
       setModelResponse(response.data.model);
@@ -110,14 +147,11 @@ export default function Hero() {
     }
   };
 
-  const isButtonDisabled = !rimSize ||  !kilowatts || !mileage || !displacement || !manufacturer;
+  const isButtonDisabled = !kilowatts || !mileage || !displacement || !manufacturer;
 
 
   return (
-    <Box
-      id="hero"
-      
-    >
+    <Box id="hero">
       <Container
         sx={{
           display: 'flex',
@@ -179,9 +213,43 @@ export default function Hero() {
                 label="Manufacturer"
               >
                 <MenuItem value="None"><em>None</em></MenuItem>
-                <MenuItem value='Volkswagen'>Volkswagen</MenuItem>
-                <MenuItem value='Mercedes'>Mercedes</MenuItem>
-                <MenuItem value='Audi'>Audi</MenuItem>
+                <MenuItem value='volkswagen'>Volkswagen</MenuItem>
+                <MenuItem value='skoda'>Skoda</MenuItem>
+                <MenuItem value='audi'>Audi</MenuItem>
+              </Select>
+            </FormControl>
+            <FormControl size='small' sx={{width: {xs: '100%', sm: '100%'}}}>
+              <InputLabel id="demo-simple-select-autowidth-label">Transmission</InputLabel>
+              <Select
+                labelId="transmission-label"
+                id="transmission"
+                value={transmission}
+                onChange={handleTransmissionChange}
+                sx={{borderRadius: 8, width: '100%'}} 
+                label="Transmission"
+              >
+                <MenuItem value={0}>Manuelni</MenuItem>
+                <MenuItem value={1}>Polu-automatik</MenuItem>
+                <MenuItem value={2}>Automatik</MenuItem>
+              </Select>
+            </FormControl>
+            <FormControl size='small' sx={{width: {xs: '100%', sm: '100%'}}}>
+              <InputLabel id="car-type-label">Car Type</InputLabel>
+              <Select
+                labelId="car-type-label"
+                id="car-type"
+                value={carType}
+                onChange={handleCarTypeChange}
+                sx={{borderRadius: 8, width: '100%'}} 
+                label="Car Type"
+              >
+                {manufacturer && carTypes[manufacturer] ? (
+                  carTypes[manufacturer].map((type) => (
+                    <MenuItem key={type.value} value={type.value}>{type.label}</MenuItem>
+                  ))
+                ) : (
+                  <MenuItem value=""><em>Select Manufacturer First</em></MenuItem>
+                )}
               </Select>
             </FormControl>
           </Box>
@@ -274,27 +342,6 @@ export default function Hero() {
               }}
               InputProps={{
                 sx:{ borderRadius: 15}  
-              }}
-              sx={{ width: { xs: '100%', sm: '200px' } }}
-              type='number'
-            />
-            <TextField
-              id="rimsize"
-              hiddenLabel
-              size="small"
-              variant="outlined"
-              aria-label="Enter rim size"
-              placeholder="Rim size"
-              onChange={(e) => setRimSize(e.target.value)}
-              onBlur={handleRimSizeChange}
-              inputProps={{
-                autoComplete: 'off',
-                'aria-label': 'Enter kilowatts',
-                min: 13,
-                max: 23
-              }}
-              InputProps={{
-                sx:{ borderRadius: 15, }  
               }}
               sx={{ width: { xs: '100%', sm: '200px' } }}
               type='number'
