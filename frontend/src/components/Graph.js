@@ -599,7 +599,7 @@ export default function Graph({ mode }) {
   className="dataCard carstats3"
   style={{
     borderRadius: '15px', 
-    width: '75%', 
+    width: '70%', 
     marginTop: '80px', 
     marginLeft: '20px', 
     marginRight: '20px', 
