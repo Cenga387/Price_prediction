@@ -367,7 +367,7 @@ def car_stats3():
         'kilowatts': 'kilowatts',
         'mileage': 'mileage',
         'displacement': 'displacement',
-        'transmission': 'transmission',  # Switch to the 'transmission' column (string values)
+        'transmission': 'transmission', 
         'type': 'type'
     }
     
@@ -377,8 +377,17 @@ def car_stats3():
     x_axis_column = x_axis_mapping[x_axis]
     
     # Assuming df_all_numeric is your DataFrame
-    # Filter the data for each manufacturer with price
     filtered_df = all_cars[all_cars['price'] <= 1_000_000]
+
+        # Get statistics for each manufacturer
+    def get_stats_by_manufacturer(manufacturer):
+        manufacturer_df = filtered_df[filtered_df['manufacturer'] == manufacturer]
+        return manufacturer_df[x_axis_column].describe().round(2).to_dict()
+
+    # Get statistics for Volkswagen, Audi, and Škoda
+    volkswagen_stats = get_stats_by_manufacturer('Volkswagen')
+    audi_stats = get_stats_by_manufacturer('Audi')
+    skoda_stats = get_stats_by_manufacturer('Škoda')
     
     # Extract unique values for 'transmission' or 'type' or bin the values based on x_axis
     if x_axis in ['transmission', 'type']:
@@ -416,7 +425,6 @@ def car_stats3():
 
     for x_value in binned_x_values:
         if bin_size and x_axis in ['kilowatts', 'mileage', 'displacement']:
-            # Apply binning logic only when necessary
             filtered_data = filtered_df[(filtered_df[x_axis_column] >= x_value - bin_size / 2) & 
                                         (filtered_df[x_axis_column] < x_value + bin_size / 2)]
         else:
@@ -436,13 +444,18 @@ def car_stats3():
             audi_prices.append(round(audi_avg_price if not pd.isna(audi_avg_price) else 0, 2))
             skoda_prices.append(round(skoda_avg_price if not pd.isna(skoda_avg_price) else 0, 2))
 
+
     data = {
         "labels": filtered_labels,  # Use the filtered labels
         "volkswagen": volkswagen_prices,
         "audi": audi_prices,
-        "skoda": skoda_prices
+        "skoda": skoda_prices,
+        "stats": {
+            "volkswagen": volkswagen_stats,
+            "audi": audi_stats,
+            "skoda": skoda_stats
+        }  # Send individual stats for each manufacturer
     }
-
 
     return jsonify(data)
 

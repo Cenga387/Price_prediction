@@ -9,6 +9,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { Box } from "@mui/material";
 import { alpha } from '@mui/material';
+import Grid from '@mui/material/Grid';
 
 Chart.register(ArcElement, LineElement, PointElement, BarElement, CategoryScale, LinearScale, Tooltip, Legend, Title);
 
@@ -22,6 +23,7 @@ export default function Graph({ mode }) {
   const [lineChartData2, setLineChartData2] = useState(null);
   const [lineChartData3, setLineChartData3] = useState(null);
   const [xAxisOption, setXAxisOption] = useState('year');
+  const [columnStats, setColumnStats] = useState(null);
 
   useEffect(() => {
     // Fetch Doughnut chart data
@@ -224,53 +226,27 @@ export default function Graph({ mode }) {
           setLineChartData3({
             labels: data.labels,
             datasets: [
-              {
-                label: "Volkswagen",
-                data: data.volkswagen,
-                backgroundColor: "#2b3fe5",
-              },
-              {
-                label: "Audi",
-                data: data.audi,
-                backgroundColor: "#fac013",
-              },
-              {
-                label: "Škoda",
-                data: data.skoda,
-                backgroundColor: "#fd8787",
-              }
+              { label: "Volkswagen", data: data.volkswagen, backgroundColor: "#2b3fe5" },
+              { label: "Audi", data: data.audi, backgroundColor: "#fac013" },
+              { label: "Škoda", data: data.skoda, backgroundColor: "#fd8787" },
             ],
           });
         } else {
           setLineChartData3({
             labels: data.labels,
             datasets: [
-              {
-                label: "Volkswagen",
-                data: data.volkswagen,
-                backgroundColor: "#2b3fe5",
-                borderColor: "#2b3fe5",
-              },
-              {
-                label: "Audi",
-                data: data.audi,
-                backgroundColor: "#fac013",
-                borderColor: "#fac013",
-              },
-              {
-                label: "Škoda",
-                data: data.skoda,
-                backgroundColor: "#fd8787",
-                borderColor: "#fd8787",
-              }
+              { label: "Volkswagen", data: data.volkswagen, backgroundColor: "#2b3fe5", borderColor: "#2b3fe5" },
+              { label: "Audi", data: data.audi, backgroundColor: "#fac013", borderColor: "#fac013" },
+              { label: "Škoda", data: data.skoda, backgroundColor: "#fd8787", borderColor: "#fd8787" },
             ],
           });
         }
+
+        setColumnStats(data.stats); // Set the stats data
       })
       .catch((error) => {
         console.error("Error fetching Line chart data for carstats3:", error);
       });
-
   }, [xAxisOption, mode]);
 
 
@@ -753,13 +729,105 @@ export default function Graph({ mode }) {
           },
         }}
       />
+      
     )
   ) : (
     <div>Loading...</div>
   )}
 </div>
-
       </div>
+      <div>
+  {/* Render statistics for each manufacturer under the chart */}
+  {columnStats && (
+    <Box sx={{ marginTop: '0px', marginBottom: '80px' }}>
+      <Grid container spacing={2} marginLeft={"0px"}>
+        {/* Volkswagen Stats */}
+        <Grid item xs={2}>
+        <Typography variant="h1"
+          sx={{
+            fontSize: '3vh',
+            marginTop: '30px',
+          }}>
+        ▹Statistics for <b>{xAxisOption.charAt(0).toUpperCase() + xAxisOption.slice(1)}</b>:
+      </Typography>
+        </Grid>
+        <Grid item xs={3}>
+          <Box sx={{ padding: '16px', backgroundColor: cardBackgroundColor, color: cardTextColor, borderRadius: '15px',
+            outline: '1px solid',
+            outlineColor:
+              theme.palette.mode === 'light'
+                ? alpha('#BFCCD9', 0.5)
+                : alpha('#9CCCFC', 0.1),
+            boxShadow:
+              theme.palette.mode === 'light'
+                ? `0 0 12px 8px ${alpha('#9CCCFC', 0.9)}`
+                : `0 0 24px 12px ${alpha('#033363', 0.4)}`,
+           }}>
+            <Typography variant="h6" sx={{ backgroundColor: 'rgba(43, 63, 229, 0.8)', padding: '10px', borderRadius: '15px',}}>Volkswagen</Typography>
+            <Typography>Count: {columnStats.volkswagen.count}</Typography>
+            <Typography>Mean: {columnStats.volkswagen.mean}</Typography>
+            <Typography>Std: {columnStats.volkswagen.std}</Typography>
+            <Typography>Min: {columnStats.volkswagen.min}</Typography>
+            <Typography>25%: {columnStats.volkswagen['25%']}</Typography>
+            <Typography>50%: {columnStats.volkswagen['50%']}</Typography>
+            <Typography>75%: {columnStats.volkswagen['75%']}</Typography>
+            <Typography>Max: {columnStats.volkswagen.max}</Typography>
+          </Box>
+        </Grid>
+
+        {/* Audi Stats */}
+        <Grid item xs={3}>
+          <Box sx={{ padding: '16px', backgroundColor: cardBackgroundColor, color: cardTextColor, borderRadius: '15px',
+            outline: '1px solid',
+            outlineColor:
+              theme.palette.mode === 'light'
+                ? alpha('#BFCCD9', 0.5)
+                : alpha('#9CCCFC', 0.1),
+            boxShadow:
+              theme.palette.mode === 'light'
+                ? `0 0 12px 8px ${alpha('#9CCCFC', 0.9)}`
+                : `0 0 24px 12px ${alpha('#033363', 0.4)}`,
+           }}>
+            <Typography variant="h6" sx={{ backgroundColor: 'rgba(250, 192, 19, 0.8)', padding: '10px', borderRadius: '15px' }}>Audi</Typography>
+            <Typography>Count: {columnStats.audi.count}</Typography>
+            <Typography>Mean: {columnStats.audi.mean}</Typography>
+            <Typography>Std: {columnStats.audi.std}</Typography>
+            <Typography>Min: {columnStats.audi.min}</Typography>
+            <Typography>25%: {columnStats.audi['25%']}</Typography>
+            <Typography>50%: {columnStats.audi['50%']}</Typography>
+            <Typography>75%: {columnStats.audi['75%']}</Typography>
+            <Typography>Max: {columnStats.audi.max}</Typography>
+          </Box>
+        </Grid>
+
+        {/* Škoda Stats */}
+        <Grid item xs={3}>
+          <Box sx={{ padding: '16px', backgroundColor: cardBackgroundColor, color: cardTextColor, borderRadius: '15px',
+            outline: '1px solid',
+            outlineColor:
+              theme.palette.mode === 'light'
+                ? alpha('#BFCCD9', 0.5)
+                : alpha('#9CCCFC', 0.1),
+            boxShadow:
+              theme.palette.mode === 'light'
+                ? `0 0 12px 8px ${alpha('#9CCCFC', 0.9)}`
+                : `0 0 24px 12px ${alpha('#033363', 0.4)}`,
+           }}>
+            <Typography variant="h6" sx={{ backgroundColor: 'rgba(253, 135, 135, 0.8)', padding: '10px', borderRadius: '15px' }}>Škoda</Typography>
+            <Typography>Count: {columnStats.skoda.count}</Typography>
+            <Typography>Mean: {columnStats.skoda.mean}</Typography>
+            <Typography>Std: {columnStats.skoda.std}</Typography>
+            <Typography>Min: {columnStats.skoda.min}</Typography>
+            <Typography>25%: {columnStats.skoda['25%']}</Typography>
+            <Typography>50%: {columnStats.skoda['50%']}</Typography>
+            <Typography>75%: {columnStats.skoda['75%']}</Typography>
+            <Typography>Max: {columnStats.skoda.max}</Typography>
+          </Box>
+        </Grid>
+      </Grid>
+    </Box>
+  )}
+</div>
     </div>
     </Box> 
   );
