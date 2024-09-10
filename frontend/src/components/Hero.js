@@ -7,7 +7,7 @@ import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import heroImage from '../assets/merc_hero.png'
+import heroImage from '../assets/audi_types/R8.png'
 import CarCard from './CarCard';
 import Grid from '@mui/material/Grid';
 import InputLabel from '@mui/material/InputLabel';
@@ -158,20 +158,20 @@ export default function Hero() {
           flexDirection: 'column',
           alignItems: 'center',
           pt: { xs: 14, sm: 14 },
-          pb: { xs: 8, sm: 12 },
+          pb: { xs: 8, sm: 10 },
         }}
       >
         <Stack spacing={2} useFlexGap sx={{ width: { xs: '100%', sm: '100%' } }}>
-          <Stack direction={{xs: 'column', md: 'row'}} spacing={2} alignItems='center'>
+          <Stack direction={{xs: 'column', md: 'row'}} spacing={2} alignItems='center' sx={{marginBottom: 2, marginTop: 4}}>
             <Container sx={{justifyContent: 'center', alignItems: 'center'}}>
               <Typography
-                variant="h1"
+                variant="h3"
                 sx={{
                   display: 'flex',
                   width: '100%',
                   alignSelf: 'center',
                   textAlign: 'center',
-                  fontSize: 'clamp(3.5rem, 10vw, 4rem)',
+                  
                 }}
               >
                 Welcome to our car price prediction AI
@@ -194,7 +194,7 @@ export default function Hero() {
               component="img"
               sx={{
                 width: 500,
-                height: 400,
+                height: 300,
                 objectFit: 'cover',
               }}
               alt="Description of the image"
@@ -364,8 +364,8 @@ export default function Hero() {
           sx={(theme) => ({
             alignSelf: 'center',
             justifySelf: 'center',
-            padding: '16px', // Padding around the text
-            borderRadius: '40px', // Rounded corners
+            padding: '16px', 
+            borderRadius: '40px', 
             outline: '1px solid',
             outlineColor:
               theme.palette.mode === 'light'
@@ -384,11 +384,11 @@ export default function Hero() {
               opacity: 0.8, // Change opacity on hover
             },
           })}
-        >
-          <Typography sx={{ fontSize: 26 }}>
-            Predicted price of your car is: <b>{modelResponse} KM</b>
-          </Typography>
-        </Box>
+          >
+            <Typography sx={{ fontSize: 24 }}>
+              Predicted price of your car is: <b>{modelResponse} KM</b>
+            </Typography>
+          </Box>
         
         
           )}
@@ -397,7 +397,7 @@ export default function Hero() {
         <Box
           id="image"
           sx={(theme) => ({
-            mt: { xs: 8, sm: 10 },
+            mt: { xs: 4, sm: 4 },
             alignSelf: 'center',
             height: { xs: 4000, sm: 1950, md: 1350 },
             width: '100%',
@@ -433,11 +433,10 @@ export default function Hero() {
         onClose={handleSnackbarClose}
       >
         <Alert onClose={handleSnackbarClose} severity="warning" sx={{ width: '100%' }}>
-          {snackbarOpen.displacement && 'Please enter a value between 0.6 and 7.3 for displacement.'}
+          {snackbarOpen.displacement && 'Please enter a value between 0.6 and 5.2 for displacement.'}
           {snackbarOpen.mileage && 'Please enter a value between 0 and 1,000,000 for mileage.'}
-          {snackbarOpen.kilowatts && 'Please enter a value between 34 and 560 for kilowatts.'}
+          {snackbarOpen.kilowatts && 'Please enter a value between 20 and 441 for kilowatts.'}
           {snackbarOpen.year && 'Please enter a value between 1950 and 2024 for year.'}
-          {snackbarOpen.rimSize && 'Please enter a value between 13 and 23 for rim size.'}
         </Alert>
       </Snackbar>
       </Container>

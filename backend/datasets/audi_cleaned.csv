@@ -678,7 +678,6 @@ displacement,doors,fuel,kilowatts,location,manufacturer,mileage,model,price,titl
 1.6,5-Apr,Dizel,85,Brčko,Audi,38000,A3,37900,"Audi A3 Sportback 1.6 tdi, 2020 god. Prešao 38.000 km",2020,Siva,TRUE,Sva četiri,Euro 5,17,Manuelni,Malo auto,FALSE,TRUE,TRUE,0,2
 1.6,5-Apr,Dizel,81,Banja Luka,Audi,38455,A3,37499,Audi A3 2016,2016,Siva,TRUE,Prednji,Euro 6,16,Manuelni,Malo auto,TRUE,FALSE,FALSE,0,2
 2,5-Apr,Dizel,140,Sarajevo - Centar,Audi,38900,Q5,89500,Audi Q5 40 TDI QUATTRO 38.000 km/garancija,2019,Smeđa,TRUE,Sva četiri,Euro 6,18,Automatik,SUV,TRUE,TRUE,TRUE,2,6
-1,5-Apr,Elektro,300,Banja Luka,Audi,38900,e-tron,88000,Audi e-tron 50,2020,Crna,TRUE,Sva četiri,Euro 5,16,Automatik,SUV,FALSE,TRUE,TRUE,2,6
 1.5,5-Apr,Benzin,110,Vogošća,Audi,39000,A3,38940,Audi A3 3.5TFSI 1.5 S-Tronic 2019g 39.000km,2019,Crna,FALSE,Prednji,Euro 6,16,Automatik,Malo auto,TRUE,FALSE,TRUE,2,2
 1.5,5-Apr,Benzin,110,Vogošća,Audi,39000,A3,38940,Audi A3 3.5TFSI 1.5 S-Tronic 2019g 39.000km,2019,Crna,FALSE,Prednji,Euro 6,16,Automatik,Malo auto,TRUE,FALSE,TRUE,2,2
 3,5-Apr,Dizel,256,Gradačac,Audi,39000,S6,93000,Audi S6 2020,2020,Siva,TRUE,Sva četiri,Euro 5,21,Automatik,Sportski/kupe,FALSE,TRUE,FALSE,2,5
@@ -1042,7 +1041,6 @@ displacement,doors,fuel,kilowatts,location,manufacturer,mileage,model,price,titl
 2,5-Apr,Dizel,100,Banja Luka,Audi,83299,A6,57700,Audi A6 2.0 TDI Ultra S-Tronic EXCLUSIVE LED FACELIFT,2018,Siva,TRUE,Prednji,Euro 5,16,Automatik,Limuzina,TRUE,TRUE,FALSE,2,3
 3,5-Apr,Dizel,210,Sarajevo - Novi Grad,Audi,83500,Q8,137900,Audi Q8 50 TDI Quattro 3x S-Line Pano Soft B&O,2019,Bijela,TRUE,Sva četiri,Euro 6,21,Automatik,SUV,FALSE,TRUE,TRUE,2,6
 3,5-Apr,Dizel,210,Ljubuški,Audi,83900,A8,124990,Audi A8 50 TDI Quattro Tiptronic Matrix LED 286 KS,2020,Siva,FALSE,Sva četiri,Euro 6,16,Automatik,Limuzina,FALSE,FALSE,FALSE,2,3
-1.4,5-Apr,Elektro,110,Donji Vakuf,Audi,84000,e-tron,40000,Audi e-tron 2017,2017,Srebrena,TRUE,Prednji,Euro 6,16,Automatik,SUV,FALSE,TRUE,FALSE,2,6
 1.6,5-Apr,Dizel,85,Banja Luka,Audi,84000,A3,31800,Audi A3 S-line S-tronic PRVI VLASNIK,2017,Bijela,TRUE,Prednji,Euro 5,17,Automatik,Malo auto,FALSE,TRUE,TRUE,2,2
 1.6,5-Apr,Dizel,82,Banja Luka,Audi,84000,A3,30500,Audi A3 2017 ****N O V A C I J E N A****,2017,Crna,TRUE,Prednji,Euro 6,16,Manuelni,Malo auto,FALSE,FALSE,TRUE,0,2
 3,5-Apr,Dizel,210,Mostar,Audi,84000,Q8,149000,"Audi Q8 50 TDI QUATTRO 3X S-LINE FULL OPREMA ""NOVO NOVO",2018,Zlatna,TRUE,Sva četiri,Euro 6,22,Automatik,SUV,TRUE,TRUE,TRUE,2,6
@@ -1381,7 +1379,6 @@ displacement,doors,fuel,kilowatts,location,manufacturer,mileage,model,price,titl
 4,5-Apr,Dizel,320,Travnik,Audi,107000,SQ7,165000,Audi SQ7,2020,Crna,TRUE,Sva četiri,Euro 5,22,Automatik,SUV,FALSE,TRUE,TRUE,2,6
 2,5-Apr,Dizel,100,Ilidža,Audi,107200,A4,32900,Audi A4 2.0TDi 136ks 9.2016 kao Nov,2016,Crna,TRUE,Prednji,Euro 6,16,Manuelni,Limuzina,FALSE,TRUE,FALSE,0,3
 3,5-Apr,Dizel,210,Banja Luka,Audi,107200,A6,104000,Audi A6 50 TDI Quattro,2019,Crna,TRUE,Sva četiri,Euro 6,18,Automatik,Limuzina,TRUE,TRUE,TRUE,2,3
-3.6,5-Apr,Benzin,184,Banja Luka,Audi,108000,V8,19900,Audi V8 D11 3.6 V8 Quattro / Siber / 4x4 / El. Paket,1990,Siva,TRUE,Sva četiri,Euro 5,16,Manuelni,Oldtimer,FALSE,FALSE,FALSE,0,0
 2,5-Apr,Dizel,110,Široki Brijeg,Audi,108000,Q3,41900,Audi Q3-QUATTRO- 108000 km... 2016...2.0 TDI,2016,Crna,TRUE,Sva četiri,Euro 5,16,Manuelni,SUV,FALSE,FALSE,TRUE,0,6
 2,5-Apr,Benzin,140,Doboj,Audi,108000,A4,46000,Audi A4 2.0 TFSI (140 kW) - 2016,2016,Smeđa,TRUE,Prednji,Euro 6,17,Automatik,Limuzina,FALSE,TRUE,FALSE,2,3
 1.6,5-Apr,Dizel,85,Živinice,Audi,108000,Q2,33900,Audi Q2 1.6 TDI 115KS 2017 Godiste *108.000km*,2017,Crna,TRUE,Prednji,Euro 6,16,Manuelni,SUV,FALSE,FALSE,FALSE,0,6
@@ -10485,7 +10482,6 @@ displacement,doors,fuel,kilowatts,location,manufacturer,mileage,model,price,titl
 2,5-Apr,Benzin,83,Banja Luka,Audi,250000,80,5000,Audi 80,1989,Siva,FALSE,Prednji,Euro 1,14,Manuelni,Oldtimer,FALSE,FALSE,FALSE,0,0
 2,5-Apr,Benzin,83,Sarajevo - Novo Sarajevo,Audi,250000,80,2300,Audi 80 1989,1989,Bordo,FALSE,Prednji,Euro 1,16,Manuelni,Oldtimer,FALSE,FALSE,TRUE,0,0
 1.6,5-Apr,Dizel,59,Zvornik,Audi,250000,80,1800,Audi 80 1989,1989,Plava,FALSE,Prednji,Euro 5,14,Manuelni,Oldtimer,FALSE,FALSE,TRUE,0,0
-3.6,5-Apr,Benzin,184,Bijeljina,Audi,250000,V8,21000,"Audi V8, 1989. - Unikatan primerak sa stilom i snagom!",1989,Siva,FALSE,Sva četiri,Euro 5,16,Automatik,Oldtimer,FALSE,FALSE,FALSE,2,0
 1.8,5-Apr,Benzin,54,Doboj,Audi,250000,80,1200,Audi 80,1989,Crna,FALSE,Prednji,Euro 5,16,Manuelni,Oldtimer,FALSE,FALSE,FALSE,0,0
 1.8,5-Apr,Plin,54,Prijedor,Audi,250000,80,1800,Audi 80 PLIN,1989,Siva,FALSE,Prednji,Euro 5,16,Manuelni,Oldtimer,FALSE,FALSE,FALSE,0,0
 1.9,3-Feb,Dizel,55,Bihać,Audi,250000,90,5700,Audi 90,1989,Crna,FALSE,Prednji,Euro 5,16,Manuelni,Oldtimer,FALSE,FALSE,FALSE,0,0

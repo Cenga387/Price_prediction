@@ -216,7 +216,7 @@ def audi():
         type = validate_and_convert_param('type', 'type', int)
 
         prediction, filtered_data = filter_and_predict(
-            volkswagen_all_columns, volkswagen_model, displacement, kilowatts, mileage, year, transmission, type
+            audi_all_columns, audi_model, displacement, kilowatts, mileage, year, transmission, type
         )
 
         return jsonify({'model': prediction, 'cars': filtered_data})

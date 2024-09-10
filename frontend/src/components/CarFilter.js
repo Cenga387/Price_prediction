@@ -21,10 +21,10 @@ export default function CarFilter() {
   const [selectedColor, setSelectedColor] = useState([]);
   const [transmission, setTransmission] = useState([]);
   const [selectedTransmission, setSelectedTransmission] = useState([]);
-  const [displacementRange, setDisplacementRange] = useState([0.6, 5]);
-  const [kilowattsRange, setKilowattsRange] = useState([48, 240]);
-  const [mileageRange, setMileageRange] = useState([0, 300000]);
-  const [priceRange, setPriceRange] = useState([0, 100000]);
+  const [displacementRange, setDisplacementRange] = useState([0.6, 5.2]);
+  const [kilowattsRange, setKilowattsRange] = useState([20, 4410]);
+  const [mileageRange, setMileageRange] = useState([0, 400000]);
+  const [priceRange, setPriceRange] = useState([0, 340000]);
   const [yearRange, setYearRange] = useState([1950, 2024]);
   const [cruiseControl, setCruiseControl] = useState('');
   const [airCondition, setAirCondition] = useState('');
@@ -133,6 +133,32 @@ export default function CarFilter() {
     }
   }, [manufacturer, selectedModels, selectedDoors, selectedFuel, selectedColor, selectedTransmission, displacementRange, kilowattsRange, mileageRange, priceRange, yearRange, cruiseControl, airCondition, navigation, registration]);
   
+  const handleReset = useCallback(() => {
+    setManufacturer('');
+    setModels([]);
+    setSelectedModels([]);
+    setDoors([]);
+    setSelectedDoors([]);
+    setFuel([]);
+    setSelectedFuel([]);
+    setColor([]);
+    setSelectedColor([]);
+    setTransmission([]);
+    setSelectedTransmission([]);
+    setDisplacementRange([0.6, 5.2]);
+    setKilowattsRange([20, 441]);
+    setMileageRange([0, 400000]);
+    setPriceRange([0, 340000]);
+    setYearRange([1950, 2024]);
+    setCruiseControl('');
+    setAirCondition('');
+    setNavigation('');
+    setRegistration('');
+    setCars([]);
+    setPage(1);
+    setHasMoreCars(true);
+  }, []);
+
   const handleShowMore = useCallback(async () => {
     try {
       const params = {
@@ -206,7 +232,7 @@ export default function CarFilter() {
   ), []);
 
   const renderBooleanRadioGroup = useCallback((label, value, onChange) => (
-    <FormControl component="fieldset" sx={{ width: { xs: '100%', sm: '100%' }, alignItems: 'center' }}>
+    <FormControl component="fieldset" sx={{ width: { xs: '100%', sm: '100%' }, alignItems: 'start' }}>
       <Typography>{label}</Typography>
       <RadioGroup value={value} onChange={(e) => onChange(e.target.value)}>
         <FormControlLabel value="TRUE" control={<Radio />} label="No" />
@@ -230,7 +256,7 @@ export default function CarFilter() {
             marginLeft: '0vw', // Ensures the box is positioned on the left side
             marginRight: '0vw',
 
-            marginTop: '3vw',
+            marginTop: 2,
             marginBottom: '1vw',
           })}
         >
@@ -242,7 +268,7 @@ export default function CarFilter() {
           variant="h1"
           sx={{
             fontSize: '3vh',
-            marginTop: 4,
+            marginTop: 2,
             textAlign: 'center',
           }}
         >
@@ -250,14 +276,14 @@ export default function CarFilter() {
         </Typography>
       </Container>
       <Container sx={{
-        pt: { xs: 4, sm: 12 },
+        pt: { xs: 4, sm: 6 },
         pb: { xs: 8, sm: 16 },
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
         alignContent: 'center',
         alignItems: 'center',
-        gap: { xs: 3, sm: 6 },
+        gap: { xs: 3, sm: 3 },
       }}>
         <Stack direction={{ xs: 'column', sm: 'row' }}
           alignSelf="center"
@@ -298,10 +324,10 @@ export default function CarFilter() {
           spacing={4}
           useFlexGap
           sx={{ width: { xs: '100%', sm: '100%' } }}>
-          {renderSlider('Displacement', displacementRange, setDisplacementRange, 0.6, 5, 0.1)}
-          {renderSlider('Kilowatts', kilowattsRange, setKilowattsRange, 48, 240, 1)}
-          {renderSlider('Mileage', mileageRange, setMileageRange, 0, 300000, 1000)}
-          {renderSlider('Price', priceRange, setPriceRange, 0, 100000, 1000)}
+          {renderSlider('Displacement', displacementRange, setDisplacementRange, 0.6, 5.2, 0.1)}
+          {renderSlider('Kilowatts', kilowattsRange, setKilowattsRange, 20, 441, 1)}
+          {renderSlider('Mileage', mileageRange, setMileageRange, 0, 400000, 2000)}
+          {renderSlider('Price', priceRange, setPriceRange, 0, 340000, 2000)}
           {renderSlider('Year', yearRange, setYearRange, 1950, 2024, 1)}
         </Stack>
 
@@ -314,11 +340,17 @@ export default function CarFilter() {
           {renderBooleanRadioGroup('Air Condition', airCondition, setAirCondition)}
           {renderBooleanRadioGroup('Navigation', navigation, setNavigation)}
           {renderBooleanRadioGroup('Registration', registration, setRegistration)}
+          <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center', gap: 2}}>
+          <Button variant="contained"  onClick={handleFilter} color="primary" size='medium' sx={{borderRadius: 15, width: {xs: '100%', sm: '200px'}}}>
+            Filter
+          </Button>
+          <Button variant="outlined" onClick={handleReset} color="secondary" size='medium' sx={{borderRadius: 15, width: {xs: '100%', sm: '200px'}}}>
+            Reset
+          </Button>
+        </Box>
         </Stack>
 
-        <Button variant="contained"  onClick={handleFilter} color="primary" size='medium' sx={{borderRadius: 15, width: {xs: '100%', sm: '200px'}}}>
-          Filter
-        </Button>
+ 
 
         <Grid container spacing={2}>
           {cars.map((car, index) => (

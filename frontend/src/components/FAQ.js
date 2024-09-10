@@ -19,8 +19,8 @@ export default function FAQ() {
     <Container
       id="faq"
       sx={{
-        pt: { xs: 4, sm: 12 },
-        pb: { xs: 8, sm: 16 },
+        pt: { xs: 4, sm: 4 },
+        pb: { xs: 8, sm: 17 },
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',
@@ -39,7 +39,7 @@ export default function FAQ() {
             textAlign: 'center', // Aligns text to the left inside the box
             marginLeft: '0vw', // Ensures the box is positioned on the left side
             marginRight: '0vw',
-            marginTop: '3vw',
+            marginTop: 2,
             marginBottom: '1vw',
           })}
         >
