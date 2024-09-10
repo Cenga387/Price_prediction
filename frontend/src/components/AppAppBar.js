@@ -1,7 +1,8 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-
+import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
+import { ClickAwayListener } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Container from '@mui/material/Container';
@@ -11,8 +12,11 @@ import Drawer from '@mui/material/Drawer';
 import MenuIcon from '@mui/icons-material/Menu';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
+import TextField from '@mui/material/TextField';
 import ToggleColorMode from './ToggleColorMode';
 import myLogo from '../assets/bloomteq_logo.png';
+import axios from 'axios';
+import SearchCard from './SearchCard';
 
 const logoStyle = {
   width: '120px',
@@ -26,6 +30,19 @@ const logoStyle = {
 
 function AppAppBar({ mode, toggleColorMode }) {
   const [open, setOpen] = React.useState(false);
+  const [openSearch, setSearchOpen] = React.useState(false);
+  const [keywords, setKeywords] = React.useState('');
+  const [searchResults, setSearchResults] = React.useState([]);
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    setSearchOpen((prev) => !prev);
+  };
+
+  const handleClickAway = () => {
+    setSearchOpen(false);
+    setSearchResults([]); // Clear search results
+  };
 
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
@@ -43,6 +60,25 @@ function AppAppBar({ mode, toggleColorMode }) {
       });
       setOpen(false);
     }
+  };
+
+  React.useEffect(() => {
+    if (keywords) {
+      axios.get(`/search?keywords=${keywords}`)
+        .then(response => {
+          setSearchResults(response.data.cars);
+        })
+        .catch(error => {
+          console.error('Error fetching search results:', error);
+        });
+    } else {
+      setSearchResults([]);
+    }
+  }, [keywords]);
+
+  const handleSearch = (event) => {
+    event.preventDefault();
+    navigate(`/search-results?keywords=${keywords}`);
   };
 
   return (
@@ -73,8 +109,8 @@ function AppAppBar({ mode, toggleColorMode }) {
               height: 100,
               border: '2px solid',
               borderColor: 'divider',
-              borderRadius: 15
-,              boxShadow:
+              borderRadius: 15,
+              boxShadow:
                 theme.palette.mode === 'light'
                   ? `0 0 1px rgba(85, 166, 246, 0.1), 1px 1.5px 2px -1px rgba(85, 166, 246, 0.15), 4px 4px 12px -2.5px rgba(85, 166, 246, 0.15)`
                   : '0 0 1px rgba(2, 31, 59, 0.7), 1px 1.5px 2px -1px rgba(2, 31, 59, 0.65), 4px 4px 12px -2.5px rgba(2, 31, 59, 0.65)',
@@ -137,6 +173,23 @@ function AppAppBar({ mode, toggleColorMode }) {
                 alignItems: 'center',
               }}
             >
+              <form onSubmit={handleSearch} style={{ display: 'flex', alignItems: 'center' }}>
+                <TextField
+                  onClick={handleClick}
+                  label="Search for cars..."
+                  variant="outlined"
+                  value={keywords}
+                  InputProps={{
+                    sx: { borderRadius: '2rem' },
+                  }}
+                  onChange={(e) => setKeywords(e.target.value)}
+                  size="small"
+                  sx={{ mr: 2, borderRadius: '1rem' }}
+                />
+                <Button type="submit" variant="contained" color="primary" sx={{ borderRadius: '2rem' }}>
+                  Search
+                </Button>
+              </form>
               <ToggleColorMode mode={mode} toggleColorMode={toggleColorMode} />
             </Box>
             <Box sx={{ display: { sm: '', md: 'none' } }}>
@@ -187,6 +240,19 @@ function AppAppBar({ mode, toggleColorMode }) {
           </Toolbar>
         </Container>
       </AppBar>
+      {openSearch && searchResults.length > 0 && (
+        <ClickAwayListener onClickAway={handleClickAway}>
+          <Box sx={ (theme) => ({pr: '1rem', pl: '1rem', pb: '1rem', width: '100%', height: 500, overflowY: 'scroll',               
+          bgcolor:
+                theme.palette.mode === 'light'
+                  ? 'rgb(255, 255, 255)'
+                  : 'rgb(20, 20, 20)', maxWidth: 600, position: 'absolute', top: '100px', left: '75%', transform: 'translateX(-50%)', borderBottomLeftRadius: '1rem', borderBottomRightRadius: '1rem', zIndex: 10 })}>
+            {searchResults.map((car, index) => (
+              <SearchCard key={index} car={car} />
+            ))}
+          </Box>
+        </ClickAwayListener>
+      )}
     </div>
   );
 }

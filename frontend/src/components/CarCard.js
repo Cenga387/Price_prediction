@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Card, CardActionArea, CardContent, CardMedia, Typography, Collapse, Modal, Box, IconButton, Container } from '@mui/material';
+import { Card, CardActionArea, CardContent, CardMedia, Typography, Collapse, Modal, Box, IconButton, } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
 import deafultCar from '../assets/deafult_car.png'
@@ -336,7 +336,6 @@ const CarCard = ({ car }) => {
         </CardActionArea>
       </Card>
 
-      {/* Modal for displaying full car information */}
       <Modal
         open={open}
         onClose={handleCloseModal}

@@ -11,9 +11,10 @@ import Footer from './components/Footer';
 import getLPTheme from './getLPTheme';
 import CarFilter from './components/CarFilter';
 import Chatbot from './components/ChatBot';
-
+import './css/scrollbar.css';
 
 export default function LandingPage() {
+  
   const [mode, setMode] = React.useState('light');
   const showCustomTheme = false;
 
@@ -25,6 +26,16 @@ export default function LandingPage() {
   };
 
   const appliedTheme = showCustomTheme ? LPtheme : defaultTheme;
+  React.useEffect(() => {
+    const root = document.documentElement;
+    if (mode === 'dark') {
+      root.style.setProperty('--scrollbar-thumb-bg', '#888');
+      root.style.setProperty('--scrollbar-thumb-hover-bg', '#555');
+    } else {
+      root.style.setProperty('--scrollbar-thumb-bg', '#ccc');
+      root.style.setProperty('--scrollbar-thumb-hover-bg', '#999');
+    }
+  }, [mode]);
 
   return (
     <ThemeProvider theme={appliedTheme}>

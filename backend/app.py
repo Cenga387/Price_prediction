@@ -148,6 +148,26 @@ def filter_and_predict(df, model, displacement, kilowatts, mileage, year, transm
 
     return prediction, filtered_data
 
+@app.route('/search', methods=['GET'])
+def search():
+    try:
+        keywords = request.args.get('keywords', '').lower()
+        if not keywords:
+            return jsonify({'error': 'No keywords provided'}), 400
+
+        # Select the appropriate dataset based on the manufacturer
+        df = all_cars
+
+        # Filter the dataset based on the keywords in the 'title' column
+        filtered_df = df[df['title'].str.lower().str.contains(keywords)]
+
+        # Get the first 3 matching cars
+        search_results = filtered_df.head(10).to_dict(orient='records')
+
+        return jsonify({'cars': search_results})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
 @app.route('/chatbot', methods=['POST'])
 def chatbot():
     try:

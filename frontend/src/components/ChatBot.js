@@ -5,7 +5,10 @@ import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios';
 
 const Chatbot = ({mode}) => {
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState(() => {
+    const savedMessages = localStorage.getItem('chatbotMessages');
+    return savedMessages ? JSON.parse(savedMessages) : [];
+  })
   const [inputMessage, setInputMessage] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const chatListRef = useRef(null);  
@@ -64,7 +67,7 @@ const Chatbot = ({mode}) => {
 
   const toggleChat = () => {
     setIsOpen(!isOpen);
-    if (!isOpen) {
+    if (!isOpen && messages.length === 0) {
       setMessages([
         {
           sender: 'Bot',
