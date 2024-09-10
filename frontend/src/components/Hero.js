@@ -158,7 +158,7 @@ export default function Hero() {
           flexDirection: 'column',
           alignItems: 'center',
           pt: { xs: 14, sm: 14 },
-          pb: { xs: 8, sm: 10 },
+          pb: { xs: 8, sm: 14 },
         }}
       >
         <Stack spacing={2} useFlexGap sx={{ width: { xs: '100%', sm: '100%' } }}>
@@ -387,6 +387,9 @@ export default function Hero() {
           >
             <Typography sx={{ fontSize: 24 }}>
               Predicted price of your car is: <b>{modelResponse} KM</b>
+            </Typography>
+            <Typography sx={{ fontSize: 18 }}>
+              R2 score is 0.94
             </Typography>
           </Box>
         

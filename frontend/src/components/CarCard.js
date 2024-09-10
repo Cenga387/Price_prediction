@@ -66,21 +66,31 @@ import TT from '../assets/audi_types/TT.png'
 import TT_RS from '../assets/audi_types/TT RS.png'
 import e_tron_GT from '../assets/audi_types/e-tron GT.png'
 
-// Mercedes types
-import limuzinaMercedes from '../assets/mercedes_types/limuzina_mercedes.png'
-import karavanMercedes from '../assets/mercedes_types/karavan_mercedes.png'
-import maloAutoMercedes from '../assets/mercedes_types/maloAuto_mercedes.png'
-import sportskiKupeMercedes from '../assets/mercedes_types/sportskiKupe_mercedes.png'
-import kombiMercedes from '../assets/mercedes_types/kombi_mercedes.png'
-import monovolumenMercedes from '../assets/mercedes_types/monovolumen_mercedes.png'
-import kabrioletMercedes from '../assets/mercedes_types/kabriolet_mercedes.png'
-import SUVMercedes from '../assets/mercedes_types/SUV_mercedes.png'
-import terenacMercedes from '../assets/mercedes_types/terenac_mercedes.png'
-import oldtimerMercedes from '../assets/mercedes_types/oldtimer_mercedes.png'
-import offroadMercedes from '../assets/mercedes_types/offroad_mercedes.png'
-import caddyMercedes from '../assets/mercedes_types/caddy_mercedes.png'
-import pickupMercedes from '../assets/mercedes_types/pickup_mercedes.png'
-import deafultMercedes from '../assets/mercedes_types/deafult_mercedes.png'
+//Skoda types
+import skoda105 from '../assets/skoda_types/105.png'
+import skoda120 from '../assets/skoda_types/120.png'
+import skoda130 from '../assets/skoda_types/130.png'
+import Citigo from '../assets/skoda_types/Citigo.png'
+import Enyaq from '../assets/skoda_types/Enyaq.png'
+import EnyaqCoupe from '../assets/skoda_types/Enyaq Coupe.png'
+import FabiaRS from '../assets/skoda_types/Fabia RS.png'
+import Fabia from '../assets/skoda_types/Fabia.png'
+import Favorit from '../assets/skoda_types/Favorit.png'
+import Felicia from '../assets/skoda_types/Felicia.png'
+import Octavia from '../assets/skoda_types/Octavia.png'
+import OctaviaRS from '../assets/skoda_types/Octavia RS.png'
+import OctaviaScout from '../assets/skoda_types/Octavia Scout.png'
+import OctaviaTour from '../assets/skoda_types/Octavia Tour.png'
+import Praktik from '../assets/skoda_types/Praktik.png'
+import Roomster from '../assets/skoda_types/Roomster.png'
+import Rapid from '../assets/skoda_types/Rapid.png'
+import Scala from '../assets/skoda_types/Scala.png'
+import Spaceback from '../assets/skoda_types/Spaceback.png'
+import Yeti from '../assets/skoda_types/Yeti.png'
+import Superb from '../assets/skoda_types/Superb.png'
+import Kodiaq from '../assets/skoda_types/Kodiaq.png'
+import Karoq from '../assets/skoda_types/Karoq.png'
+import Kamiq from '../assets/skoda_types/Kamiq.png'
 
 
 const CarCard = ({ car }) => {
@@ -167,22 +177,32 @@ const CarCard = ({ car }) => {
       e_tron_GT: e_tron_GT,
       default: A4,
     },
-    'Mercedes-Benz': {
-      Limuzina: limuzinaMercedes,
-      Karavan: karavanMercedes,
-      'Malo auto': maloAutoMercedes,
-      'Sportski/kupe': sportskiKupeMercedes,
-      Kombi: kombiMercedes,
-      Monovolumen: monovolumenMercedes,
-      Kabriolet: kabrioletMercedes,
-      SUV: SUVMercedes,
-      Terenac: terenacMercedes,
-      Oldtimer: oldtimerMercedes,
-      'Off-Road': offroadMercedes,
-      'Off Road': offroadMercedes,
-      Caddy: caddyMercedes,
-      'Pick up': pickupMercedes,
-      default: deafultMercedes,
+    'Škoda': {
+      '105': skoda105,
+      '120': skoda120,
+      '130': skoda130,
+      Citigo: Citigo,
+      Enyaq: Enyaq,
+      'Enyaq Coupé': EnyaqCoupe,
+      FabiaRS: FabiaRS,
+      Fabia: Fabia,
+      Favorit: Favorit,
+      Felicia: Felicia,
+      Octavia: Octavia,
+      'Octavia RS': OctaviaRS,
+      'Octavia Scout': OctaviaScout,
+      'Octavia Tour': OctaviaTour,
+      Praktik: Praktik,
+      Roomster: Roomster,
+      Rapid: Rapid,
+      Scala: Scala,
+      Spaceback: Spaceback,
+      Yeti: Yeti,
+      Superb: Superb,
+      Kodiaq: Kodiaq,
+      Karoq: Karoq,
+      Kamiq: Kamiq,
+      default: Fabia,      
     }
   };
 

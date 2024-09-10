@@ -128,10 +128,10 @@ def filter_and_predict(df, model, displacement, kilowatts, mileage, year, transm
 
     mileage_min = mileage - 35000
     mileage_max = mileage + 35000
-    price_min = prediction * 1
-    price_max = prediction * 10
-    min_year = year - 0.95
-    max_year = year + 1.15
+    price_min = prediction * 0.85
+    price_max = prediction * 1.15
+    min_year = year - 3
+    max_year = year + 3
 
     # Filter the dataset based on the input ranges
     filtered_df = df[
@@ -486,7 +486,7 @@ def get_models_by_manufacturer(manufacturer):
         models = volkswagen_all_columns['model'].unique().tolist()
     elif manufacturer == 'audi':
         models = audi_all_columns['model'].unique().tolist()
-    elif manufacturer == 'Škoda':
+    elif manufacturer == 'skoda':
         models = skoda_all_columns['model'].unique().tolist()
     else:
         return jsonify({'error': 'Manufacturer not found'}), 404
@@ -541,10 +541,10 @@ def filter_by_manufacturer_and_model():
         price_min = float(request.args.get('priceRangeMin', ''))
         price_max = float(request.args.get('priceRangeMax', ''))
         year_min = int(request.args.get('yearRangeMin', ''))
-        year_max = int(request.args.get('yearRangeMax', ''))
+        year_max = int(request.args.get('yearRangeMax', ''))       
         cruise_control = request.args.get('cruiseControl', '').upper() == 'TRUE'
         air_condition = request.args.get('airCondition', '').upper() == 'TRUE'
-        navigation = request.args.get('navigation', '').upper() == 'TRUE'
+        navigation = request.args.get('navigation', '').upper()  == 'TRUE'
         registration = request.args.get('registration', '').upper() == 'TRUE'
         page = int(request.args.get('page', 1))
         limit = int(request.args.get('limit', 12))
@@ -576,14 +576,14 @@ def filter_by_manufacturer_and_model():
             df = df[(df['price'] >= price_min) & (df['price'] <= price_max)]
         if year_min and year_max:
             df = df[(df['year'] >= year_min) & (df['year'] <= year_max)]
-        if cruise_control is not None:
-            df = df[df['cruiseControl'] == cruise_control]
-        if air_condition is not None:
-            df = df[df['airCondition'] == air_condition]
-        if navigation is not None:
-            df = df[df['navigation'] == navigation]
-        if registration is not None:
-            df = df[df['registration'] == registration]
+        if cruise_control in ['TRUE', 'FALSE']:
+            df = df[df['cruiseControl'] == (cruise_control == 'TRUE')]
+        if air_condition in ['TRUE', 'FALSE']:
+            df = df[df['airCondition'] == (air_condition == 'TRUE')]
+        if navigation in ['TRUE', 'FALSE']:
+            df = df[df['navigation'] == (navigation == 'TRUE')]
+        if registration in ['TRUE', 'FALSE']:
+            df = df[df['registration'] == (registration == 'TRUE')]
 
         print(f"Filtered DataFrame Shape: {df.shape}")
 

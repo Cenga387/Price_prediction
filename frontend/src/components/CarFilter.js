@@ -6,7 +6,7 @@ import axios from 'axios';
 // Set the base URL for axios requests
 axios.defaults.baseURL = 'http://localhost:5000';
 
-const MANUFACTURERS = ['Volkswagen', 'Skoda', 'Audi'];
+const MANUFACTURERS = ['Volkswagen', 'Audi', 'Škoda',];
 
 export default function CarFilter() {
   const [manufacturer, setManufacturer] = useState('');
@@ -64,7 +64,7 @@ export default function CarFilter() {
     const endpointMap = {
       'Volkswagen': '/volkswagen/models',
       'Audi': '/audi/models',
-      'Skoda': '/skoda/models'
+      'Škoda': '/skoda/models'
     };
 
     const endpoint = endpointMap[selectedManufacturer] || '';
