@@ -4,20 +4,51 @@ import CloseIcon from '@mui/icons-material/Close';
 
 import deafultCar from '../assets/deafult_car.png'
 // Volkswagen types
-import limuzinaVolkswagen from '../assets/volkswagen_types/limuzina_volkswagen.png';
-import karavanVolkswagen from '../assets/volkswagen_types/karavan_volkswagen.png';
-import terenacVolkswagen from '../assets/volkswagen_types/terenac_volkswagen.png';
-import maloAutoVolkswagen from '../assets/volkswagen_types/maloAuto_volkswagen.png';
-import caddyVolkswagen from '../assets/volkswagen_types/caddy_volkswagen.png';
-import SUVVolkswagen from '../assets/volkswagen_types/SUV_volkswagen.png';
-import monovolumenVolkswagen from '../assets/volkswagen_types/monovolumen_volkswagen.png';
-import kombiVolkswagen from '../assets/volkswagen_types/kombi_volkswagen.png';
-import sportskiKupeVolkswagen from '../assets/volkswagen_types/sportskiKupe_volkswagen.png';
-import oldtimerVolkswagen from '../assets/volkswagen_types/oldtimer_volkswagen.png';
-import kabrioletVolkswagen from '../assets/volkswagen_types/kabriolet_volkswagen.png';
-import pickupVolkswagen from '../assets/volkswagen_types/pickup_volkswagen.png';
-import offroadVolkswagen from '../assets/volkswagen_types/offroad_volkswagen.png';
-import defaultVolkswagen from '../assets/volkswagen_types/deafult_volkswagen.png';
+import T1 from '../assets/volkswagen_types/T1.png'
+import XL1 from '../assets/volkswagen_types/XL1.png'
+import VW181 from '../assets/volkswagen_types/181.png'
+import Atlas from '../assets/volkswagen_types/Atlas.png'
+import Routan from '../assets/volkswagen_types/Routan.png'
+import CC from '../assets/volkswagen_types/CC.png'
+import T3 from '../assets/volkswagen_types/T3.png'
+import Corrado from '../assets/volkswagen_types/Corrado.png'
+import Eos from '../assets/volkswagen_types/Eos.png'
+import Vento from '../assets/volkswagen_types/Vento.png'
+import Buggy from '../assets/volkswagen_types/Buggy.png'
+import LT from '../assets/volkswagen_types/LT.png'
+import Taigo from '../assets/volkswagen_types/Taigo.png'
+import Lupo from '../assets/volkswagen_types/Lupo.png'
+import Crafter from '../assets/volkswagen_types/Crafter.png'
+import T2 from '../assets/volkswagen_types/T2.png'
+import Phaeton from '../assets/volkswagen_types/Phaeton.png'
+import Fox from '../assets/volkswagen_types/Fox.png'
+import e_Golf from '../assets/volkswagen_types/e_Golf.png'
+import T_Cross from '../assets/volkswagen_types/T_Cross.png'
+import Up from '../assets/volkswagen_types/Up.png'
+import T7 from '../assets/volkswagen_types/T7.png'
+import T6 from '../assets/volkswagen_types/T6.png'
+import Buba_Beetle from '../assets/volkswagen_types/Buba_Beetle.png'
+import T4 from '../assets/volkswagen_types/T4.png'
+import ID_3 from '../assets/volkswagen_types/ID_3.png'
+import ID_5 from '../assets/volkswagen_types/ID_5.png'
+import ID_4 from '../assets/volkswagen_types/ID_4.png'
+import Touareg from '../assets/volkswagen_types/Touareg.png'
+import T_Roc from '../assets/volkswagen_types/T_Roc.png'
+import T5 from '../assets/volkswagen_types/T5.png'
+import Amarok from '../assets/volkswagen_types/Amarok.png'
+import Sharan from '../assets/volkswagen_types/Sharan.png'
+import Jetta from '../assets/volkswagen_types/Jetta.png'
+import Passat_CC from '../assets/volkswagen_types/Passat_CC.png'
+import Touran from '../assets/volkswagen_types/Touran.png'
+import Caddy from '../assets/volkswagen_types/Caddy.png'
+import Golf_Plus from '../assets/volkswagen_types/Golf_Plus.png'
+import Polo from '../assets/volkswagen_types/Polo.png'
+import Bora from '../assets/volkswagen_types/Bora.png'
+import Tiguan from '../assets/volkswagen_types/Tiguan.png'
+import Scirocco from '../assets/volkswagen_types/Scirocco.png'
+import Golf from '../assets/volkswagen_types/Golf.png'
+import Passat from '../assets/volkswagen_types/Passat.png'
+import Arteon from '../assets/volkswagen_types/Arteon.png'
 
 // Audi types
 import audi50 from '../assets/audi_types/50.png'
@@ -102,22 +133,52 @@ const CarCard = ({ car }) => {
   // Mapping of types to images
   const manufacturerToTypeImageMap = {
     Volkswagen: {
-      Limuzina: limuzinaVolkswagen,
-      Karavan: karavanVolkswagen,
-      Terenac: terenacVolkswagen,
-      'Malo auto': maloAutoVolkswagen,
-      Caddy: caddyVolkswagen,
-      SUV: SUVVolkswagen,
-      Monovolumen: monovolumenVolkswagen,
-      Kombi: kombiVolkswagen,
-      'Sportski/kupe': sportskiKupeVolkswagen,
-      Oldtimer: oldtimerVolkswagen,
-      Kabriolet: kabrioletVolkswagen,
-      'Pick-up': pickupVolkswagen,
-      'Off Road': offroadVolkswagen,
-      'Pick up': pickupVolkswagen,
-      'Off-Road': offroadVolkswagen,
-      default: defaultVolkswagen,
+      Arteon: Arteon,
+      Passat: Passat,
+      Golf: Golf,
+      Scirocco: Scirocco,
+      Tiguan: Tiguan,
+      Bora: Bora,
+      Polo: Polo,
+      'Golf Plus': Golf_Plus,
+      Caddy: Caddy,
+      Touran: Touran,
+      'Passat CC': Passat_CC,
+      Jetta: Jetta,
+      Sharan: Sharan,
+      Amarok: Amarok,
+      T5: T5,
+      'T-Roc': T_Roc,
+      Touareg: Touareg,
+      'ID.4': ID_4,
+      'ID.5': ID_5,
+      'ID.3': ID_3,
+      T4: T4,
+      'Buba / Beetle': Buba_Beetle,
+      T6: T6,
+      T7: T7,
+      'Up!': Up,
+      'T-Cross': T_Cross,
+      'e-Golf': e_Golf,
+      Fox: Fox,
+      Phaeton: Phaeton,
+      T2: T2,
+      Crafter: Crafter,
+      Lupo: Lupo,
+      Taigo: Taigo,
+      LT: LT,
+      Buggy: Buggy,
+      Vento: Vento,
+      Eos: Eos,
+      Corrado: Corrado,
+      T3: T3,
+      CC: CC,
+      Routan: Routan,
+      Atlas: Atlas,
+      '181': VW181,
+      XL1: XL1,
+      T1: T1,
+      default: Golf,
     },
     Audi: {
       '50': audi50,
