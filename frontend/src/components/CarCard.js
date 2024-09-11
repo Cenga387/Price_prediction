@@ -287,7 +287,7 @@ const CarCard = ({ car }) => {
           backgroundColor:
             theme.palette.mode === 'light'
               ? '#d1e0f0'
-              : theme.palette.grey[900],
+              : '#001529',
         })}
         
         onMouseEnter={handleExpandClick}
@@ -355,7 +355,7 @@ const CarCard = ({ car }) => {
                 : theme.palette.grey[900], 
             boxShadow: 24, 
             p: 4, 
-            borderRadius: 2, 
+            borderRadius: 8, 
             outline: 'none',
           })}
         >

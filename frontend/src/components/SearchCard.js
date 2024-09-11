@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Card, CardActionArea, CardContent, CardMedia, Typography, Collapse, Modal, Box, IconButton } from '@mui/material';
+import { Card, CardContent, CardMedia, Typography, Modal, Box, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
 import deafultCar from '../assets/deafult_car.png'
@@ -280,13 +280,13 @@ const SearchCard = ({ car }) => {
                 '&:hover': {
                     bgcolor:
                     theme.palette.mode === 'light'
-                      ? 'rgb(240, 240, 240)' // Light mode hover color
-                      : 'rgb(30, 30, 30)',  // Dark mode hover color
+                      ? 'rgb(240, 240, 240)' 
+                      : '#0C1C2C',  
                 },
                 bgcolor:
                 theme.palette.mode === 'light'
-                  ? 'rgb(255, 255, 255)'
-                  : 'rgb(0, 0, 0)', 
+                  ? `#d1e0f0` 
+                  : '#001529', 
                 position: 'relative', 
                 zIndex: 10, 
                 height: '8rem' })}

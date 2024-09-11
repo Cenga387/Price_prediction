@@ -152,17 +152,151 @@ def filter_and_predict(df, model, displacement, kilowatts, mileage, year, transm
 def search():
     try:
         keywords = request.args.get('keywords', '').lower()
+        page = int(request.args.get('page', 1))
+        limit = int(request.args.get('limit', 12))
+        
         if not keywords:
             return jsonify({'error': 'No keywords provided'}), 400
+        
+        keyword_list = keywords.split()
+        
+        keyword_to_dataset = {
+            'golf': volkswagen_all_columns,
+            'golf 7': volkswagen_all_columns,
+            'passat': volkswagen_all_columns,
+            'arteon': volkswagen_all_columns,
+            'scirocco': volkswagen_all_columns,
+            'tiguan': volkswagen_all_columns,
+            'bora': volkswagen_all_columns,
+            'polo': volkswagen_all_columns,
+            'golf plus': volkswagen_all_columns,
+            'caddy': volkswagen_all_columns,
+            'touran': volkswagen_all_columns,
+            'passat cc': volkswagen_all_columns,
+            'jetta': volkswagen_all_columns,
+            'sharan': volkswagen_all_columns,
+            'amarok': volkswagen_all_columns,
+            't5': volkswagen_all_columns,
+            't-roc': volkswagen_all_columns,
+            'touareg': volkswagen_all_columns,
+            'id.4': volkswagen_all_columns,
+            'id.5': volkswagen_all_columns,
+            'id.3': volkswagen_all_columns,
+            't4': volkswagen_all_columns,
+            'buba / beetle': volkswagen_all_columns,
+            't6': volkswagen_all_columns,
+            't7': volkswagen_all_columns,
+            'up!': volkswagen_all_columns,
+            't-cross': volkswagen_all_columns,
+            'e-golf': volkswagen_all_columns,
+            'fox': volkswagen_all_columns,
+            'phaeton': volkswagen_all_columns,
+            't2': volkswagen_all_columns,
+            'crafter': volkswagen_all_columns,
+            'lupo': volkswagen_all_columns,
+            'taigo': volkswagen_all_columns,
+            'lt': volkswagen_all_columns,
+            'buggy': volkswagen_all_columns,
+            'vento': volkswagen_all_columns,
+            'eos': volkswagen_all_columns,
+            'corrado': volkswagen_all_columns,
+            't3': volkswagen_all_columns,
+            'cc': volkswagen_all_columns,
+            'routan': volkswagen_all_columns,
+            'atlas': volkswagen_all_columns,
+            '181': volkswagen_all_columns,
+            'xl1': volkswagen_all_columns,
+            't1': volkswagen_all_columns,
+            'audi': audi_all_columns,
+            '50': audi_all_columns,
+            '80': audi_all_columns,
+            '90': audi_all_columns,
+            '100': audi_all_columns,
+            'a1': audi_all_columns,
+            'a2': audi_all_columns,
+            'a3': audi_all_columns,
+            'a4': audi_all_columns,
+            'a4 allroad': audi_all_columns,
+            'a5': audi_all_columns,
+            'a6': audi_all_columns,
+            'a6 allroad': audi_all_columns,
+            'a7': audi_all_columns,
+            'a8': audi_all_columns,
+            'b4': audi_all_columns,
+            'cabriolet': audi_all_columns,
+            's1': audi_all_columns,
+            's3': audi_all_columns,
+            's4': audi_all_columns,
+            's5': audi_all_columns,
+            's6': audi_all_columns,
+            's7': audi_all_columns,
+            's8': audi_all_columns,
+            'sq3': audi_all_columns,
+            'q2': audi_all_columns,
+            'q3': audi_all_columns,
+            'q4 e-tron': audi_all_columns,
+            'q5': audi_all_columns,
+            'q7': audi_all_columns,
+            'q8': audi_all_columns,
+            'q8 e-tron': audi_all_columns,
+            'sq5': audi_all_columns,
+            'sq7': audi_all_columns,
+            'sq8': audi_all_columns,
+            'rs3': audi_all_columns,
+            'rs4': audi_all_columns,
+            'rs5': audi_all_columns,
+            'rs6': audi_all_columns,
+            'rs7': audi_all_columns,
+            'rsq3': audi_all_columns,
+            'rsq8': audi_all_columns,
+            'r8': audi_all_columns,
+            'tt': audi_all_columns,
+            'tt_rs': audi_all_columns,
+            'e_tron_gt': audi_all_columns,
+            'skoda': skoda_all_columns,
+            '105': skoda_all_columns,
+            '120': skoda_all_columns,
+            '130': skoda_all_columns,
+            'citigo': skoda_all_columns,
+            'enyaq': skoda_all_columns,
+            'enyaq coupé': skoda_all_columns,
+            'fabia rs': skoda_all_columns,
+            'fabia': skoda_all_columns,
+            'favorit': skoda_all_columns,
+            'felicia': skoda_all_columns,
+            'octavia': skoda_all_columns,
+            'octavia rs': skoda_all_columns,
+            'octavia scout': skoda_all_columns,
+            'octavia tour': skoda_all_columns,
+            'praktik': skoda_all_columns,
+            'roomster': skoda_all_columns,
+            'rapid': skoda_all_columns,
+            'scala': skoda_all_columns,
+            'spaceback': skoda_all_columns,
+            'yeti': skoda_all_columns,
+            'superb': skoda_all_columns,
+            'kodiaq': skoda_all_columns,
+            'karoq': skoda_all_columns,
+            'kamiq': skoda_all_columns
+        }
 
-        # Select the appropriate dataset based on the manufacturer
         df = all_cars
+
+        for keyword in keyword_list:
+            if keyword in keyword_to_dataset:
+                df = keyword_to_dataset[keyword]
+                break
 
         # Filter the dataset based on the keywords in the 'title' column
         filtered_df = df[df['title'].str.lower().str.contains(keywords)]
 
+        start = (page - 1) * limit
+        end = start + limit
+        paginated_df = filtered_df.iloc[start:end]
+
+
         # Get the first 3 matching cars
-        search_results = filtered_df.head(10).to_dict(orient='records')
+        search_results = paginated_df.head(24).to_dict(orient='records')
 
         return jsonify({'cars': search_results})
     except Exception as e:

@@ -127,6 +127,7 @@ function AppAppBar({ mode, toggleColorMode }) {
                 src={myLogo}
                 style={logoStyle}
                 alt="bloomteq logo"
+                onClick={() => navigate('/')}
               />
               <Box sx={{ display: { xs: 'none', md: 'flex' }, ml: 2 }}>
                 <MenuItem
@@ -184,7 +185,7 @@ function AppAppBar({ mode, toggleColorMode }) {
                   }}
                   onChange={(e) => setKeywords(e.target.value)}
                   size="small"
-                  sx={{ mr: 2, borderRadius: '1rem' }}
+                  sx={{ mr: 2, borderRadius: '1rem', width: '30rem' }}
                 />
                 <Button type="submit" variant="contained" color="primary" sx={{ borderRadius: '2rem' }}>
                   Search
@@ -243,10 +244,10 @@ function AppAppBar({ mode, toggleColorMode }) {
       {openSearch && searchResults.length > 0 && (
         <ClickAwayListener onClickAway={handleClickAway}>
           <Box sx={ (theme) => ({pr: '1rem', pl: '1rem', pb: '1rem', width: '100%', height: 500, overflowY: 'scroll',               
-          bgcolor:
+          backgroundImage:
                 theme.palette.mode === 'light'
-                  ? 'rgb(255, 255, 255)'
-                  : 'rgb(20, 20, 20)', maxWidth: 600, position: 'absolute', top: '100px', left: '75%', transform: 'translateX(-50%)', borderBottomLeftRadius: '1rem', borderBottomRightRadius: '1rem', zIndex: 10 })}>
+                  ? 'radial-gradient(circle, #a7bdd4, #b0c0d1, #a7bdd4, #b0c0d1)'
+                  : 'radial-gradient(circle, #031526, #0A161C)', maxWidth: 600, position: 'absolute', top: '100px', left: '75%', transform: 'translateX(-50%)', borderBottomLeftRadius: '1rem', borderBottomRightRadius: '1rem', zIndex: 10 })}>
             {searchResults.map((car, index) => (
               <SearchCard key={index} car={car} />
             ))}
