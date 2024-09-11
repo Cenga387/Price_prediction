@@ -7,7 +7,7 @@ import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import heroImage from '../assets/merc_hero.png'
+import heroImage from '../assets/audi_types/R8.png'
 import CarCard from './CarCard';
 import Grid from '@mui/material/Grid';
 import InputLabel from '@mui/material/InputLabel';
@@ -24,26 +24,61 @@ const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
+const carTypes = {
+   volkswagen: [
+    { label: 'Off-road', value: 0 },
+    { label: 'Oldtimer', value: 1 },
+    { label: 'Cabriolet', value: 2 },
+    { label: 'Malo auto', value: 3 },
+    { label: 'Monovolumen', value: 4 },
+    { label: 'Sportski/kupe', value: 5 },
+    { label: 'Limuzina', value: 6 },
+    { label: 'Caddy', value: 7 },
+    { label: 'Kombi', value: 8 },
+    { label: 'SUV', value: 9 },
+    { label: 'Pickup', value: 10 }
+  ],
+  audi: [
+    { label: 'Oldtimer', value: 0 },
+    { label: 'Cabriolet', value: 1 },
+    { label: 'Malo auto', value: 2 },
+    { label: 'Limuzina', value: 3 },
+    { label: 'Karavan', value: 4 },
+    { label: 'Sportski/kupe', value: 5 },
+    { label: 'SUV', value: 6 }
+  ],
+  skoda: [
+    { label: 'Malo auto', value: 0 },
+    { label: 'Caddy', value: 1 },
+    { label: 'Limuzina', value: 2 },
+    { label: 'Karavan', value: 3 },
+    { label: 'Sportski/kupe', value: 4 },
+    { label: 'SUV', value: 5 }
+  ]
+};
+
 export default function Hero() {
 
   const [modelResponse, setModelResponse] = useState(null);
   const [displacement, setDisplacement] = useState('');
   const [mileage, setMileage] = useState('');
-  const [rimSize, setRimSize] = useState('');
   const [year, setYear] = useState('');
   const [kilowatts, setKilowatts] = useState('');
   const [manufacturer, setManufacturer] = useState('');
+  const [transmission, setTransmission] = useState('');
   const [cars, setCars] = useState([])
+  const [carType, setCarType] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState({
       displacement: false,
       mileage: false,
       kilowatts: false,
       year: false,
-      rimSize: false,
+      carType: false,
+      transmission: false,
   });
 
   const handleSnackbarClose = () => {
-    setSnackbarOpen({ displacement: false, mileage: false, kilowatts: false, year: false, rimSize: false });
+    setSnackbarOpen({ displacement: false, mileage: false, kilowatts: false, year: false, carType: false, transmission: false });
   };
 
   const handleDisplacementChange = (e) => {
@@ -61,36 +96,37 @@ export default function Hero() {
   const handleKilowattsChange = (e) => {
     const value = parseInt(e.target.value, 10);
 
-    if (value < 48 || value > 240) {
+    if (value < 34 || value > 560) {
       setSnackbarOpen({ ...snackbarOpen, kilowatts: true });
     } 
   };
 
+  const handleCarTypeChange = (event) => {
+    setCarType(event.target.value);
+  };
+
   const handleYearChange = (e) => {
     const value = parseInt(e.target.value, 10);
-    if (value < 0 || value > 1000000) {
+    if (value < 1950 || value > 2024) {
       setSnackbarOpen({ ...snackbarOpen, year: true });
     } 
   };
 
-  const handleRimSizeChange = (e) => {
-    const value = parseInt(e.target.value, 10);
-    if (value < 0 || value > 1000000) {
-      setSnackbarOpen({ ...snackbarOpen, rimSize: true });
-    }
-  };
   const handleManufacturerChange = (event) => {
     setManufacturer(event.target.value);
+  }
+  const handleTransmissionChange = (event) => {
+    setTransmission(event.target.value);
   }
   
   const handlePredict = async () => {
     let endpoint = '';
-    if (manufacturer === 'Volkswagen') {
+    if (manufacturer === 'volkswagen') {
       endpoint = '/volkswagen';
-    } else if (manufacturer === 'Audi') {
+    } else if (manufacturer === 'audi') {
       endpoint = '/audi';
-    } else if (manufacturer === 'Mercedes') {
-      endpoint = '/mercedes';
+    } else if (manufacturer === 'skoda') {
+      endpoint = '/skoda';
     }
 
     try {
@@ -100,7 +136,8 @@ export default function Hero() {
           mileage: parseInt(mileage, 10),
           year: parseInt(year, 10),
           kilowatts: parseInt(kilowatts),
-          rimSize: parseInt(rimSize),
+          transmission: parseInt(transmission),
+          type: parseInt(carType),
         }
       });
       setModelResponse(response.data.model);
@@ -110,42 +147,31 @@ export default function Hero() {
     }
   };
 
-  const isButtonDisabled = !rimSize ||  !kilowatts || !mileage || !displacement || !manufacturer;
+  const isButtonDisabled = !kilowatts || !mileage || !displacement || !manufacturer;
 
 
   return (
-    <Box
-      id="hero"
-      sx={(theme) => ({
-        width: '100%',
-        backgroundImage:
-          theme.palette.mode === 'light'
-            ? 'linear-gradient(180deg, #CEE5FD, #FFF)'
-            : `linear-gradient(#02294F, ${alpha('#090E10', 0.0)})`,
-        backgroundSize: '100% 20%',
-        backgroundRepeat: 'no-repeat',
-      })}
-    >
+    <Box id="hero">
       <Container
         sx={{
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           pt: { xs: 14, sm: 14 },
-          pb: { xs: 8, sm: 12 },
+          pb: { xs: 8, sm: 14 },
         }}
       >
         <Stack spacing={2} useFlexGap sx={{ width: { xs: '100%', sm: '100%' } }}>
-          <Stack direction={{xs: 'column', md: 'row'}} spacing={2} alignItems='center'>
+          <Stack direction={{xs: 'column', md: 'row'}} spacing={2} alignItems='center' sx={{marginBottom: 2, marginTop: 4}}>
             <Container sx={{justifyContent: 'center', alignItems: 'center'}}>
               <Typography
-                variant="h1"
+                variant="h3"
                 sx={{
                   display: 'flex',
                   width: '100%',
                   alignSelf: 'center',
                   textAlign: 'center',
-                  fontSize: 'clamp(3.5rem, 10vw, 4rem)',
+                  
                 }}
               >
                 Welcome to our car price prediction AI
@@ -168,14 +194,18 @@ export default function Hero() {
               component="img"
               sx={{
                 width: 500,
-                height: 400,
+                height: 300,
                 objectFit: 'cover',
               }}
               alt="Description of the image"
               src={heroImage}
             />
           </Stack>
-          <Box sx={{width: '100%'}}>
+          <Stack 
+            direction={{ xs: 'column', sm: 'row' }}
+            spacing={1}
+            sx={{ width: { xs: '100%', sm: '100%' } }}
+            >
             <FormControl size='small' sx={{width: {xs: '100%', sm: '100%'}}}>
               <InputLabel id="demo-simple-select-autowidth-label">Manufacturer</InputLabel>
               <Select
@@ -187,17 +217,49 @@ export default function Hero() {
                 label="Manufacturer"
               >
                 <MenuItem value="None"><em>None</em></MenuItem>
-                <MenuItem value='Volkswagen'>Volkswagen</MenuItem>
-                <MenuItem value='Mercedes'>Mercedes</MenuItem>
-                <MenuItem value='Audi'>Audi</MenuItem>
+                <MenuItem value='volkswagen'>Volkswagen</MenuItem>
+                <MenuItem value='skoda'>Skoda</MenuItem>
+                <MenuItem value='audi'>Audi</MenuItem>
               </Select>
             </FormControl>
-          </Box>
+            <FormControl size='small' sx={{width: {xs: '100%', sm: '100%'}}}>
+              <InputLabel id="demo-simple-select-autowidth-label">Transmission</InputLabel>
+              <Select
+                labelId="transmission-label"
+                id="transmission"
+                value={transmission}
+                onChange={handleTransmissionChange}
+                sx={{borderRadius: 8, width: '100%'}} 
+                label="Transmission"
+              >
+                <MenuItem value={0}>Manuelni</MenuItem>
+                <MenuItem value={1}>Polu-automatik</MenuItem>
+                <MenuItem value={2}>Automatik</MenuItem>
+              </Select>
+            </FormControl>
+            <FormControl size='small' sx={{width: {xs: '100%', sm: '100%'}}}>
+              <InputLabel id="car-type-label">Car Type</InputLabel>
+              <Select
+                labelId="car-type-label"
+                id="car-type"
+                value={carType}
+                onChange={handleCarTypeChange}
+                sx={{borderRadius: 8, width: '100%'}} 
+                label="Car Type"
+              >
+                {manufacturer && carTypes[manufacturer] ? (
+                  carTypes[manufacturer].map((type) => (
+                    <MenuItem key={type.value} value={type.value}>{type.label}</MenuItem>
+                  ))
+                ) : (
+                  <MenuItem value=""><em>Select Manufacturer First</em></MenuItem>
+                )}
+              </Select>
+            </FormControl>
+          </Stack>
           <Stack
             direction={{ xs: 'column', sm: 'row' }}
-            alignSelf="center"
             spacing={1}
-            useFlexGap
             sx={{ width: { xs: '100%', sm: '100%' } }}
           >
             <TextField
@@ -212,13 +274,14 @@ export default function Hero() {
               inputProps={{
                 autoComplete: 'off',
                 'aria-label': 'Enter displacement',
-                min: 0,
+                min: 0.6,
+                max: 7.3,
                 step: 0.1,
               }}
               InputProps={{
                 sx:{ borderRadius: 15,}
               }}
-              sx={{ width: { xs: '100%', sm: '200px' } }}
+              sx={{ width: { xs: '100%', sm: '100%' } }}
               type='number'
             />
             <TextField
@@ -234,12 +297,13 @@ export default function Hero() {
                 autoComplete: 'off',
                 'aria-label': 'Enter mileage',
                 min: 0,
+                max: 1_000_000,
                 step: 1000,
               }}
               InputProps={{
                 sx:{ borderRadius: 15, },
               }}
-              sx={{ width: { xs: '100%', sm: '200px' } }}
+              sx={{ width: { xs: '100%', sm: '100%' } }}
               type='number'
             />
             <TextField
@@ -260,7 +324,7 @@ export default function Hero() {
               InputProps={{
                 sx:{ borderRadius: 15, width: '100%' },
               }}
-              sx={{ width: { xs: '100%', sm: '200px' } }}
+              sx={{ width: { xs: '100%', sm: '100%' } }}
               type= 'number'
             />
             <TextField
@@ -281,35 +345,14 @@ export default function Hero() {
               InputProps={{
                 sx:{ borderRadius: 15}  
               }}
-              sx={{ width: { xs: '100%', sm: '200px' } }}
-              type='number'
-            />
-            <TextField
-              id="rimsize"
-              hiddenLabel
-              size="small"
-              variant="outlined"
-              aria-label="Enter rim size"
-              placeholder="Rim size"
-              onChange={(e) => setRimSize(e.target.value)}
-              onBlur={handleRimSizeChange}
-              inputProps={{
-                autoComplete: 'off',
-                'aria-label': 'Enter kilowatts',
-                min: 13,
-                max: 23
-              }}
-              InputProps={{
-                sx:{ borderRadius: 15, }  
-              }}
-              sx={{ width: { xs: '100%', sm: '200px' } }}
+              sx={{ width: { xs: '100%', sm: '100%' } }}
               type='number'
             />
             <Button 
               variant="contained" 
               color="primary" 
               size='medium' 
-              sx={{borderRadius: 15, width: {xs: '100%', sm: '200px'}}}
+              sx={{borderRadius: 15, width: {xs: '100%', sm: '100%'}}}
               onClick={handlePredict}
               disabled={isButtonDisabled}
             >
@@ -317,16 +360,47 @@ export default function Hero() {
             </Button>
           </Stack>
           {modelResponse &&(
-          <Box sx={{alignSelf: 'center', justifySelf: 'center'}}>
-            <Typography sx={{fontSize: 16}}>Predicted  price of your car is: {modelResponse} KM</Typography>
+          <Box
+          sx={(theme) => ({
+            alignSelf: 'center',
+            justifySelf: 'center',
+            padding: '16px', 
+            borderRadius: '40px', 
+            outline: '1px solid',
+            outlineColor:
+              theme.palette.mode === 'light'
+                ? alpha('#BFCCD9', 0.5)
+                : alpha('#9CCCFC', 0.1),
+            boxShadow:
+            theme.palette.mode === 'light'
+              ? `0 0 12px 8px ${alpha('#9CCCFC', 0.4)}`
+              : `0 0 24px 12px ${alpha('#033363', 0.2)}`, // Optional: Adds a subtle shadow
+            backgroundColor:
+              theme.palette.mode === 'light'
+                ? '#d1e0f0'
+                : theme.palette.grey[900],
+            transition: 'opacity 0.3s ease', // Smooth transition for opacity change
+            '&:hover': {
+              opacity: 0.8, // Change opacity on hover
+            },
+          })}
+          >
+            <Typography sx={{ fontSize: 24 }}>
+              Predicted price of your car is: <b>{modelResponse} KM</b>
+            </Typography>
+            <Typography sx={{ fontSize: 18 }}>
+              R2 score is 0.94
+            </Typography>
           </Box>
+        
+        
           )}
         </Stack>
         {modelResponse &&(
         <Box
           id="image"
           sx={(theme) => ({
-            mt: { xs: 8, sm: 10 },
+            mt: { xs: 4, sm: 4 },
             alignSelf: 'center',
             height: { xs: 4000, sm: 1950, md: 1350 },
             width: '100%',
@@ -343,8 +417,8 @@ export default function Hero() {
                 : alpha('#9CCCFC', 0.1),
             boxShadow:
               theme.palette.mode === 'light'
-                ? `0 0 12px 8px ${alpha('#9CCCFC', 0.2)}`
-                : `0 0 24px 12px ${alpha('#033363', 0.2)}`,
+                ? `0 0 12px 8px ${alpha('#9CCCFC', 0.9)}`
+                : `0 0 24px 12px ${alpha('#033363', 0.4)}`,
           })}
         >
           <Grid container spacing={2}>
@@ -362,11 +436,10 @@ export default function Hero() {
         onClose={handleSnackbarClose}
       >
         <Alert onClose={handleSnackbarClose} severity="warning" sx={{ width: '100%' }}>
-          {snackbarOpen.displacement && 'Please enter a value between 0.6 and 7.3 for displacement.'}
-          {snackbarOpen.mileage && 'Please enter a value between 0 and 1000000 for mileage.'}
-          {snackbarOpen.kilowatts && 'Please enter a value between 34 and 540 for kilowatts.'}
+          {snackbarOpen.displacement && 'Please enter a value between 0.6 and 5.2 for displacement.'}
+          {snackbarOpen.mileage && 'Please enter a value between 0 and 1,000,000 for mileage.'}
+          {snackbarOpen.kilowatts && 'Please enter a value between 20 and 441 for kilowatts.'}
           {snackbarOpen.year && 'Please enter a value between 1950 and 2024 for year.'}
-          {snackbarOpen.rimSize && 'Please enter a value between 13 and 23 for rim size.'}
         </Alert>
       </Snackbar>
       </Container>
