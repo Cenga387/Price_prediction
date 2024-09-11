@@ -320,7 +320,7 @@ def chatbot():
                 {"role": "user", "content": user_input},
                 {"role": "assistant", "content": "Hi, I'm an AI chatbot that is an expert in cars. How can I help you today?"}
             ],
-            max_tokens=1000,
+            max_tokens=500,
             temperature=0.3,
             n=1
         )
