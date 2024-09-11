@@ -185,7 +185,7 @@ function AppAppBar({ mode, toggleColorMode }) {
                   }}
                   onChange={(e) => setKeywords(e.target.value)}
                   size="small"
-                  sx={{ mr: 2, borderRadius: '1rem', width: '30rem' }}
+                  sx={{ mr: 2, borderRadius: '1rem' }}
                 />
                 <Button type="submit" variant="contained" color="primary" sx={{ borderRadius: '2rem' }}>
                   Search

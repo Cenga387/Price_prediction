@@ -234,8 +234,8 @@ const CarCard = ({ car }) => {
       RSQ8: RSQ8,
       R8: R8,
       TT: TT,
-      TT_RS: TT_RS,
-      e_tron_GT: e_tron_GT,
+      'TT RS': TT_RS,
+      'e-tron GT': e_tron_GT,
       default: A4,
     },
     'Škoda': {
@@ -352,7 +352,7 @@ const CarCard = ({ car }) => {
             backgroundColor:
               theme.palette.mode === 'light'
                 ? `#d1e0f0` 
-                : theme.palette.grey[900], 
+                : '#001529', 
             boxShadow: 24, 
             p: 4, 
             borderRadius: 8, 

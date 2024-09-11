@@ -4,7 +4,6 @@ import pandas as pd
 import joblib
 import logging
 import numpy as np
-import openai
 from openai import OpenAI
 from openai import OpenAIError
 import os
@@ -130,8 +129,8 @@ def filter_and_predict(df, model, displacement, kilowatts, mileage, year, transm
     mileage_max = mileage + 35000
     price_min = prediction * 0.85
     price_max = prediction * 1.15
-    min_year = year - 3
-    max_year = year + 3
+    min_year = year - 2
+    max_year = year + 2
 
     # Filter the dataset based on the input ranges
     filtered_df = df[
