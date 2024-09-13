@@ -263,11 +263,10 @@ const SearchCard = ({ car }) => {
       const handleCloseModal = () => {
         setOpen(false);
       };
-    // Select image based on manufacturer and type
     const carImage =
         manufacturerToTypeImageMap[car.manufacturer]?.[car.model] ||
         manufacturerToTypeImageMap[car.manufacturer]?.default ||
-        deafultCar; // Fallback in case manufacturer/type not found
+        deafultCar; 
 
         return (
             <>

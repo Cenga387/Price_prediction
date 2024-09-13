@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { CssBaseline, Box, Typography, Grid, Button } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
-import AppAppBar from './AppAppBar';
+import Header from './Header';
 import CarCard from './CarCard';
 import { useThemeContext } from '../ThemeContext';
 
@@ -64,7 +64,7 @@ const SearchResults = () => {
       })}
     >
       <CssBaseline />
-      <AppAppBar mode={mode} toggleColorMode={toggleColorMode} />
+      <Header mode={mode} toggleColorMode={toggleColorMode} />
       <Typography variant="h4" gutterBottom>
         Search Results for "{keywords}"
       </Typography>

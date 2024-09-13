@@ -374,14 +374,14 @@ export default function Hero() {
             boxShadow:
             theme.palette.mode === 'light'
               ? `0 0 12px 8px ${alpha('#9CCCFC', 0.4)}`
-              : `0 0 24px 12px ${alpha('#033363', 0.2)}`, // Optional: Adds a subtle shadow
+              : `0 0 24px 12px ${alpha('#033363', 0.2)}`,
             backgroundColor:
               theme.palette.mode === 'light'
                 ? '#d1e0f0'
                 : theme.palette.grey[900],
-            transition: 'opacity 0.3s ease', // Smooth transition for opacity change
+            transition: 'opacity 0.3s ease', 
             '&:hover': {
-              opacity: 0.8, // Change opacity on hover
+              opacity: 0.8, 
             },
           })}
           >

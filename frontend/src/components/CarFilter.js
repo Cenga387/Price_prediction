@@ -3,10 +3,9 @@ import { FormControl, InputLabel, MenuItem, Select, Button, Stack, Container, Gr
 import CarCard from './CarCard';
 import axios from 'axios';
 
-// Set the base URL for axios requests
 axios.defaults.baseURL = 'http://localhost:5000';
 
-const MANUFACTURERS = ['Volkswagen', 'Audi', 'Škoda',];
+const MANUFACTURERS = ['Volkswagen', 'Audi', 'Škoda'];
 
 export default function CarFilter() {
   const [manufacturer, setManufacturer] = useState('');
@@ -22,7 +21,7 @@ export default function CarFilter() {
   const [transmission, setTransmission] = useState([]);
   const [selectedTransmission, setSelectedTransmission] = useState([]);
   const [displacementRange, setDisplacementRange] = useState([0.6, 5.2]);
-  const [kilowattsRange, setKilowattsRange] = useState([20, 4410]);
+  const [kilowattsRange, setKilowattsRange] = useState([20, 441]);
   const [mileageRange, setMileageRange] = useState([0, 400000]);
   const [priceRange, setPriceRange] = useState([0, 340000]);
   const [yearRange, setYearRange] = useState([1950, 2024]);
@@ -34,11 +33,11 @@ export default function CarFilter() {
   const [hasMoreCars, setHasMoreCars] = useState(true);
 
   useEffect(() => {
-    if (selectedModels.length > 0) {
+    if (manufacturer) {
       const fetchFilterOptions = async () => {
         try {
           const response = await axios.get('/filter-options', {
-            params: {manufacturer, models: selectedModels.join(',') }
+            params: { manufacturer, models: selectedModels.join(',') }
           });
           setDoors(response.data.doors);
           setFuel(response.data.fuel);
@@ -49,8 +48,22 @@ export default function CarFilter() {
         }
       };
       fetchFilterOptions();
+    } else {
+      const fetchDefaultFilterOptions = async () => {
+        try {
+          const response = await axios.get('/default-filter-options');
+          setDoors(response.data.doors);
+          setFuel(response.data.fuel);
+          setColor(response.data.color);
+          setTransmission(response.data.transmission);
+          setModels(response.data.models);
+        } catch (error) {
+          console.error('Error fetching default filter options:', error);
+        }
+      };
+      fetchDefaultFilterOptions();
     }
-  }, [manufacturer,selectedModels]);
+  }, [manufacturer, selectedModels]);
 
   const handleManufacturerChange = useCallback((event) => {
     const selectedManufacturer = event.target.value;
@@ -61,43 +74,57 @@ export default function CarFilter() {
     setSelectedColor([]);
     setSelectedTransmission([]);
 
-    const endpointMap = {
-      'Volkswagen': '/volkswagen/models',
-      'Audi': '/audi/models',
-      'Škoda': '/skoda/models'
-    };
+    if (selectedManufacturer) {
+      const endpointMap = {
+        'Volkswagen': '/volkswagen/models',
+        'Audi': '/audi/models',
+        'Škoda': '/skoda/models'
+      };
 
-    const endpoint = endpointMap[selectedManufacturer] || '';
+      const endpoint = endpointMap[selectedManufacturer] || '';
 
-    if (!endpoint) {
-      setModels([]);
-      setDoors([]);
-      setFuel([]);
-      setColor([]);
-      setTransmission([]);
-      return;
-    }
-
-    axios.get(endpoint)
-    .then((response) => {
-      console.log(response.data);
-      const models = response.data.models; // Access the 'model' array returned from Flask
-      if (!Array.isArray(models)) {
-        throw new Error('Invalid response format');
+      if (!endpoint) {
+        setModels([]);
+        setDoors([]);
+        setFuel([]);
+        setColor([]);
+        setTransmission([]);
+        return;
       }
-      
-      // Since we only fetch models in this endpoint, setModels accordingly
-      setModels(models.sort()); // Sort the models and update the state
-    })
-    .catch((error) => {
-      console.error('Error fetching models:', error);
-    });
+
+      axios.get(endpoint)
+        .then((response) => {
+          console.log(response.data);
+          const models = response.data.models; 
+          if (!Array.isArray(models)) {
+            throw new Error('Invalid response format');
+          }
+          setModels(models.sort()); 
+        })
+        .catch((error) => {
+          console.error('Error fetching models:', error);
+        });
+    } else {
+      const fetchDefaultFilterOptions = async () => {
+        try {
+          const response = await axios.get('/default-filter-options');
+          setDoors(response.data.doors);
+          setFuel(response.data.fuel);
+          setColor(response.data.color);
+          setTransmission(response.data.transmission);
+          setModels(response.data.models);
+        } catch (error) {
+          console.error('Error fetching default filter options:', error);
+        }
+      };
+      fetchDefaultFilterOptions();
+    }
   }, []);
-  
 
   const handleFilterChange = useCallback((setter, value) => {
     setter(value);
   }, []);
+
   const handleFilter = useCallback(async () => {
     try {
       const params = {
@@ -132,7 +159,7 @@ export default function CarFilter() {
       console.error('Error fetching cars:', error);
     }
   }, [manufacturer, selectedModels, selectedDoors, selectedFuel, selectedColor, selectedTransmission, displacementRange, kilowattsRange, mileageRange, priceRange, yearRange, cruiseControl, airCondition, navigation, registration]);
-  
+
   const handleReset = useCallback(() => {
     setManufacturer('');
     setModels([]);
@@ -193,6 +220,7 @@ export default function CarFilter() {
       console.error('Error fetching more cars:', error);
     }
   }, [manufacturer, selectedModels, selectedDoors, selectedFuel, selectedColor, selectedTransmission, displacementRange, kilowattsRange, mileageRange, priceRange, yearRange, cruiseControl, airCondition, navigation, registration, page]);
+
   const handleSelectAllModels = useCallback(() => {
     setSelectedModels(selectedModels.length === models.length ? [] : models);
   }, [selectedModels, models]);
@@ -244,18 +272,17 @@ export default function CarFilter() {
   return (
     <Box id="CarFilter">
       <Container title="Title">
-      <Typography
+        <Typography
           component="h1"
           variant="h3"
           sx={(theme) => ({
-            alignSelf: 'center', // Aligns the text to the start (left) of the container
-            justifySelf: 'center', // Ensures the box is aligned to the left
-            padding: '4px', // Padding around the text
-            borderRadius: '40px', // Rounded corners
-            textAlign: 'center', // Aligns text to the left inside the box
-            marginLeft: '0vw', // Ensures the box is positioned on the left side
+            alignSelf: 'center', 
+            justifySelf: 'center', 
+            padding: '4px', 
+            borderRadius: '40px', 
+            textAlign: 'center', 
+            marginLeft: '0vw', 
             marginRight: '0vw',
-
             marginTop: 2,
             marginBottom: '1vw',
           })}
@@ -263,7 +290,7 @@ export default function CarFilter() {
           Car Filter
         </Typography>
       </Container>
-      <Container sx={{ justifyContent: 'center', alignContent: 'center', alignItems: 'center',}}>
+      <Container sx={{ justifyContent: 'center', alignContent: 'center', alignItems: 'center' }}>
         <Typography
           variant="h1"
           sx={{
@@ -340,17 +367,15 @@ export default function CarFilter() {
           {renderBooleanRadioGroup('Air Condition', airCondition, setAirCondition)}
           {renderBooleanRadioGroup('Navigation', navigation, setNavigation)}
           {renderBooleanRadioGroup('Registration', registration, setRegistration)}
-          <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center', gap: 2}}>
-          <Button variant="contained"  onClick={handleFilter} color="primary" size='medium' sx={{borderRadius: 15, width: {xs: '100%', sm: '200px'}}}>
-            Filter
-          </Button>
-          <Button variant="outlined" onClick={handleReset} color="secondary" size='medium' sx={{borderRadius: 15, width: {xs: '100%', sm: '200px'}}}>
-            Reset
-          </Button>
-        </Box>
+          <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center', gap: 2 }}>
+            <Button variant="contained" onClick={handleFilter} color="primary" size='medium' sx={{ borderRadius: 15, width: { xs: '100%', sm: '200px' } }}>
+              Filter
+            </Button>
+            <Button variant="outlined" onClick={handleReset} color="secondary" size='medium' sx={{ borderRadius: 15, width: { xs: '100%', sm: '200px' } }}>
+              Reset
+            </Button>
+          </Box>
         </Stack>
-
- 
 
         <Grid container spacing={2}>
           {cars.map((car, index) => (
@@ -361,7 +386,7 @@ export default function CarFilter() {
         </Grid>
 
         {cars.length > 0 && hasMoreCars && (
-        <Button variant="contained"  onClick={handleShowMore} color="primary" size='medium' sx={{borderRadius: 15, width: {xs: '100%', sm: '200px'}}}>
+          <Button variant="contained" onClick={handleShowMore} color="primary" size='medium' sx={{ borderRadius: 15, width: { xs: '100%', sm: '200px' } }}>
             Show more
           </Button>
         )}
@@ -369,3 +394,5 @@ export default function CarFilter() {
     </Box>
   );
 }
+       
+

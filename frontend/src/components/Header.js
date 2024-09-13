@@ -28,7 +28,7 @@ const logoStyle = {
   marginTop: 0,
 };
 
-function AppAppBar({ mode, toggleColorMode }) {
+function Header({ mode, toggleColorMode }) {
   const [open, setOpen] = React.useState(false);
   const [openSearch, setSearchOpen] = React.useState(false);
   const [keywords, setKeywords] = React.useState('');
@@ -41,7 +41,7 @@ function AppAppBar({ mode, toggleColorMode }) {
 
   const handleClickAway = () => {
     setSearchOpen(false);
-    setSearchResults([]); // Clear search results
+    setSearchResults([]); 
   };
 
   const toggleDrawer = (newOpen) => () => {
@@ -258,9 +258,9 @@ function AppAppBar({ mode, toggleColorMode }) {
   );
 }
 
-AppAppBar.propTypes = {
+Header.propTypes = {
   mode: PropTypes.oneOf(['dark', 'light']).isRequired,
   toggleColorMode: PropTypes.func.isRequired,
 };
 
-export default AppAppBar;
+export default Header;

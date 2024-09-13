@@ -140,7 +140,6 @@ const CarCard = ({ car }) => {
     setOpen(false);
   };
 
-  // Mapping of types to images
   const manufacturerToTypeImageMap = {
     Volkswagen: {
       Arteon: Arteon,
@@ -267,11 +266,10 @@ const CarCard = ({ car }) => {
     }
   };
 
-  // Select image based on manufacturer and type
   const carImage =
     manufacturerToTypeImageMap[car.manufacturer]?.[car.model] ||
     manufacturerToTypeImageMap[car.manufacturer]?.default ||
-    deafultCar; // Fallback in case manufacturer/type not found
+    deafultCar;
 
   return (
     <>

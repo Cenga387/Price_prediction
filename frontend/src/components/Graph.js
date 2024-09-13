@@ -26,7 +26,6 @@ export default function Graph({ mode }) {
   const [columnStats, setColumnStats] = useState(null);
 
   useEffect(() => {
-    // Fetch Doughnut chart data
     axios.get("http://localhost:5000/api/car-stats")
       .then((response) => {
         const data = response.data;
@@ -54,7 +53,6 @@ export default function Graph({ mode }) {
         console.error("Error fetching Doughnut chart data:", error);
       });
 
-          // Fetch Doughnut chart data for carstats4
     axios.get("http://localhost:5000/api/car-stats4")
     .then((response) => {
       const data = response.data;
@@ -96,7 +94,6 @@ export default function Graph({ mode }) {
       console.error("Error fetching Doughnut chart data for carstats4:", error);
     });
 
-  // Fetch Doughnut chart data for carstats5
   axios.get("http://localhost:5000/api/car-stats5")
     .then((response) => {
       const data = response.data;
@@ -138,7 +135,6 @@ export default function Graph({ mode }) {
       console.error("Error fetching Doughnut chart data for carstats5:", error);
     });
 
-  // Fetch Doughnut chart data for carstats6
   axios.get("http://localhost:5000/api/car-stats6")
     .then((response) => {
       const data = response.data;
@@ -181,7 +177,6 @@ export default function Graph({ mode }) {
     });
 
       
-    // Fetch Line chart data for carstats2
     axios.get("http://localhost:5000/api/car-stats2")
       .then((response) => {
         const data = response.data;
@@ -215,7 +210,6 @@ export default function Graph({ mode }) {
 
   }, [mode]);
 
-  // Fetch Line chart data for carstats3, carstats4, and carstats5 when xAxisOption changes
   useEffect(() => {
     axios.get(`http://localhost:5000/api/car-stats3`, {
       params: { x_axis: xAxisOption }
@@ -242,7 +236,7 @@ export default function Graph({ mode }) {
           });
         }
 
-        setColumnStats(data.stats); // Set the stats data
+        setColumnStats(data.stats); 
       })
       .catch((error) => {
         console.error("Error fetching Line chart data for carstats3:", error);
@@ -250,7 +244,6 @@ export default function Graph({ mode }) {
   }, [xAxisOption, mode]);
 
 
-  // Define chart background color based on the mode
   const cardBackgroundColor = mode === 'dark' ? theme.palette.grey[900] : '#d1e0f0';
   const cardTextColor = mode === 'dark' ? '#d1e0f0' : theme.palette.grey[900];
 
@@ -264,12 +257,12 @@ export default function Graph({ mode }) {
           component="h1"
           variant="h3"
           sx={(theme) => ({
-            alignSelf: 'flex-start', // Aligns the text to the start (left) of the container
-            justifySelf: 'flex-start', // Ensures the box is aligned to the left
-            padding: '4px', // Padding around the text
-            borderRadius: '40px', // Rounded corners
-            textAlign: 'center', // Aligns text to the left inside the box
-            marginLeft: '0vw', // Ensures the box is positioned on the left side
+            alignSelf: 'flex-start', 
+            justifySelf: 'flex-start', 
+            padding: '4px', 
+            borderRadius: '40px', 
+            textAlign: 'center', 
+            marginLeft: '0vw', 
             marginRight: '0vw',
             marginTop: '3vw',
             marginBottom: '1vw',
@@ -571,7 +564,6 @@ export default function Graph({ mode }) {
 
 
       <div style={{ display: 'flex', justifyContent: 'center' }}>
-              {/* X-axis selection dropdown */}
       <FormControl fullWidth sx={{ marginTop: '100px', marginBottom: '20px', marginRight: '20px', width: '10%', borderRadius: '300px',}}>
       <Typography
           variant="h1"
@@ -737,10 +729,10 @@ export default function Graph({ mode }) {
 </div>
       </div>
       <div>
-  {/* Render statistics for each manufacturer under the chart */}
   {columnStats && (
     <Box sx={{  marginBottom: '80px', width: '100%', paddingRight: '50px', paddingLeft: '50px'}}>
       <Grid container spacing={2} sx={{width: '100%', justifyContent: 'space-between'}}>
+        
         {/* Volkswagen Stats */}
         <Grid item xs={2}>
         <Typography variant="h6">

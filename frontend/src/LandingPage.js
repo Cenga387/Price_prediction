@@ -2,7 +2,7 @@ import * as React from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
-import AppAppBar from './components/AppAppBar';
+import Header from './components/Header';
 import Hero from './components/Hero';
 import Graph from './components/Graph';
 import FAQ from './components/FAQ';
@@ -37,7 +37,7 @@ export default function LandingPage() {
       })}
     >
       <CssBaseline />
-      <AppAppBar mode={mode} toggleColorMode={toggleColorMode} />
+      <Header mode={mode} toggleColorMode={toggleColorMode} />
       <Hero />
       <Divider />
       <Graph mode={mode} />

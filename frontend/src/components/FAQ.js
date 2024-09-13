@@ -32,12 +32,12 @@ export default function FAQ() {
           component="h1"
           variant="h3"
           sx={(theme) => ({
-            alignSelf: 'center', // Aligns the text to the start (left) of the container
-            justifySelf: 'center', // Ensures the box is aligned to the left
-            padding: '4px', // Padding around the text
-            borderRadius: '40px', // Rounded corners
-            textAlign: 'center', // Aligns text to the left inside the box
-            marginLeft: '0vw', // Ensures the box is positioned on the left side
+            alignSelf: 'center',
+            justifySelf: 'center',
+            padding: '4px',
+            borderRadius: '40px', 
+            textAlign: 'center', 
+            marginLeft: '0vw', 
             marginRight: '0vw',
             marginTop: 2,
             marginBottom: '1vw',
