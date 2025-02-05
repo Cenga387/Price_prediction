@@ -69,9 +69,9 @@ After following the setup instructions for both the backend and frontend, you ca
 ## App Screenshots
 
 <div align="center">
-   <img src="https://github.com/user-attachments/assets/8fa101c2-2812-4089-ab2b-242fe341d8c7" width=700/>
-   <img src="https://github.com/user-attachments/assets/54389784-25ff-4659-81a5-9101dd84427a" width=700/>
-   <img src="https://github.com/user-attachments/assets/96c43b15-fb12-4e20-9bc5-dfbfa8538c98" width=700/>
    <img src="https://github.com/user-attachments/assets/8cc5a154-8f53-4d21-8f90-10ddcd6fcbdd" width=700/>
+   <img src="https://github.com/user-attachments/assets/96c43b15-fb12-4e20-9bc5-dfbfa8538c98" width=700/>
+   <img src="https://github.com/user-attachments/assets/54389784-25ff-4659-81a5-9101dd84427a" width=700/>
    <img src="https://github.com/user-attachments/assets/57454c8f-bef3-40bc-9e0b-182c857e8894" width=700/>
+   <img src="https://github.com/user-attachments/assets/8fa101c2-2812-4089-ab2b-242fe341d8c7" width=700/>
 </div>
